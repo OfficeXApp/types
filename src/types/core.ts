@@ -46,7 +46,7 @@ export interface FileRecord {
   full_file_path: DriveFullFilePath;
   tags: TagValue[];
   created_by: UserID;
-  created_date_ms: number;
+  created_at: number;
   disk_id: DiskID;
   disk_type: DiskTypeEnum;
   file_size: number;
@@ -72,7 +72,7 @@ export interface FolderRecord {
   full_folder_path: DriveFullFilePath;
   tags: TagValue[];
   created_by: UserID;
-  created_date_ms: number;
+  created_at: number;
   last_updated_date_ms: number;
   last_updated_by: UserID;
   disk_id: DiskID;
@@ -102,13 +102,18 @@ export interface ApiKey {
 /** Contact */
 export interface Contact {
   id: UserID;
-  nickname: string;
+  name: string;
+  avatar: string;
+  email: string;
+  webhook_url: string;
   public_note: string;
   private_note?: string;
   evm_public_address: EvmPublicAddress;
   icp_principal: ICPPrincipalString;
   teams: TeamID[];
   tags: TagValue[];
+  last_online_at: number;
+  created_at: number;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
 }
@@ -124,6 +129,7 @@ export interface Disk {
   tags: TagValue[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  created_at: number;
 }
 
 /** Drive */
@@ -138,6 +144,7 @@ export interface Drive {
   tags: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  created_at: number;
 }
 
 /** Tag */
@@ -160,6 +167,7 @@ export interface Team {
   id: TeamID;
   name: string;
   owner: string;
+  avatar: string;
   public_note?: string;
   private_note?: string;
   admin_invites: string[];
@@ -171,6 +179,15 @@ export interface Team {
   tags: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  team_previews: ContactTeamPreview[];
+}
+
+export interface ContactTeamPreview {
+  team_id: TeamID;
+  invite_id: TeamInviteID;
+  is_admin: boolean;
+  team_name: string;
+  team_avatar?: string;
 }
 
 /** Team invite */
@@ -204,6 +221,7 @@ export interface Webhook {
   tags: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  created_at: number;
 }
 
 /** Permission for directory resource frontend representation */

@@ -1,6 +1,6 @@
 # OfficeX Types
 
-Typescript types for `OfficeX Drive`
+Typescript types for `OfficeX Drive`. View Documentation at https://dev.officex.app
 
 ```ts
 import { IRequestCreateDisk, IResponseCreateDisk, DiskTypeEnum, Disk } = "@officexapp/types";
