@@ -20,6 +20,7 @@ import {
   FolderID,
   ICPPrincipalString,
   StateDiffRecordID,
+  SystemPermissionType,
   TagID,
   TagValue,
   TeamID,
@@ -105,7 +106,7 @@ export interface Contact {
   name: string;
   avatar: string;
   email: string;
-  webhook_url: string;
+  notifications_url: string;
   public_note: string;
   private_note?: string;
   evm_public_address: EvmPublicAddress;
@@ -116,6 +117,19 @@ export interface Contact {
   created_at: number;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+}
+
+export interface ContactFE extends Contact {
+  team_previews: ContactTeamPreview[];
+  permission_previews: SystemPermissionType[];
+}
+
+export interface ContactTeamPreview {
+  team_id: TeamID;
+  invite_id: TeamInviteID;
+  is_admin: boolean;
+  team_name: string;
+  team_avatar?: string;
 }
 
 /** Disk */
@@ -179,15 +193,6 @@ export interface Team {
   tags: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
-  team_previews: ContactTeamPreview[];
-}
-
-export interface ContactTeamPreview {
-  team_id: TeamID;
-  invite_id: TeamInviteID;
-  is_admin: boolean;
-  team_name: string;
-  team_avatar?: string;
 }
 
 /** Team invite */

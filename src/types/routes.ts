@@ -3,7 +3,7 @@
 import { DirectoryAction } from "./actions";
 import {
   ApiKey,
-  Contact,
+  ContactFE,
   DirectoryResourcePermissionFE,
   Disk,
   Drive,
@@ -196,14 +196,6 @@ export interface IRequestUpdateApiKey {
 /** Update API Key Response */
 export interface IResponseUpdateApiKey extends ISuccessResponse<ApiKey> {}
 
-/** Upsert API Key Request */
-export type IRequestUpsertApiKey = IRequestCreateApiKey | IRequestUpdateApiKey;
-
-/** Upsert API Key Response */
-export type IResponseUpsertApiKey =
-  | IResponseCreateApiKey
-  | IResponseUpdateApiKey;
-
 /** Delete API Key Request */
 export interface IRequestDeleteApiKey {
   /** ID of the API key to delete */
@@ -230,14 +222,14 @@ export interface IRequestGetContact {
 }
 
 /** Get Contact Response */
-export interface IResponseGetContact extends ISuccessResponse<Contact> {}
+export interface IResponseGetContact extends ISuccessResponse<ContactFE> {}
 
 /** List Contacts Request */
 export interface IRequestListContacts extends IPaginationParams {}
 
 /** List Contacts Response */
 export interface IResponseListContacts
-  extends ISuccessResponse<IPaginatedResponse<Contact>> {}
+  extends ISuccessResponse<IPaginatedResponse<ContactFE>> {}
 
 /** Create Contact Request */
 export interface IRequestCreateContact {
@@ -259,7 +251,7 @@ export interface IRequestCreateContact {
 }
 
 /** Create Contact Response */
-export interface IResponseCreateContact extends ISuccessResponse<Contact> {}
+export interface IResponseCreateContact extends ISuccessResponse<ContactFE> {}
 
 /** Update Contact Request */
 export interface IRequestUpdateContact {
@@ -283,17 +275,7 @@ export interface IRequestUpdateContact {
 }
 
 /** Update Contact Response */
-export interface IResponseUpdateContact extends ISuccessResponse<Contact> {}
-
-/** Upsert Contact Request */
-export type IRequestUpsertContact =
-  | IRequestCreateContact
-  | IRequestUpdateContact;
-
-/** Upsert Contact Response */
-export type IResponseUpsertContact =
-  | IResponseCreateContact
-  | IResponseUpdateContact;
+export interface IResponseUpdateContact extends ISuccessResponse<ContactFE> {}
 
 /** Delete Contact Request */
 export interface IRequestDeleteContact {
@@ -373,12 +355,6 @@ export interface IRequestUpdateDisk {
 
 /** Update Disk Response */
 export interface IResponseUpdateDisk extends ISuccessResponse<Disk> {}
-
-/** Upsert Disk Request */
-export type IRequestUpsertDisk = IRequestCreateDisk | IRequestUpdateDisk;
-
-/** Upsert Disk Response */
-export type IResponseUpsertDisk = IResponseCreateDisk | IResponseUpdateDisk;
 
 /** Delete Disk Request */
 export interface IRequestDeleteDisk {
@@ -460,12 +436,6 @@ export interface IRequestUpdateDrive {
 
 /** Update Drive Response */
 export interface IResponseUpdateDrive extends ISuccessResponse<Drive> {}
-
-/** Upsert Drive Request */
-export type IRequestUpsertDrive = IRequestCreateDrive | IRequestUpdateDrive;
-
-/** Upsert Drive Response */
-export type IResponseUpsertDrive = IResponseCreateDrive | IResponseUpdateDrive;
 
 /** Delete Drive Request */
 export interface IRequestDeleteDrive {
@@ -650,16 +620,6 @@ export interface IRequestUpdateDirectoryPermission {
 export interface IResponseUpdateDirectoryPermission
   extends ISuccessResponse<DirectoryPermission> {}
 
-/** Upsert Directory Permission Request */
-export type IRequestUpsertDirectoryPermission =
-  | IRequestCreateDirectoryPermission
-  | IRequestUpdateDirectoryPermission;
-
-/** Upsert Directory Permission Response */
-export type IResponseUpsertDirectoryPermission =
-  | IResponseCreateDirectoryPermission
-  | IResponseUpdateDirectoryPermission;
-
 /** Delete Directory Permission Request */
 export interface IRequestDeleteDirectoryPermission {
   /** ID of the directory permission to delete */
@@ -779,16 +739,6 @@ export interface IRequestUpdateSystemPermission {
 export interface IResponseUpdateSystemPermission
   extends ISuccessResponse<SystemPermission> {}
 
-/** Upsert System Permission Request */
-export type IRequestUpsertSystemPermission =
-  | IRequestCreateSystemPermission
-  | IRequestUpdateSystemPermission;
-
-/** Upsert System Permission Response */
-export type IResponseUpsertSystemPermission =
-  | IResponseCreateSystemPermission
-  | IResponseUpdateSystemPermission;
-
 /** Delete System Permission Request */
 export interface IRequestDeleteSystemPermission {
   /** ID of the system permission to delete */
@@ -898,12 +848,6 @@ export interface IRequestUpdateTeam {
 /** Update Team Response */
 export interface IResponseUpdateTeam extends ISuccessResponse<Team> {}
 
-/** Upsert Team Request */
-export type IRequestUpsertTeam = IRequestCreateTeam | IRequestUpdateTeam;
-
-/** Upsert Team Response */
-export type IResponseUpsertTeam = IResponseCreateTeam | IResponseUpdateTeam;
-
 /** Delete Team Request */
 export interface IRequestDeleteTeam {
   /** ID of the team to delete */
@@ -1009,16 +953,6 @@ export interface IRequestUpdateTeamInvite {
 export interface IResponseUpdateTeamInvite
   extends ISuccessResponse<TeamInvite> {}
 
-/** Upsert Team Invite Request */
-export type IRequestUpsertTeamInvite =
-  | IRequestCreateTeamInvite
-  | IRequestUpdateTeamInvite;
-
-/** Upsert Team Invite Response */
-export type IResponseUpsertTeamInvite =
-  | IResponseCreateTeamInvite
-  | IResponseUpdateTeamInvite;
-
 /** Delete Team Invite Request */
 export interface IRequestDeleteTeamInvite {
   /** ID of the team invite to delete */
@@ -1120,12 +1054,6 @@ export interface IRequestUpdateTag {
 
 /** Update Tag Response */
 export interface IResponseUpdateTag extends ISuccessResponse<Tag> {}
-
-/** Upsert Tag Request */
-export type IRequestUpsertTag = IRequestCreateTag | IRequestUpdateTag;
-
-/** Upsert Tag Response */
-export type IResponseUpsertTag = IResponseCreateTag | IResponseUpdateTag;
 
 /** Delete Tag Request */
 export interface IRequestDeleteTag {
@@ -1230,16 +1158,6 @@ export interface IRequestUpdateWebhook {
 
 /** Update Webhook Response */
 export interface IResponseUpdateWebhook extends ISuccessResponse<Webhook> {}
-
-/** Upsert Webhook Request */
-export type IRequestUpsertWebhook =
-  | IRequestCreateWebhook
-  | IRequestUpdateWebhook;
-
-/** Upsert Webhook Response */
-export type IResponseUpsertWebhook =
-  | IResponseCreateWebhook
-  | IResponseUpdateWebhook;
 
 /** Delete Webhook Request */
 export interface IRequestDeleteWebhook {
