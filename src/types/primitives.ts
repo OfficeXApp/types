@@ -126,7 +126,7 @@ export enum DirectoryPermissionType {
 /** Types of permissions for system resources */
 export enum SystemPermissionType {
   CREATE = "CREATE",
-  UPDATE = "UPDATE",
+  EDIT = "EDIT",
   DELETE = "DELETE",
   VIEW = "VIEW",
   INVITE = "INVITE",
