@@ -26,6 +26,7 @@ import {
   TeamID,
   TeamInviteID,
   TeamRole,
+  URLEndpoint,
   UserID,
   WebhookEventLabel,
   WebhookID,
@@ -153,7 +154,7 @@ export interface Drive {
   icp_principal: ICPPrincipalString;
   public_note?: string;
   private_note?: string;
-  url_endpoint: string;
+  endpoint_url: URLEndpoint;
   last_indexed_ms?: number;
   tags: string[];
   external_id?: ExternalID;
@@ -189,7 +190,7 @@ export interface Team {
   created_at: number;
   last_modified_at: number;
   drive_id: DriveID;
-  url_endpoint: string;
+  endpoint_url: URLEndpoint;
   tags: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
@@ -241,7 +242,7 @@ export interface StateDiffRecord {
   timestamp_ns: number;
   notes?: string;
   drive_id: DriveID;
-  url_endpoint: string;
+  endpoint_url: URLEndpoint;
   implementation: "RUST_ICP_CANISTER" | "JAVASCRIPT_RUNTIME";
   diff_forward: string;
   diff_backward: string;
