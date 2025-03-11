@@ -28,13 +28,16 @@ import {
   DriveID,
   ExternalID,
   ExternalPayload,
+  GiftCardID,
   GranteeID,
+  ICPPrincipalString,
   SortDirection,
   SystemPermissionID,
   TagID,
   TeamID,
   TeamInviteID,
   TeamRole,
+  URLEndpoint,
   UserID,
   WebhookEventLabel,
   WebhookID,
@@ -160,7 +163,6 @@ export interface IResponseListApiKeys extends ISuccessResponse<ApiKey[]> {}
 
 /** Create API Key Request */
 export interface IRequestCreateApiKey {
-  action: "CREATE";
   /** Name for the API key */
   name: string;
   /** ID of the user to create the API key for */
@@ -178,7 +180,6 @@ export interface IResponseCreateApiKey extends ISuccessResponse<ApiKey> {}
 
 /** Update API Key Request */
 export interface IRequestUpdateApiKey {
-  action: "UPDATE";
   /** ID of the API key to update */
   id: ApiKeyID;
   /** New name for the API key */
@@ -233,7 +234,6 @@ export interface IResponseListContacts
 
 /** Create Contact Request */
 export interface IRequestCreateContact {
-  action: "CREATE";
   /** ICP principal associated with the contact */
   icp_principal: string;
   /** Nickname for the contact */
@@ -255,7 +255,6 @@ export interface IResponseCreateContact extends ISuccessResponse<ContactFE> {}
 
 /** Update Contact Request */
 export interface IRequestUpdateContact {
-  action: "UPDATE";
   /** ID of the contact to update */
   id: UserID;
   /** New nickname for the contact */
@@ -292,6 +291,16 @@ export interface IResponseDeleteContact
     deleted: boolean;
   }> {}
 
+/** Redeem Contact Request */
+export interface IRequestRedeemContact {
+  current_user_id: UserID;
+  new_user_id: UserID;
+  redeem_code: String;
+}
+
+/** Redeem Contact Response */
+export interface IResponseRedeemContact extends ISuccessResponse<ContactFE> {}
+
 // =========================================================================
 // Disks Routes
 // =========================================================================
@@ -314,7 +323,6 @@ export interface IResponseListDisks
 
 /** Create Disk Request */
 export interface IRequestCreateDisk {
-  action: "CREATE";
   /** Name for the disk */
   name: string;
   /** Type of disk */
@@ -336,7 +344,6 @@ export interface IResponseCreateDisk extends ISuccessResponse<Disk> {}
 
 /** Update Disk Request */
 export interface IRequestUpdateDisk {
-  action: "UPDATE";
   /** ID of the disk to update */
   id: DiskID;
   /** New name for the disk */
@@ -393,7 +400,6 @@ export interface IResponseListDrives
 
 /** Create Drive Request */
 export interface IRequestCreateDrive {
-  action: "CREATE";
   /** Name for the drive */
   name: string;
   /** ICP principal */
@@ -403,7 +409,7 @@ export interface IRequestCreateDrive {
   /** Private note about the drive */
   private_note?: string;
   /** URL endpoint for the drive */
-  url_endpoint?: string;
+  endpoint_url?: URLEndpoint;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -415,7 +421,6 @@ export interface IResponseCreateDrive extends ISuccessResponse<Drive> {}
 
 /** Update Drive Request */
 export interface IRequestUpdateDrive {
-  action: "UPDATE";
   /** ID of the drive to update */
   id: DriveID;
   /** New name for the drive */
@@ -427,7 +432,7 @@ export interface IRequestUpdateDrive {
   /** ICP principal */
   icp_principal?: string;
   /** URL endpoint for the drive */
-  url_endpoint?: string;
+  endpoint_url?: URLEndpoint;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -558,7 +563,6 @@ export interface IResponseGetDirectoryPermission
 
 /** Create Directory Permission Request */
 export interface IRequestCreateDirectoryPermission {
-  action: "CREATE";
   /** ID of the resource to grant permission for */
   resource_id: DirectoryResourceID;
   /** ID of the user/team to grant permission to */
@@ -589,7 +593,6 @@ export interface IResponseCreateDirectoryPermission
 
 /** Update Directory Permission Request */
 export interface IRequestUpdateDirectoryPermission {
-  action: "UPDATE";
   /** ID of the permission to update */
   id: DirectoryPermissionID;
   /** ID of the resource to grant permission for */
@@ -685,7 +688,6 @@ export interface IResponseGetSystemPermission
 
 /** Create System Permission Request */
 export interface IRequestCreateSystemPermission {
-  action: "CREATE";
   /** ID of the resource to grant permission for */
   resource_id: SystemResourceID;
   /** ID of the user/team to grant permission to */
@@ -712,7 +714,6 @@ export interface IResponseCreateSystemPermission
 
 /** Update System Permission Request */
 export interface IRequestUpdateSystemPermission {
-  action: "UPDATE";
   /** ID of the permission to update */
   id: SystemPermissionID;
   /** ID of the resource to grant permission for */
@@ -808,7 +809,6 @@ export interface IResponseListTeams
 
 /** Create Team Request */
 export interface IRequestCreateTeam {
-  action: "CREATE";
   /** Name for the team */
   name: string;
   /** Public note about the team */
@@ -816,7 +816,7 @@ export interface IRequestCreateTeam {
   /** Private note about the team */
   private_note?: string;
   /** URL endpoint for the team */
-  url_endpoint?: string;
+  endpoint_url?: URLEndpoint;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -828,7 +828,6 @@ export interface IResponseCreateTeam extends ISuccessResponse<Team> {}
 
 /** Update Team Request */
 export interface IRequestUpdateTeam {
-  action: "UPDATE";
   /** ID of the team to update */
   id: TeamID;
   /** New name for the team */
@@ -838,7 +837,7 @@ export interface IRequestUpdateTeam {
   /** Private note about the team */
   private_note?: string;
   /** URL endpoint for the team */
-  url_endpoint?: string;
+  endpoint_url?: URLEndpoint;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -907,7 +906,6 @@ export interface IResponseListTeamInvites
 
 /** Create Team Invite Request */
 export interface IRequestCreateTeamInvite {
-  action: "CREATE";
   /** ID of the team for the invite */
   team_id: TeamID;
   /** ID of the user to invite */
@@ -932,7 +930,6 @@ export interface IResponseCreateTeamInvite
 
 /** Update Team Invite Request */
 export interface IRequestUpdateTeamInvite {
-  action: "UPDATE";
   /** ID of the invite to update */
   id: TeamInviteID;
   /** New role to assign */
@@ -1019,7 +1016,6 @@ export interface IResponseListTags
 
 /** Create Tag Request */
 export interface IRequestCreateTag {
-  action: "CREATE";
   /** The tag value (e.g., "Project-Alpha") */
   value: string;
   /** Description of the tag */
@@ -1037,7 +1033,6 @@ export interface IResponseCreateTag extends ISuccessResponse<Tag> {}
 
 /** Update Tag Request */
 export interface IRequestUpdateTag {
-  action: "UPDATE";
   /** ID of the tag to update */
   id: TagID;
   /** New value for the tag */
@@ -1113,7 +1108,6 @@ export interface IResponseListWebhooks
 
 /** Create Webhook Request */
 export interface IRequestCreateWebhook {
-  action: "CREATE";
   /** Alternative index for the webhook */
   alt_index: string;
   /** URL to send webhook events to */
@@ -1137,7 +1131,6 @@ export interface IResponseCreateWebhook extends ISuccessResponse<Webhook> {}
 
 /** Update Webhook Request */
 export interface IRequestUpdateWebhook {
-  action: "UPDATE";
   /** ID of the webhook to update */
   id: WebhookID;
   /** New URL for the webhook */
@@ -1172,4 +1165,48 @@ export interface IResponseDeleteWebhook
     id: WebhookID;
     /** Whether the webhook was successfully deleted */
     deleted: boolean;
+  }> {}
+
+/** Superswap User Request */
+export interface IRequestSuperswapUser {
+  current_user_id: String;
+  new_user_id: String;
+}
+
+/** Superswap User Response */
+export interface IResponseSuperswapUser
+  extends ISuccessResponse<{
+    success: boolean;
+    message: String;
+  }> {}
+
+/** Redeem Gift Card Request */
+export interface IRequestRedeemGiftCard {
+  id: GiftCardID;
+  owner_icp_principal: ICPPrincipalString;
+  organization_name?: String;
+}
+
+/** Redeem Gift Card Response */
+export interface IResponseRedeemGiftCard
+  extends ISuccessResponse<{
+    owner_id: UserID;
+    drive_id: DriveID;
+    endpoint_url: URLEndpoint;
+    redeem_code: String;
+  }> {}
+
+/** Redeem Org Request */
+export interface IRequestRedeemOrg {
+  redeem_code: String;
+}
+
+/** Redeem Org Response */
+export interface IResponseRedeemOrg
+  extends ISuccessResponse<{
+    drive_id: DriveID; // spawned drive id
+    endpoint_url: URLEndpoint; // spawned drive url endpoint
+    api_key: String; // admin api key for the spawned drive
+    note: String; // note about the spawned drive, particularly info about the factory
+    admin_login_password: String; // admin login password for the spawned drive
   }> {}

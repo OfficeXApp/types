@@ -21,6 +21,8 @@ export type ApiKeyID = string;
 /** Unique identifier for a user */
 export type UserID = string;
 
+export type GiftCardID = string;
+
 /** Unique identifier for a team */
 export type TeamID = string;
 
@@ -59,6 +61,9 @@ export type ICPPrincipalString = string;
 
 /** EVM public address */
 export type EvmPublicAddress = string;
+
+/** URL endpoint */
+export type URLEndpoint = string;
 
 /** External identifier for integration purposes */
 export type ExternalID = string;
