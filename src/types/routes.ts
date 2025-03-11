@@ -163,6 +163,7 @@ export interface IResponseListApiKeys extends ISuccessResponse<ApiKey[]> {}
 
 /** Create API Key Request */
 export interface IRequestCreateApiKey {
+  id?: ApiKeyID;
   /** Name for the API key */
   name: string;
   /** ID of the user to create the API key for */
@@ -234,6 +235,7 @@ export interface IResponseListContacts
 
 /** Create Contact Request */
 export interface IRequestCreateContact {
+  id?: UserID;
   /** ICP principal associated with the contact */
   icp_principal: string;
   /** Nickname for the contact */
@@ -323,6 +325,7 @@ export interface IResponseListDisks
 
 /** Create Disk Request */
 export interface IRequestCreateDisk {
+  id?: DiskID;
   /** Name for the disk */
   name: string;
   /** Type of disk */
@@ -400,6 +403,7 @@ export interface IResponseListDrives
 
 /** Create Drive Request */
 export interface IRequestCreateDrive {
+  id?: DriveID;
   /** Name for the drive */
   name: string;
   /** ICP principal */
@@ -563,6 +567,7 @@ export interface IResponseGetDirectoryPermission
 
 /** Create Directory Permission Request */
 export interface IRequestCreateDirectoryPermission {
+  id?: DirectoryPermissionID;
   /** ID of the resource to grant permission for */
   resource_id: DirectoryResourceID;
   /** ID of the user/team to grant permission to */
@@ -688,6 +693,7 @@ export interface IResponseGetSystemPermission
 
 /** Create System Permission Request */
 export interface IRequestCreateSystemPermission {
+  id?: SystemPermissionID;
   /** ID of the resource to grant permission for */
   resource_id: SystemResourceID;
   /** ID of the user/team to grant permission to */
@@ -809,6 +815,7 @@ export interface IResponseListTeams
 
 /** Create Team Request */
 export interface IRequestCreateTeam {
+  id?: TeamID;
   /** Name for the team */
   name: string;
   /** Public note about the team */
@@ -906,6 +913,7 @@ export interface IResponseListTeamInvites
 
 /** Create Team Invite Request */
 export interface IRequestCreateTeamInvite {
+  id?: TeamInviteID;
   /** ID of the team for the invite */
   team_id: TeamID;
   /** ID of the user to invite */
@@ -1016,6 +1024,7 @@ export interface IResponseListTags
 
 /** Create Tag Request */
 export interface IRequestCreateTag {
+  id?: TagID;
   /** The tag value (e.g., "Project-Alpha") */
   value: string;
   /** Description of the tag */
@@ -1108,6 +1117,7 @@ export interface IResponseListWebhooks
 
 /** Create Webhook Request */
 export interface IRequestCreateWebhook {
+  id?: WebhookID;
   /** Alternative index for the webhook */
   alt_index: string;
   /** URL to send webhook events to */
@@ -1182,7 +1192,7 @@ export interface IResponseSuperswapUser
 
 /** Redeem Gift Card Request */
 export interface IRequestRedeemGiftCard {
-  id: GiftCardID;
+  giftcard_id: GiftCardID;
   owner_icp_principal: ICPPrincipalString;
   organization_name?: String;
 }

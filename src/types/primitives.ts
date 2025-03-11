@@ -1,5 +1,7 @@
 // src/types/primitives.ts
 
+import { v4 as uuidv4 } from "uuid";
+
 /**
  * OfficeX API Type Definitions
  * Derived from OpenAPI v3.0.3 specification
@@ -8,6 +10,52 @@
 // =========================================================================
 // ID Type Definitions
 // =========================================================================
+
+// enum for id prefix IDPrefixEnum
+export enum IDPrefixEnum {
+  File = "FileID_",
+  Folder = "FolderID_",
+  Drive = "DriveID_",
+  ApiKey = "ApiKeyID_",
+  Disk = "DiskID_",
+  Team = "TeamID_",
+  TeamInvite = "TeamInviteID_",
+  SystemPermission = "SystemPermissionID_",
+  DirectoryPermission = "DirectoryPermissionID_",
+  PlaceholderPermissionGrantee = "PlaceholderPermissionGranteeID_",
+  Webhook = "WebhookID_",
+  User = "UserID_",
+  DirectoryActionOutcome = "DirectoryActionOutcomeID_",
+  PlaceholderTeamInviteeID = "PlaceholderTeamInviteeID_",
+  ShareTrackID = "ShareTrackID_",
+  DriveStateDiffID = "DriveStateDiffID_",
+  TagID = "TagID_",
+  RedeemToken = "RedeemTokenID_",
+}
+
+export const GenerateID = {
+  File: () => `${IDPrefixEnum.File}${uuidv4()}`,
+  Folder: () => `${IDPrefixEnum.Folder}${uuidv4()}`,
+  Drive: () => `${IDPrefixEnum.Drive}${uuidv4()}`,
+  ApiKey: () => `${IDPrefixEnum.ApiKey}${uuidv4()}`,
+  Disk: () => `${IDPrefixEnum.Disk}${uuidv4()}`,
+  Team: () => `${IDPrefixEnum.Team}${uuidv4()}`,
+  TeamInvite: () => `${IDPrefixEnum.TeamInvite}${uuidv4()}`,
+  SystemPermission: () => `${IDPrefixEnum.SystemPermission}${uuidv4()}`,
+  DirectoryPermission: () => `${IDPrefixEnum.DirectoryPermission}${uuidv4()}`,
+  PlaceholderPermissionGrantee: () =>
+    `${IDPrefixEnum.PlaceholderPermissionGrantee}${uuidv4()}`,
+  Webhook: () => `${IDPrefixEnum.Webhook}${uuidv4()}`,
+  User: () => `${IDPrefixEnum.User}${uuidv4()}`,
+  DirectoryActionOutcome: () =>
+    `${IDPrefixEnum.DirectoryActionOutcome}${uuidv4()}`,
+  PlaceholderTeamInviteeID: () =>
+    `${IDPrefixEnum.PlaceholderTeamInviteeID}${uuidv4()}`,
+  ShareTrackID: () => `${IDPrefixEnum.ShareTrackID}${uuidv4()}`,
+  DriveStateDiffID: () => `${IDPrefixEnum.DriveStateDiffID}${uuidv4()}`,
+  TagID: () => `${IDPrefixEnum.TagID}${uuidv4()}`,
+  RedeemToken: () => `${IDPrefixEnum.RedeemToken}${uuidv4()}`,
+};
 
 /** Unique identifier for a file */
 export type FileID = string;
