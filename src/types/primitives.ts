@@ -30,7 +30,7 @@ export enum IDPrefixEnum {
   ShareTrackID = "ShareTrackID_",
   DriveStateDiffID = "DriveStateDiffID_",
   TagID = "TagID_",
-  RedeemToken = "RedeemTokenID_",
+  RedeemCode = "RedeemCodeID_",
 }
 
 export const GenerateID = {
@@ -54,7 +54,7 @@ export const GenerateID = {
   ShareTrackID: () => `${IDPrefixEnum.ShareTrackID}${uuidv4()}`,
   DriveStateDiffID: () => `${IDPrefixEnum.DriveStateDiffID}${uuidv4()}`,
   TagID: () => `${IDPrefixEnum.TagID}${uuidv4()}`,
-  RedeemToken: () => `${IDPrefixEnum.RedeemToken}${uuidv4()}`,
+  RedeemCode: () => `${IDPrefixEnum.RedeemCode}${uuidv4()}`,
 };
 
 /** Unique identifier for a file */

@@ -409,7 +409,7 @@ export interface IRequestCreateDrive {
   /** Name for the drive */
   name: string;
   /** ICP principal */
-  icp_principal?: string;
+  icp_principal: string;
   /** Public note about the drive */
   public_note?: string;
   /** Private note about the drive */
@@ -1126,6 +1126,10 @@ export interface IRequestCreateWebhook {
   url: string;
   /** Event type to trigger the webhook */
   event: WebhookEventLabel;
+  /** Name for the webhook */
+  name?: string;
+  /** Note for the webhook */
+  note?: string;
   /** Signature for webhook verification */
   signature?: string;
   /** Description of the webhook */
@@ -1147,6 +1151,10 @@ export interface IRequestUpdateWebhook {
   id: WebhookID;
   /** New URL for the webhook */
   url?: string;
+  /** Name for the webhook */
+  name?: string;
+  /** Note for the webhook */
+  note?: string;
   /** New signature for webhook verification */
   signature?: string;
   /** New description for the webhook */

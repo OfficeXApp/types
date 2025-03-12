@@ -101,6 +101,10 @@ export interface ApiKey {
   external_payload?: ExternalPayload;
 }
 
+export interface ApiKeyFE extends ApiKey {
+  permission_previews: SystemPermissionType[];
+}
+
 /** Contact */
 export interface Contact {
   id: UserID;
@@ -162,6 +166,10 @@ export interface Drive {
   created_at: number;
 }
 
+export interface DriveFE {
+  permission_previews: SystemPermissionType[];
+}
+
 /** Tag */
 export interface Tag {
   id: TagID;
@@ -175,6 +183,10 @@ export interface Tag {
   tags: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+}
+
+export interface TagFE extends Tag {
+  permission_previews: SystemPermissionType[];
 }
 
 /** Team */
@@ -196,6 +208,20 @@ export interface Team {
   external_payload?: ExternalPayload;
 }
 
+export interface TeamFE extends Team {
+  member_previews: TeamMemberPreview[];
+  permission_previews: SystemPermissionType[];
+}
+
+export interface TeamMemberPreview {
+  user_id: UserID;
+  name: String;
+  avatar?: String;
+  team_id: TeamID;
+  is_admin: boolean;
+  invite_id: TeamInviteID;
+}
+
 /** Team invite */
 export interface TeamInvite {
   id: TeamInviteID;
@@ -214,6 +240,14 @@ export interface TeamInvite {
   external_payload?: ExternalPayload;
 }
 
+export interface TeamInviteFE extends TeamInvite {
+  team_name: String;
+  team_avatar?: String;
+  invitee_name: String;
+  invitee_avatar?: String;
+  permission_previews: SystemPermissionType[];
+}
+
 /** Webhook */
 export interface Webhook {
   id: WebhookID;
@@ -228,6 +262,10 @@ export interface Webhook {
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;
+}
+
+export interface WebhookFE extends Webhook {
+  permission_previews: SystemPermissionType[];
 }
 
 /** Permission for directory resource frontend representation */
