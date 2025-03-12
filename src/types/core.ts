@@ -151,6 +151,10 @@ export interface Disk {
   created_at: number;
 }
 
+export interface DiskFE extends Disk {
+  permission_previews: SystemPermissionType[];
+}
+
 /** Drive */
 export interface Drive {
   id: DriveID;
@@ -166,7 +170,7 @@ export interface Drive {
   created_at: number;
 }
 
-export interface DriveFE {
+export interface DriveFE extends Drive {
   permission_previews: SystemPermissionType[];
 }
 

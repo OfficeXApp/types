@@ -260,7 +260,7 @@ export interface IRequestUpdateContact {
   /** ID of the contact to update */
   id: UserID;
   /** New nickname for the contact */
-  nickname?: string;
+  name?: string;
   /** New nickname for the contact */
   email?: string;
   /** New nickname for the contact */
@@ -435,8 +435,6 @@ export interface IRequestUpdateDrive {
   public_note?: string;
   /** Private note about the drive */
   private_note?: string;
-  /** ICP principal */
-  icp_principal?: string;
   /** URL endpoint for the drive */
   endpoint_url?: URLEndpoint;
   /** External identifier */
