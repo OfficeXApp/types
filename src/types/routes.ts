@@ -1128,6 +1128,8 @@ export interface IRequestCreateWebhook {
   name?: string;
   /** Note for the webhook */
   note?: string;
+  /** Webhook active */
+  active?: boolean;
   /** Signature for webhook verification */
   signature?: string;
   /** Description of the webhook */

@@ -102,6 +102,7 @@ export interface ApiKey {
 }
 
 export interface ApiKeyFE extends ApiKey {
+  user_name?: string;
   permission_previews: SystemPermissionType[];
 }
 
