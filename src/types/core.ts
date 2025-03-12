@@ -114,7 +114,7 @@ export interface Contact {
   icp_principal: ICPPrincipalString;
   teams: TeamID[];
   tags: TagValue[];
-  last_online_at: number;
+  last_online_ms: number;
   created_at: number;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;

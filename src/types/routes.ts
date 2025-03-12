@@ -239,7 +239,7 @@ export interface IRequestCreateContact {
   /** ICP principal associated with the contact */
   icp_principal: string;
   /** Nickname for the contact */
-  nickname: string;
+  name: string;
   /** EVM public address */
   evm_public_address?: string;
   /** Public note about the contact */
@@ -261,14 +261,16 @@ export interface IRequestUpdateContact {
   id: UserID;
   /** New nickname for the contact */
   nickname?: string;
+  /** New nickname for the contact */
+  email?: string;
+  /** New nickname for the contact */
+  notifications_url?: string;
   /** Public note about the contact */
   public_note?: string;
   /** Private note about the contact */
   private_note?: string;
   /** EVM public address */
   evm_public_address?: string;
-  /** ICP principal */
-  icp_principal?: string;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -1194,6 +1196,7 @@ export interface IResponseSuperswapUser
 export interface IRequestRedeemGiftCard {
   giftcard_id: GiftCardID;
   owner_icp_principal: ICPPrincipalString;
+  owner_name?: String;
   organization_name?: String;
 }
 

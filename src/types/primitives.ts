@@ -36,7 +36,7 @@ export enum IDPrefixEnum {
 export const GenerateID = {
   File: () => `${IDPrefixEnum.File}${uuidv4()}`,
   Folder: () => `${IDPrefixEnum.Folder}${uuidv4()}`,
-  Drive: () => `${IDPrefixEnum.Drive}${uuidv4()}`,
+  Drive: (icp_principal: string) => `${IDPrefixEnum.Drive}${icp_principal}`,
   ApiKey: () => `${IDPrefixEnum.ApiKey}${uuidv4()}`,
   Disk: () => `${IDPrefixEnum.Disk}${uuidv4()}`,
   Team: () => `${IDPrefixEnum.Team}${uuidv4()}`,
@@ -46,7 +46,7 @@ export const GenerateID = {
   PlaceholderPermissionGrantee: () =>
     `${IDPrefixEnum.PlaceholderPermissionGrantee}${uuidv4()}`,
   Webhook: () => `${IDPrefixEnum.Webhook}${uuidv4()}`,
-  User: () => `${IDPrefixEnum.User}${uuidv4()}`,
+  User: (icp_principal: string) => `${IDPrefixEnum.User}${icp_principal}`,
   DirectoryActionOutcome: () =>
     `${IDPrefixEnum.DirectoryActionOutcome}${uuidv4()}`,
   PlaceholderTeamInviteeID: () =>
