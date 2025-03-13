@@ -221,10 +221,12 @@ export interface TeamFE extends Team {
 export interface TeamMemberPreview {
   user_id: UserID;
   name: String;
+  note?: String;
   avatar?: String;
   team_id: TeamID;
   is_admin: boolean;
   invite_id: TeamInviteID;
+  last_online_ms: number;
 }
 
 /** Team invite */

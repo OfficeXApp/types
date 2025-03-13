@@ -919,7 +919,7 @@ export interface IRequestCreateTeamInvite {
   /** ID of the user to invite */
   invitee_id?: UserID;
   /** Role to assign to the invited user */
-  role: TeamRole;
+  role?: TeamRole;
   /** Timestamp when the invite becomes active */
   active_from?: number;
   /** Timestamp when the invite expires */
