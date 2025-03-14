@@ -20,8 +20,8 @@ import {
   ICPPrincipalString,
   StateDiffRecordID,
   SystemPermissionType,
-  TagID,
-  TagValue,
+  LabelID,
+  LabelValue,
   GroupID,
   GroupInviteID,
   GroupRole,
@@ -45,7 +45,7 @@ export interface FileRecord {
   next_version?: FileID;
   extension: string;
   full_file_path: DriveFullFilePath;
-  tags: TagValue[];
+  labels: LabelValue[];
   created_by: UserID;
   created_at: number;
   disk_id: DiskID;
@@ -71,7 +71,7 @@ export interface FolderRecord {
   subfolder_uuids: FolderID[];
   file_uuids: FileID[];
   full_folder_path: DriveFullFilePath;
-  tags: TagValue[];
+  labels: LabelValue[];
   created_by: UserID;
   created_at: number;
   last_updated_date_ms: number;
@@ -95,7 +95,7 @@ export interface ApiKey {
   created_at: number;
   expires_at: number;
   is_revoked: boolean;
-  tags: TagValue[];
+  labels: LabelValue[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
 }
@@ -117,7 +117,7 @@ export interface Contact {
   evm_public_address: EvmPublicAddress;
   icp_principal: ICPPrincipalString;
   groups: GroupID[];
-  tags: TagValue[];
+  labels: LabelValue[];
   last_online_ms: number;
   created_at: number;
   external_id?: ExternalID;
@@ -145,7 +145,7 @@ export interface Disk {
   public_note?: string;
   private_note?: string;
   auth_json?: string;
-  tags: TagValue[];
+  labels: LabelValue[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;
@@ -164,7 +164,7 @@ export interface Drive {
   private_note?: string;
   endpoint_url: URLEndpoint;
   last_indexed_ms?: number;
-  tags: string[];
+  labels: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;
@@ -174,9 +174,9 @@ export interface DriveFE extends Drive {
   permission_previews: SystemPermissionType[];
 }
 
-/** Tag */
-export interface Tag {
-  id: TagID;
+/** Label */
+export interface Label {
+  id: LabelID;
   value: string;
   description?: string;
   color: string;
@@ -184,12 +184,12 @@ export interface Tag {
   created_at: number;
   last_updated_at: number;
   resources: any[];
-  tags: string[];
+  labels: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
 }
 
-export interface TagFE extends Tag {
+export interface LabelFE extends Label {
   permission_previews: SystemPermissionType[];
 }
 
@@ -207,7 +207,7 @@ export interface Group {
   last_modified_at: number;
   drive_id: DriveID;
   endpoint_url: URLEndpoint;
-  tags: string[];
+  labels: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
 }
@@ -241,7 +241,7 @@ export interface GroupInvite {
   created_at: number;
   last_modified_at: number;
   from_placeholder_invitee?: string;
-  tags: TagValue[];
+  labels: LabelValue[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
 }
@@ -264,7 +264,7 @@ export interface Webhook {
   description: string;
   active: boolean;
   filters: string;
-  tags: string[];
+  labels: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;

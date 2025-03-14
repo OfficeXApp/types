@@ -9,7 +9,7 @@ import {
   Drive,
   FileRecord,
   FolderRecord,
-  Tag,
+  Label,
   Group,
   GroupInvite,
   Webhook,
@@ -29,7 +29,7 @@ import {
   ICPPrincipalString,
   SortDirection,
   SystemPermissionID,
-  TagID,
+  LabelID,
   GroupID,
   GroupInviteID,
   GroupRole,
@@ -695,8 +695,8 @@ export interface IRequestListSystemPermissions {
     resource_ids?: string[];
     /** Filter by grantee IDs */
     grantee_ids?: GranteeID[];
-    /** Filter by tags */
-    tags?: string[];
+    /** Filter by labels */
+    labels?: string[];
   };
   /** Number of items per page */
   page_size?: number;
@@ -1018,23 +1018,23 @@ export interface IResponseRedeemGroupInvite
   }> {}
 
 // =========================================================================
-// Tags Routes
+// Labels Routes
 // =========================================================================
 
-/** Get Tag Request */
-export interface IRequestGetTag {
-  /** ID or value of the tag to retrieve */
-  id: TagID | string;
+/** Get Label Request */
+export interface IRequestGetLabel {
+  /** ID or value of the label to retrieve */
+  id: LabelID | string;
 }
 
-/** Get Tag Response */
-export interface IResponseGetTag extends ISuccessResponse<Tag> {}
+/** Get Label Response */
+export interface IResponseGetLabel extends ISuccessResponse<Label> {}
 
-/** List Tags Request */
-export interface IRequestListTags {
-  /** Filters for tags */
+/** List Labels Request */
+export interface IRequestListLabels {
+  /** Filters for labels */
   filters?: {
-    /** Filter tags by prefix */
+    /** Filter labels by prefix */
     prefix?: string;
   };
   /** Number of items per page */
@@ -1047,16 +1047,16 @@ export interface IRequestListTags {
   cursor_down?: string;
 }
 
-/** List Tags Response */
-export interface IResponseListTags
-  extends ISuccessResponse<IPaginatedResponse<Tag>> {}
+/** List Labels Response */
+export interface IResponseListLabels
+  extends ISuccessResponse<IPaginatedResponse<Label>> {}
 
-/** Create Tag Request */
-export interface IRequestCreateTag {
-  id?: TagID;
-  /** The tag value (e.g., "Project-Alpha") */
+/** Create Label Request */
+export interface IRequestCreateLabel {
+  id?: LabelID;
+  /** The label value (e.g., "Project-Alpha") */
   value: string;
-  /** Description of the tag */
+  /** Description of the label */
   description?: string;
   /** Color in hex format (e.g., #RRGGBB) */
   color?: string;
@@ -1066,16 +1066,16 @@ export interface IRequestCreateTag {
   external_payload?: string;
 }
 
-/** Create Tag Response */
-export interface IResponseCreateTag extends ISuccessResponse<Tag> {}
+/** Create Label Response */
+export interface IResponseCreateLabel extends ISuccessResponse<Label> {}
 
-/** Update Tag Request */
-export interface IRequestUpdateTag {
-  /** ID of the tag to update */
-  id: TagID;
-  /** New value for the tag */
+/** Update Label Request */
+export interface IRequestUpdateLabel {
+  /** ID of the label to update */
+  id: LabelID;
+  /** New value for the label */
   value?: string;
-  /** New description for the tag */
+  /** New description for the label */
   description?: string;
   /** New color in hex format (e.g., #RRGGBB) */
   color?: string;
@@ -1085,43 +1085,43 @@ export interface IRequestUpdateTag {
   external_payload?: string;
 }
 
-/** Update Tag Response */
-export interface IResponseUpdateTag extends ISuccessResponse<Tag> {}
+/** Update Label Response */
+export interface IResponseUpdateLabel extends ISuccessResponse<Label> {}
 
-/** Delete Tag Request */
-export interface IRequestDeleteTag {
-  /** ID of the tag to delete */
-  id: TagID;
+/** Delete Label Request */
+export interface IRequestDeleteLabel {
+  /** ID of the label to delete */
+  id: LabelID;
 }
 
-/** Delete Tag Response */
-export interface IResponseDeleteTag
+/** Delete Label Response */
+export interface IResponseDeleteLabel
   extends ISuccessResponse<{
-    /** ID of the deleted tag */
-    id: TagID;
-    /** Whether the tag was successfully deleted */
+    /** ID of the deleted label */
+    id: LabelID;
+    /** Whether the label was successfully deleted */
     deleted: boolean;
   }> {}
 
-/** Tag Resource Request */
-export interface IRequestTagResource {
-  /** ID of the tag */
-  tag_id: TagID;
-  /** ID of the resource to tag or untag */
+/** Label Resource Request */
+export interface IRequestLabelResource {
+  /** ID of the label */
+  label_id: LabelID;
+  /** ID of the resource to label or unlabel */
   resource_id: string;
-  /** True to add the tag, false to remove it */
+  /** True to add the label, false to remove it */
   add: boolean;
 }
 
-/** Tag Resource Response */
-export interface IResponseTagResource
+/** Label Resource Response */
+export interface IResponseLabelResource
   extends ISuccessResponse<{
     /** Whether the operation was successful */
     success: boolean;
     /** Additional information about the operation */
     message?: string;
-    /** The updated tag */
-    tag?: Tag;
+    /** The updated label */
+    label?: Label;
   }> {}
 
 // =========================================================================
