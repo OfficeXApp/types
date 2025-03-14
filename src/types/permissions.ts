@@ -30,7 +30,7 @@ export enum SystemTableValueEnum {
   API_KEYS = "API_KEYS",
   PERMISSIONS = "PERMISSIONS",
   WEBHOOKS = "WEBHOOKS",
-  TAGS = "TAGS",
+  LABELS = "LABELS",
 }
 
 /** Unique identifier for a system table resource */
@@ -57,7 +57,7 @@ export interface DirectoryPermission {
   created_at: number;
   last_modified_at: number;
   from_placeholder_grantee?: string;
-  tags: string[];
+  labels: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
 }
@@ -76,7 +76,7 @@ export interface DirectoryPermissionFE {
   created_at: number;
   last_modified_at: number;
   from_placeholder_grantee?: string;
-  tags: string[];
+  labels: string[];
   external_id?: string;
   external_payload?: string;
   permission_previews: SystemPermissionType[];
@@ -95,7 +95,7 @@ export interface SystemPermission {
   created_at: number;
   last_modified_at: number;
   from_placeholder_grantee?: string;
-  tags: string[];
+  labels: string[];
   metadata?: Record<string, any>;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
@@ -113,7 +113,7 @@ export interface SystemPermissionFE {
   created_at: number;
   last_modified_at: number;
   from_placeholder_grantee?: string;
-  tags: string[];
+  labels: string[];
   metadata?: Record<string, any>;
   external_id?: string;
   external_payload?: string;

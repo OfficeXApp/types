@@ -29,7 +29,7 @@ export enum IDPrefixEnum {
   PlaceholderGroupInviteeID = "PlaceholderGroupInviteeID_",
   ShareTrackID = "ShareTrackID_",
   DriveStateDiffID = "DriveStateDiffID_",
-  TagID = "TagID_",
+  LabelID = "LabelID_",
   RedeemCode = "RedeemCodeID_",
 }
 
@@ -53,7 +53,7 @@ export const GenerateID = {
     `${IDPrefixEnum.PlaceholderGroupInviteeID}${uuidv4()}`,
   ShareTrackID: () => `${IDPrefixEnum.ShareTrackID}${uuidv4()}`,
   DriveStateDiffID: () => `${IDPrefixEnum.DriveStateDiffID}${uuidv4()}`,
-  TagID: () => `${IDPrefixEnum.TagID}${uuidv4()}`,
+  Label: () => `${IDPrefixEnum.LabelID}${uuidv4()}`,
   RedeemCode: () => `${IDPrefixEnum.RedeemCode}${uuidv4()}`,
 };
 
@@ -86,8 +86,8 @@ export type DiskID = string;
 /** Unique identifier for a drive */
 export type DriveID = string;
 
-/** Unique identifier for a tag */
-export type TagID = string;
+/** Unique identifier for a label */
+export type LabelID = string;
 
 /** Unique identifier for a webhook */
 export type WebhookID = string;
@@ -119,8 +119,8 @@ export type ExternalID = string;
 /** Additional data for external integrations */
 export type ExternalPayload = string;
 
-/** Value for a tag */
-export type TagValue = string;
+/** Value for a label */
+export type LabelValue = string;
 
 /** API key value */
 export type ApiKeyValue = string;
@@ -223,6 +223,7 @@ export enum WebhookEventLabel {
   GROUP_INVITE_UPDATED = "group.invite.updated",
   DRIVE_RESTORE_TRASH = "drive.restore_trash",
   DRIVE_STATE_DIFFS = "drive.state_diffs",
-  TAG_ADDED = "tag.added",
-  TAG_REMOVED = "tag.removed",
+  LABEL_ADDED = "label.added",
+  LABEL_REMOVED = "label.removed",
+  ORG_SUPERSWAP_USER = "org.superswap_user",
 }

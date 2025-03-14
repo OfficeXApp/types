@@ -18,7 +18,7 @@ import {
   FileConflictResolutionEnum,
   FileID,
   FolderID,
-  TagValue,
+  LabelValue,
   UserID,
 } from "./primitives";
 
@@ -48,8 +48,8 @@ export interface CreateFilePayload {
   name: string;
   /** File extension */
   extension: string;
-  /** Tags to associate with the file */
-  tags: TagValue[];
+  /** Labels to associate with the file */
+  labels: LabelValue[];
   /** Size of the file in bytes */
   file_size: number;
   /** URL where the raw file content can be accessed */
@@ -72,8 +72,8 @@ export interface CreateFilePayload {
 export interface CreateFolderPayload {
   /** Name of the folder */
   name: string;
-  /** Tags to associate with the folder */
-  tags: TagValue[];
+  /** Labels to associate with the folder */
+  labels: LabelValue[];
   /** ID of the disk where the folder will be stored */
   disk_id: DiskID;
   /** Timestamp when the folder expires */
@@ -96,8 +96,8 @@ export interface CreateFolderPayload {
 export interface UpdateFilePayload {
   /** New name for the file */
   name?: string;
-  /** New tags for the file */
-  tags?: TagValue[];
+  /** New labels for the file */
+  labels?: LabelValue[];
   /** New URL where the raw file content can be accessed */
   raw_url?: string;
   /** New expiration timestamp */
@@ -112,8 +112,8 @@ export interface UpdateFilePayload {
 export interface UpdateFolderPayload {
   /** New name for the folder */
   name?: string;
-  /** New tags for the folder */
-  tags?: TagValue[];
+  /** New labels for the folder */
+  labels?: LabelValue[];
   /** New expiration timestamp */
   expires_at?: number;
   /** External identifier for integration purposes */
