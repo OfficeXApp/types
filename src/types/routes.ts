@@ -10,15 +10,11 @@ import {
   FileRecord,
   FolderRecord,
   Tag,
-  Team,
-  TeamInvite,
+  Group,
+  GroupInvite,
   Webhook,
 } from "./core";
-import {
-  DirectoryPermission,
-  SystemPermission,
-  SystemResourceID,
-} from "./permissions";
+import { DirectoryPermissionFE, SystemPermissionFE } from "./permissions";
 import {
   ApiKeyID,
   DirectoryPermissionID,
@@ -34,9 +30,9 @@ import {
   SortDirection,
   SystemPermissionID,
   TagID,
-  TeamID,
-  TeamInviteID,
-  TeamRole,
+  GroupID,
+  GroupInviteID,
+  GroupRole,
   URLEndpoint,
   UserID,
   WebhookEventLabel,
@@ -239,7 +235,7 @@ export interface IRequestCreateContact {
   /** ICP principal associated with the contact */
   icp_principal: string;
   /** Nickname for the contact */
-  nickname: string;
+  name: string;
   /** EVM public address */
   evm_public_address?: string;
   /** Public note about the contact */
@@ -260,15 +256,17 @@ export interface IRequestUpdateContact {
   /** ID of the contact to update */
   id: UserID;
   /** New nickname for the contact */
-  nickname?: string;
+  name?: string;
+  /** New nickname for the contact */
+  email?: string;
+  /** New nickname for the contact */
+  notifications_url?: string;
   /** Public note about the contact */
   public_note?: string;
   /** Private note about the contact */
   private_note?: string;
   /** EVM public address */
   evm_public_address?: string;
-  /** ICP principal */
-  icp_principal?: string;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -407,7 +405,7 @@ export interface IRequestCreateDrive {
   /** Name for the drive */
   name: string;
   /** ICP principal */
-  icp_principal?: string;
+  icp_principal: string;
   /** Public note about the drive */
   public_note?: string;
   /** Private note about the drive */
@@ -433,8 +431,6 @@ export interface IRequestUpdateDrive {
   public_note?: string;
   /** Private note about the drive */
   private_note?: string;
-  /** ICP principal */
-  icp_principal?: string;
   /** URL endpoint for the drive */
   endpoint_url?: URLEndpoint;
   /** External identifier */
@@ -563,14 +559,14 @@ export interface IRequestGetDirectoryPermission {
 
 /** Get Directory Permission Response */
 export interface IResponseGetDirectoryPermission
-  extends ISuccessResponse<DirectoryPermission> {}
+  extends ISuccessResponse<DirectoryPermissionFE> {}
 
 /** Create Directory Permission Request */
 export interface IRequestCreateDirectoryPermission {
   id?: DirectoryPermissionID;
   /** ID of the resource to grant permission for */
   resource_id: DirectoryResourceID;
-  /** ID of the user/team to grant permission to */
+  /** ID of the user/group to grant permission to */
   granted_to?: GranteeID;
   /** Types of permissions to grant */
   permission_types: Array<
@@ -594,7 +590,7 @@ export interface IRequestCreateDirectoryPermission {
 
 /** Create Directory Permission Response */
 export interface IResponseCreateDirectoryPermission
-  extends ISuccessResponse<DirectoryPermission> {}
+  extends ISuccessResponse<DirectoryPermissionFE> {}
 
 /** Update Directory Permission Request */
 export interface IRequestUpdateDirectoryPermission {
@@ -602,7 +598,7 @@ export interface IRequestUpdateDirectoryPermission {
   id: DirectoryPermissionID;
   /** ID of the resource to grant permission for */
   resource_id?: DirectoryResourceID;
-  /** ID of the user/team to grant permission to */
+  /** ID of the user/group to grant permission to */
   granted_to?: GranteeID;
   /** Types of permissions to grant */
   permission_types?: Array<
@@ -626,7 +622,7 @@ export interface IRequestUpdateDirectoryPermission {
 
 /** Update Directory Permission Response */
 export interface IResponseUpdateDirectoryPermission
-  extends ISuccessResponse<DirectoryPermission> {}
+  extends ISuccessResponse<DirectoryPermissionFE> {}
 
 /** Delete Directory Permission Request */
 export interface IRequestDeleteDirectoryPermission {
@@ -645,17 +641,17 @@ export interface IResponseDeleteDirectoryPermission
 export interface IRequestCheckDirectoryPermissions {
   /** ID of the resource to check permissions for */
   resource_id: DirectoryResourceID;
-  /** ID of the user/team to check permissions for */
+  /** ID of the user/group to check permissions for */
   grantee_id: GranteeID;
 }
 
 /** Check Directory Permissions Response */
 export interface IResponseCheckDirectoryPermissions
   extends ISuccessResponse<{
-    /** ID of the resource checked */
-    resource_id: DirectoryResourceID;
-    /** ID of the grantee checked */
-    grantee_id: GranteeID;
+    /** ID of the resource checked (as string) */
+    resource_id: string;
+    /** ID of the grantee checked (as string) */
+    grantee_id: string;
     /** Permissions the grantee has for the resource */
     permissions: Array<
       "VIEW" | "UPLOAD" | "EDIT" | "DELETE" | "INVITE" | "MANAGE"
@@ -674,7 +670,7 @@ export interface IRequestRedeemDirectoryPermission {
 export interface IResponseRedeemDirectoryPermission
   extends ISuccessResponse<{
     /** The redeemed permission */
-    permission: DirectoryPermission;
+    permission: DirectoryPermissionFE;
   }> {}
 
 // =========================================================================
@@ -689,15 +685,47 @@ export interface IRequestGetSystemPermission {
 
 /** Get System Permission Response */
 export interface IResponseGetSystemPermission
-  extends ISuccessResponse<SystemPermission> {}
+  extends ISuccessResponse<SystemPermissionFE> {}
+
+/** List System Permissions Request */
+export interface IRequestListSystemPermissions {
+  /** Filters for system permissions */
+  filters?: {
+    /** Filter by resource IDs */
+    resource_ids?: string[];
+    /** Filter by grantee IDs */
+    grantee_ids?: GranteeID[];
+    /** Filter by tags */
+    tags?: string[];
+  };
+  /** Number of items per page */
+  page_size?: number;
+  /** Sort direction */
+  direction?: SortDirection;
+  /** Cursor for pagination */
+  cursor?: string | null;
+}
+
+/** List System Permissions Response */
+export interface IResponseListSystemPermissions
+  extends ISuccessResponse<{
+    /** System permissions matching the request */
+    items: SystemPermissionFE[];
+    /** Number of items per page */
+    page_size: number;
+    /** Total number of matching permissions */
+    total: number;
+    /** Cursor for pagination */
+    cursor?: string | null;
+  }> {}
 
 /** Create System Permission Request */
 export interface IRequestCreateSystemPermission {
   id?: SystemPermissionID;
   /** ID of the resource to grant permission for */
-  resource_id: SystemResourceID;
-  /** ID of the user/team to grant permission to */
-  granted_to?: GranteeID;
+  resource_id: string;
+  /** ID of the user/group to grant permission to */
+  granted_to?: string;
   /** Types of permissions to grant */
   permission_types: Array<"CREATE" | "UPDATE" | "DELETE" | "VIEW" | "INVITE">;
   /** When the permission becomes active */
@@ -716,16 +744,16 @@ export interface IRequestCreateSystemPermission {
 
 /** Create System Permission Response */
 export interface IResponseCreateSystemPermission
-  extends ISuccessResponse<SystemPermission> {}
+  extends ISuccessResponse<SystemPermissionFE> {}
 
 /** Update System Permission Request */
 export interface IRequestUpdateSystemPermission {
   /** ID of the permission to update */
   id: SystemPermissionID;
   /** ID of the resource to grant permission for */
-  resource_id?: SystemResourceID;
-  /** ID of the user/team to grant permission to */
-  granted_to?: GranteeID;
+  resource_id?: string;
+  /** ID of the user/group to grant permission to */
+  granted_to?: string;
   /** Types of permissions to grant */
   permission_types?: Array<"CREATE" | "UPDATE" | "DELETE" | "VIEW" | "INVITE">;
   /** When the permission becomes active */
@@ -744,7 +772,7 @@ export interface IRequestUpdateSystemPermission {
 
 /** Update System Permission Response */
 export interface IResponseUpdateSystemPermission
-  extends ISuccessResponse<SystemPermission> {}
+  extends ISuccessResponse<SystemPermissionFE> {}
 
 /** Delete System Permission Request */
 export interface IRequestDeleteSystemPermission {
@@ -762,18 +790,18 @@ export interface IResponseDeleteSystemPermission
 /** Check System Permissions Request */
 export interface IRequestCheckSystemPermissions {
   /** ID of the resource to check permissions for */
-  resource_id: SystemResourceID;
-  /** ID of the user/team to check permissions for */
-  grantee_id: GranteeID;
+  resource_id: string;
+  /** ID of the user/group to check permissions for */
+  grantee_id: string;
 }
 
 /** Check System Permissions Response */
 export interface IResponseCheckSystemPermissions
   extends ISuccessResponse<{
-    /** ID of the resource checked */
-    resource_id: SystemResourceID;
-    /** ID of the grantee checked */
-    grantee_id: GranteeID;
+    /** ID of the resource checked (as string) */
+    resource_id: string;
+    /** ID of the grantee checked (as string) */
+    grantee_id: string;
     /** Permissions the grantee has for the resource */
     permissions: Array<"CREATE" | "UPDATE" | "DELETE" | "VIEW" | "INVITE">;
   }> {}
@@ -790,39 +818,39 @@ export interface IRequestRedeemSystemPermission {
 export interface IResponseRedeemSystemPermission
   extends ISuccessResponse<{
     /** The redeemed permission */
-    permission: SystemPermission;
+    permission: SystemPermissionFE;
   }> {}
 
 // =========================================================================
-// Teams Routes
+// Groups Routes
 // =========================================================================
 
-/** Get Team Request */
-export interface IRequestGetTeam {
-  /** ID of the team to retrieve */
-  team_id: TeamID;
+/** Get Group Request */
+export interface IRequestGetGroup {
+  /** ID of the group to retrieve */
+  group_id: GroupID;
 }
 
-/** Get Team Response */
-export interface IResponseGetTeam extends ISuccessResponse<Team> {}
+/** Get Group Response */
+export interface IResponseGetGroup extends ISuccessResponse<Group> {}
 
-/** List Teams Request */
-export interface IRequestListTeams extends IPaginationParams {}
+/** List Groups Request */
+export interface IRequestListGroups extends IPaginationParams {}
 
-/** List Teams Response */
-export interface IResponseListTeams
-  extends ISuccessResponse<IPaginatedResponse<Team>> {}
+/** List Groups Response */
+export interface IResponseListGroups
+  extends ISuccessResponse<IPaginatedResponse<Group>> {}
 
-/** Create Team Request */
-export interface IRequestCreateTeam {
-  id?: TeamID;
-  /** Name for the team */
+/** Create Group Request */
+export interface IRequestCreateGroup {
+  id?: GroupID;
+  /** Name for the group */
   name: string;
-  /** Public note about the team */
+  /** Public note about the group */
   public_note?: string;
-  /** Private note about the team */
+  /** Private note about the group */
   private_note?: string;
-  /** URL endpoint for the team */
+  /** URL endpoint for the group */
   endpoint_url?: URLEndpoint;
   /** External identifier */
   external_id?: string;
@@ -830,20 +858,20 @@ export interface IRequestCreateTeam {
   external_payload?: string;
 }
 
-/** Create Team Response */
-export interface IResponseCreateTeam extends ISuccessResponse<Team> {}
+/** Create Group Response */
+export interface IResponseCreateGroup extends ISuccessResponse<Group> {}
 
-/** Update Team Request */
-export interface IRequestUpdateTeam {
-  /** ID of the team to update */
-  id: TeamID;
-  /** New name for the team */
+/** Update Group Request */
+export interface IRequestUpdateGroup {
+  /** ID of the group to update */
+  id: GroupID;
+  /** New name for the group */
   name?: string;
-  /** Public note about the team */
+  /** Public note about the group */
   public_note?: string;
-  /** Private note about the team */
+  /** Private note about the group */
   private_note?: string;
-  /** URL endpoint for the team */
+  /** URL endpoint for the group */
   endpoint_url?: URLEndpoint;
   /** External identifier */
   external_id?: string;
@@ -851,75 +879,76 @@ export interface IRequestUpdateTeam {
   external_payload?: string;
 }
 
-/** Update Team Response */
-export interface IResponseUpdateTeam extends ISuccessResponse<Team> {}
+/** Update Group Response */
+export interface IResponseUpdateGroup extends ISuccessResponse<Group> {}
 
-/** Delete Team Request */
-export interface IRequestDeleteTeam {
-  /** ID of the team to delete */
-  id: TeamID;
+/** Delete Group Request */
+export interface IRequestDeleteGroup {
+  /** ID of the group to delete */
+  id: GroupID;
 }
 
-/** Delete Team Response */
-export interface IResponseDeleteTeam
+/** Delete Group Response */
+export interface IResponseDeleteGroup
   extends ISuccessResponse<{
-    /** ID of the deleted team */
-    id: TeamID;
-    /** Whether the team was successfully deleted */
+    /** ID of the deleted group */
+    id: GroupID;
+    /** Whether the group was successfully deleted */
     deleted: boolean;
   }> {}
 
-/** Validate Team Member Request */
-export interface IRequestValidateTeamMember {
+/** Validate Group Member Request */
+export interface IRequestValidateGroupMember {
   /** ID of the user to check */
   user_id: UserID;
-  /** ID of the team to check */
-  team_id: TeamID;
+  /** ID of the group to check */
+  group_id: GroupID;
 }
 
-/** Validate Team Member Response */
-export interface IResponseValidateTeamMember
+/** Validate Group Member Response */
+export interface IResponseValidateGroupMember
   extends ISuccessResponse<{
-    /** Whether the user is a member of the team */
+    /** Whether the user is a member of the group */
     is_member: boolean;
-    /** ID of the team that was checked */
-    team_id: TeamID;
+    /** ID of the group that was checked */
+    group_id: GroupID;
     /** ID of the user that was checked */
     user_id: UserID;
   }> {}
 
 // =========================================================================
-// Team Invites Routes
+// Group Invites Routes
 // =========================================================================
 
-/** Get Team Invite Request */
-export interface IRequestGetTeamInvite {
-  /** ID of the team invite to retrieve */
-  invite_id: TeamInviteID;
+/** Get Group Invite Request */
+export interface IRequestGetGroupInvite {
+  /** ID of the group invite to retrieve */
+  invite_id: GroupInviteID;
 }
 
-/** Get Team Invite Response */
-export interface IResponseGetTeamInvite extends ISuccessResponse<TeamInvite> {}
+/** Get Group Invite Response */
+export interface IResponseGetGroupInvite
+  extends ISuccessResponse<GroupInvite> {}
 
-/** List Team Invites Request */
-export interface IRequestListTeamInvites extends IPaginationParams {
-  /** ID of the team to list invites for */
-  team_id: TeamID;
+/** List Group Invites Request */
+export interface IRequestListGroupInvites extends IPaginationParams {
+  /** ID of the group to list invites for */
+  group_id: GroupID;
 }
 
-/** List Team Invites Response */
-export interface IResponseListTeamInvites
-  extends ISuccessResponse<IPaginatedResponse<TeamInvite>> {}
+/** List Group Invites Response */
+export interface IResponseListGroupInvites
+  extends ISuccessResponse<IPaginatedResponse<GroupInvite>> {}
 
-/** Create Team Invite Request */
-export interface IRequestCreateTeamInvite {
-  id?: TeamInviteID;
-  /** ID of the team for the invite */
-  team_id: TeamID;
+/** Create Group Invite Request */
+export interface IRequestCreateGroupInvite {
+  id?: GroupInviteID;
+  /** ID of the group for the invite */
+  group_id: GroupID;
   /** ID of the user to invite */
   invitee_id?: UserID;
   /** Role to assign to the invited user */
-  role: TeamRole;
+  role?: GroupRole;
   /** Timestamp when the invite becomes active */
   active_from?: number;
   /** Timestamp when the invite expires */
@@ -932,16 +961,16 @@ export interface IRequestCreateTeamInvite {
   external_payload?: string;
 }
 
-/** Create Team Invite Response */
-export interface IResponseCreateTeamInvite
-  extends ISuccessResponse<TeamInvite> {}
+/** Create Group Invite Response */
+export interface IResponseCreateGroupInvite
+  extends ISuccessResponse<GroupInvite> {}
 
-/** Update Team Invite Request */
-export interface IRequestUpdateTeamInvite {
+/** Update Group Invite Request */
+export interface IRequestUpdateGroupInvite {
   /** ID of the invite to update */
-  id: TeamInviteID;
+  id: GroupInviteID;
   /** New role to assign */
-  role?: TeamRole;
+  role?: GroupRole;
   /** New timestamp when the invite becomes active */
   active_from?: number;
   /** New timestamp when the invite expires */
@@ -954,38 +983,38 @@ export interface IRequestUpdateTeamInvite {
   external_payload?: string;
 }
 
-/** Update Team Invite Response */
-export interface IResponseUpdateTeamInvite
-  extends ISuccessResponse<TeamInvite> {}
+/** Update Group Invite Response */
+export interface IResponseUpdateGroupInvite
+  extends ISuccessResponse<GroupInvite> {}
 
-/** Delete Team Invite Request */
-export interface IRequestDeleteTeamInvite {
-  /** ID of the team invite to delete */
-  id: TeamInviteID;
+/** Delete Group Invite Request */
+export interface IRequestDeleteGroupInvite {
+  /** ID of the group invite to delete */
+  id: GroupInviteID;
 }
 
-/** Delete Team Invite Response */
-export interface IResponseDeleteTeamInvite
+/** Delete Group Invite Response */
+export interface IResponseDeleteGroupInvite
   extends ISuccessResponse<{
-    /** ID of the deleted team invite */
-    id: TeamInviteID;
-    /** Whether the team invite was successfully deleted */
+    /** ID of the deleted group invite */
+    id: GroupInviteID;
+    /** Whether the group invite was successfully deleted */
     deleted: boolean;
   }> {}
 
-/** Redeem Team Invite Request */
-export interface IRequestRedeemTeamInvite {
-  /** ID of the team invite to redeem */
-  invite_id: TeamInviteID;
+/** Redeem Group Invite Request */
+export interface IRequestRedeemGroupInvite {
+  /** ID of the group invite to redeem */
+  invite_id: GroupInviteID;
   /** ID of the user to redeem the invite for */
   user_id: UserID;
 }
 
-/** Redeem Team Invite Response */
-export interface IResponseRedeemTeamInvite
+/** Redeem Group Invite Response */
+export interface IResponseRedeemGroupInvite
   extends ISuccessResponse<{
     /** The redeemed invite */
-    invite: TeamInvite;
+    invite: GroupInvite;
   }> {}
 
 // =========================================================================
@@ -1124,6 +1153,12 @@ export interface IRequestCreateWebhook {
   url: string;
   /** Event type to trigger the webhook */
   event: WebhookEventLabel;
+  /** Name for the webhook */
+  name?: string;
+  /** Note for the webhook */
+  note?: string;
+  /** Webhook active */
+  active?: boolean;
   /** Signature for webhook verification */
   signature?: string;
   /** Description of the webhook */
@@ -1145,6 +1180,10 @@ export interface IRequestUpdateWebhook {
   id: WebhookID;
   /** New URL for the webhook */
   url?: string;
+  /** Name for the webhook */
+  name?: string;
+  /** Note for the webhook */
+  note?: string;
   /** New signature for webhook verification */
   signature?: string;
   /** New description for the webhook */
@@ -1194,6 +1233,7 @@ export interface IResponseSuperswapUser
 export interface IRequestRedeemGiftCard {
   giftcard_id: GiftCardID;
   owner_icp_principal: ICPPrincipalString;
+  owner_name?: String;
   organization_name?: String;
 }
 

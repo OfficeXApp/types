@@ -8,7 +8,6 @@
 import {
   ApiKeyID,
   ApiKeyValue,
-  DirectoryPermissionType,
   DiskID,
   DiskTypeEnum,
   DriveFullFilePath,
@@ -23,9 +22,9 @@ import {
   SystemPermissionType,
   TagID,
   TagValue,
-  TeamID,
-  TeamInviteID,
-  TeamRole,
+  GroupID,
+  GroupInviteID,
+  GroupRole,
   URLEndpoint,
   UserID,
   WebhookEventLabel,
@@ -101,6 +100,11 @@ export interface ApiKey {
   external_payload?: ExternalPayload;
 }
 
+export interface ApiKeyFE extends ApiKey {
+  user_name?: string;
+  permission_previews: SystemPermissionType[];
+}
+
 /** Contact */
 export interface Contact {
   id: UserID;
@@ -112,25 +116,25 @@ export interface Contact {
   private_note?: string;
   evm_public_address: EvmPublicAddress;
   icp_principal: ICPPrincipalString;
-  teams: TeamID[];
+  groups: GroupID[];
   tags: TagValue[];
-  last_online_at: number;
+  last_online_ms: number;
   created_at: number;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
 }
 
 export interface ContactFE extends Contact {
-  team_previews: ContactTeamPreview[];
+  group_previews: ContactGroupPreview[];
   permission_previews: SystemPermissionType[];
 }
 
-export interface ContactTeamPreview {
-  team_id: TeamID;
-  invite_id: TeamInviteID;
+export interface ContactGroupPreview {
+  group_id: GroupID;
+  invite_id: GroupInviteID;
   is_admin: boolean;
-  team_name: string;
-  team_avatar?: string;
+  group_name: string;
+  group_avatar?: string;
 }
 
 /** Disk */
@@ -145,6 +149,10 @@ export interface Disk {
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;
+}
+
+export interface DiskFE extends Disk {
+  permission_previews: SystemPermissionType[];
 }
 
 /** Drive */
@@ -162,6 +170,10 @@ export interface Drive {
   created_at: number;
 }
 
+export interface DriveFE extends Drive {
+  permission_previews: SystemPermissionType[];
+}
+
 /** Tag */
 export interface Tag {
   id: TagID;
@@ -177,9 +189,13 @@ export interface Tag {
   external_payload?: ExternalPayload;
 }
 
-/** Team */
-export interface Team {
-  id: TeamID;
+export interface TagFE extends Tag {
+  permission_previews: SystemPermissionType[];
+}
+
+/** Group */
+export interface Group {
+  id: GroupID;
   name: string;
   owner: string;
   avatar: string;
@@ -196,13 +212,29 @@ export interface Team {
   external_payload?: ExternalPayload;
 }
 
-/** Team invite */
-export interface TeamInvite {
-  id: TeamInviteID;
-  team_id: TeamID;
+export interface GroupFE extends Group {
+  member_previews: GroupMemberPreview[];
+  permission_previews: SystemPermissionType[];
+}
+
+export interface GroupMemberPreview {
+  user_id: UserID;
+  name: String;
+  note?: String;
+  avatar?: String;
+  group_id: GroupID;
+  is_admin: boolean;
+  invite_id: GroupInviteID;
+  last_online_ms: number;
+}
+
+/** Group invite */
+export interface GroupInvite {
+  id: GroupInviteID;
+  group_id: GroupID;
   inviter_id: UserID;
   invitee_id: UserID;
-  role: TeamRole;
+  role: GroupRole;
   note: string;
   active_from: number;
   expires_at: number;
@@ -212,6 +244,14 @@ export interface TeamInvite {
   tags: TagValue[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+}
+
+export interface GroupInviteFE extends GroupInvite {
+  group_name: String;
+  group_avatar?: String;
+  invitee_name: String;
+  invitee_avatar?: String;
+  permission_previews: SystemPermissionType[];
 }
 
 /** Webhook */
@@ -230,10 +270,14 @@ export interface Webhook {
   created_at: number;
 }
 
+export interface WebhookFE extends Webhook {
+  permission_previews: SystemPermissionType[];
+}
+
 /** Permission for directory resource frontend representation */
 export interface DirectoryResourcePermissionFE {
   permission_id: string;
-  grant_type: DirectoryPermissionType;
+  grant_type: string;
 }
 
 /** State diff record */
