@@ -26,7 +26,7 @@ export enum SystemTableValueEnum {
   DRIVES = "DRIVES",
   DISKS = "DISKS",
   CONTACTS = "CONTACTS",
-  TEAMS = "TEAMS",
+  GROUPS = "GROUPS",
   API_KEYS = "API_KEYS",
   PERMISSIONS = "PERMISSIONS",
   WEBHOOKS = "WEBHOOKS",
@@ -34,16 +34,10 @@ export enum SystemTableValueEnum {
 }
 
 /** Unique identifier for a system table resource */
-export interface SystemTableResource {
-  type: "Table";
-  value: SystemTableValueEnum;
-}
+export type SystemTableResource = string;
 
 /** Unique identifier for a system record resource */
-export interface SystemRecordResource {
-  type: "Record";
-  value: string; // ID with appropriate prefix (e.g., "DriveID_abcdef123456")
-}
+export type SystemRecordResource = string;
 
 /** Unique identifier for a system resource (table or record) */
 export type SystemResourceID = SystemTableResource | SystemRecordResource;
@@ -64,10 +58,28 @@ export interface DirectoryPermission {
   last_modified_at: number;
   from_placeholder_grantee?: string;
   tags: string[];
+  external_id?: ExternalID;
+  external_payload?: ExternalPayload;
 }
 
-export interface DirectoryPermissionFE extends DirectoryPermission {
-  permission_previews: DirectoryPermissionType[];
+export interface DirectoryPermissionFE {
+  id: string;
+  resource_id: string;
+  resource_path: string;
+  granted_to: string;
+  granted_by: string;
+  permission_types: DirectoryPermissionType[];
+  begin_date_ms: number;
+  expiry_date_ms: number;
+  inheritable: boolean;
+  note: string;
+  created_at: number;
+  last_modified_at: number;
+  from_placeholder_grantee?: string;
+  tags: string[];
+  external_id?: string;
+  external_payload?: string;
+  permission_previews: SystemPermissionType[];
 }
 
 /** System permission */
@@ -89,6 +101,39 @@ export interface SystemPermission {
   external_payload?: ExternalPayload;
 }
 
-export interface SystemPermissionFE extends SystemPermission {
+export interface SystemPermissionFE {
+  id: string;
+  resource_id: string;
+  granted_to: string;
+  granted_by: string;
+  permission_types: SystemPermissionType[];
+  begin_date_ms: number;
+  expiry_date_ms: number;
+  note: string;
+  created_at: number;
+  last_modified_at: number;
+  from_placeholder_grantee?: string;
+  tags: string[];
+  metadata?: Record<string, any>;
+  external_id?: string;
+  external_payload?: string;
+  resource_name?: string;
+  grantee_name?: string;
+  grantee_avatar?: string;
+  granter_name?: string;
   permission_previews: SystemPermissionType[];
+}
+
+/** CheckPermissionResult type */
+export interface CheckPermissionResult {
+  resource_id: string;
+  grantee_id: string;
+  permissions: DirectoryPermissionType[];
+}
+
+/** CheckSystemPermissionResult type */
+export interface CheckSystemPermissionResult {
+  resource_id: string;
+  grantee_id: string;
+  permissions: SystemPermissionType[];
 }

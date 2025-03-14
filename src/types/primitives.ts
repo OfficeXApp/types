@@ -18,15 +18,15 @@ export enum IDPrefixEnum {
   Drive = "DriveID_",
   ApiKey = "ApiKeyID_",
   Disk = "DiskID_",
-  Team = "TeamID_",
-  TeamInvite = "TeamInviteID_",
+  Group = "GroupID_",
+  GroupInvite = "GroupInviteID_",
   SystemPermission = "SystemPermissionID_",
   DirectoryPermission = "DirectoryPermissionID_",
   PlaceholderPermissionGrantee = "PlaceholderPermissionGranteeID_",
   Webhook = "WebhookID_",
   User = "UserID_",
   DirectoryActionOutcome = "DirectoryActionOutcomeID_",
-  PlaceholderTeamInviteeID = "PlaceholderTeamInviteeID_",
+  PlaceholderGroupInviteeID = "PlaceholderGroupInviteeID_",
   ShareTrackID = "ShareTrackID_",
   DriveStateDiffID = "DriveStateDiffID_",
   TagID = "TagID_",
@@ -39,8 +39,8 @@ export const GenerateID = {
   Drive: (icp_principal: string) => `${IDPrefixEnum.Drive}${icp_principal}`,
   ApiKey: () => `${IDPrefixEnum.ApiKey}${uuidv4()}`,
   Disk: () => `${IDPrefixEnum.Disk}${uuidv4()}`,
-  Team: () => `${IDPrefixEnum.Team}${uuidv4()}`,
-  TeamInvite: () => `${IDPrefixEnum.TeamInvite}${uuidv4()}`,
+  Group: () => `${IDPrefixEnum.Group}${uuidv4()}`,
+  GroupInvite: () => `${IDPrefixEnum.GroupInvite}${uuidv4()}`,
   SystemPermission: () => `${IDPrefixEnum.SystemPermission}${uuidv4()}`,
   DirectoryPermission: () => `${IDPrefixEnum.DirectoryPermission}${uuidv4()}`,
   PlaceholderPermissionGrantee: () =>
@@ -49,8 +49,8 @@ export const GenerateID = {
   User: (icp_principal: string) => `${IDPrefixEnum.User}${icp_principal}`,
   DirectoryActionOutcome: () =>
     `${IDPrefixEnum.DirectoryActionOutcome}${uuidv4()}`,
-  PlaceholderTeamInviteeID: () =>
-    `${IDPrefixEnum.PlaceholderTeamInviteeID}${uuidv4()}`,
+  PlaceholderGroupInviteeID: () =>
+    `${IDPrefixEnum.PlaceholderGroupInviteeID}${uuidv4()}`,
   ShareTrackID: () => `${IDPrefixEnum.ShareTrackID}${uuidv4()}`,
   DriveStateDiffID: () => `${IDPrefixEnum.DriveStateDiffID}${uuidv4()}`,
   TagID: () => `${IDPrefixEnum.TagID}${uuidv4()}`,
@@ -71,14 +71,14 @@ export type UserID = string;
 
 export type GiftCardID = string;
 
-/** Unique identifier for a team */
-export type TeamID = string;
+/** Unique identifier for a group */
+export type GroupID = string;
 
-/** Unique identifier for a team invite */
-export type TeamInviteID = string;
+/** Unique identifier for a group invite */
+export type GroupInviteID = string;
 
-/** Either a UserID or TeamID */
-export type GranteeID = UserID | TeamID;
+/** Either a UserID or GroupID */
+export type GranteeID = UserID | GroupID;
 
 /** Unique identifier for a disk */
 export type DiskID = string;
@@ -185,8 +185,8 @@ export enum SystemPermissionType {
   INVITE = "INVITE",
 }
 
-/** Roles for team members */
-export enum TeamRole {
+/** Roles for group members */
+export enum GroupRole {
   ADMIN = "ADMIN",
   MEMBER = "MEMBER",
 }
@@ -219,8 +219,8 @@ export enum WebhookEventLabel {
   SUBFOLDER_UPDATED = "subfolder.updated",
   SUBFOLDER_DELETED = "subfolder.deleted",
   SUBFOLDER_SHARED = "subfolder.shared",
-  TEAM_INVITE_CREATED = "team.invite.created",
-  TEAM_INVITE_UPDATED = "team.invite.updated",
+  GROUP_INVITE_CREATED = "group.invite.created",
+  GROUP_INVITE_UPDATED = "group.invite.updated",
   DRIVE_RESTORE_TRASH = "drive.restore_trash",
   DRIVE_STATE_DIFFS = "drive.state_diffs",
   TAG_ADDED = "tag.added",
