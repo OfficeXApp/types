@@ -86,6 +86,8 @@ export type DiskID = string;
 /** Unique identifier for a drive */
 export type DriveID = string;
 
+export type InboxNotifID = string;
+
 /** Unique identifier for a label */
 export type LabelID = string;
 
@@ -226,4 +228,5 @@ export enum WebhookEventLabel {
   LABEL_ADDED = "label.added",
   LABEL_REMOVED = "label.removed",
   ORG_SUPERSWAP_USER = "org.superswap_user",
+  ORG_INBOX_NEW_NOTIF = "org.inbox.new_notif",
 }

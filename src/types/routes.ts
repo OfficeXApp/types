@@ -37,6 +37,7 @@ import {
   UserID,
   WebhookEventLabel,
   WebhookID,
+  InboxNotifID,
 } from "./primitives";
 
 /**
@@ -1259,4 +1260,20 @@ export interface IResponseRedeemOrg
     api_key: String; // admin api key for the spawned drive
     note: String; // note about the spawned drive, particularly info about the factory
     admin_login_password: String; // admin login password for the spawned drive
+  }> {}
+
+/** Inbox Org Request */
+export interface IRequestInboxOrg {
+  drive_id: DriveID;
+  recipient: String;
+  payload: any;
+}
+
+/** Redeem Org Response */
+export interface IResponseInboxOrg
+  extends ISuccessResponse<{
+    inbox_notif_id: InboxNotifID;
+    drive_id: DriveID;
+    timestamp_ms: number;
+    note: String;
   }> {}
