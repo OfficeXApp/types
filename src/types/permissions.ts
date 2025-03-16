@@ -31,6 +31,7 @@ export enum SystemTableValueEnum {
   PERMISSIONS = "PERMISSIONS",
   WEBHOOKS = "WEBHOOKS",
   LABELS = "LABELS",
+  INBOX = "INBOX",
 }
 
 /** Unique identifier for a system table resource */

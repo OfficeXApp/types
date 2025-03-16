@@ -257,6 +257,7 @@ export interface GroupInviteFE extends GroupInvite {
 /** Webhook */
 export interface Webhook {
   id: WebhookID;
+  name: string;
   url: string;
   alt_index: string;
   event: WebhookEventLabel;
