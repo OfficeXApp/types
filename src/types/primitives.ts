@@ -228,5 +228,5 @@ export enum WebhookEventLabel {
   LABEL_ADDED = "label.added",
   LABEL_REMOVED = "label.removed",
   ORG_SUPERSWAP_USER = "org.superswap_user",
-  ORG_INBOX_NEW_NOTIF = "org.inbox.new_notif",
+  ORG_INBOX_NEW_MAIL = "org.inbox.new_mail",
 }
