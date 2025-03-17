@@ -1265,7 +1265,7 @@ export interface IResponseRedeemOrg
 /** Inbox Org Request */
 export interface IRequestInboxOrg {
   drive_id: DriveID;
-  recipient: String;
+  topic: String;
   payload: any;
 }
 

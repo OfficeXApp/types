@@ -55,7 +55,7 @@ export interface FileRecord {
   last_updated_date_ms: number;
   last_updated_by: UserID;
   deleted: boolean;
-  canister_id: ICPPrincipalString;
+  drive_id: ICPPrincipalString;
   expires_at: number;
   restore_trash_prior_folder_path?: DriveFullFilePath;
   has_sovereign_permissions: boolean;
@@ -79,7 +79,7 @@ export interface FolderRecord {
   disk_id: DiskID;
   deleted: boolean;
   expires_at: number;
-  canister_id: ICPPrincipalString;
+  drive_id: DriveID;
   restore_trash_prior_folder_path?: DriveFullFilePath;
   has_sovereign_permissions: boolean;
   external_id?: ExternalID;
