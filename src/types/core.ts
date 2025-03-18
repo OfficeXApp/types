@@ -29,6 +29,8 @@ import {
   UserID,
   WebhookEventLabel,
   WebhookID,
+  DirectoryPermissionType,
+  DriveClippedFilePath,
 } from "./primitives";
 
 // =========================================================================
@@ -44,7 +46,7 @@ export interface FileRecord {
   prior_version?: FileID;
   next_version?: FileID;
   extension: string;
-  full_file_path: DriveFullFilePath;
+  full_directory_path: DriveFullFilePath;
   labels: LabelValue[];
   created_by: UserID;
   created_at: number;
@@ -59,8 +61,14 @@ export interface FileRecord {
   expires_at: number;
   restore_trash_prior_folder_path?: DriveFullFilePath;
   has_sovereign_permissions: boolean;
+  shortcut_to?: FileID;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+}
+
+export interface FileRecordFE extends FileRecord {
+  clipped_directory_path: DriveClippedFilePath;
+  permission_previews: DirectoryPermissionType[];
 }
 
 /** Folder record */
@@ -70,7 +78,7 @@ export interface FolderRecord {
   parent_folder_uuid?: FolderID;
   subfolder_uuids: FolderID[];
   file_uuids: FileID[];
-  full_folder_path: DriveFullFilePath;
+  full_directory_path: DriveFullFilePath;
   labels: LabelValue[];
   created_by: UserID;
   created_at: number;
@@ -82,8 +90,13 @@ export interface FolderRecord {
   drive_id: DriveID;
   restore_trash_prior_folder_path?: DriveFullFilePath;
   has_sovereign_permissions: boolean;
+  shortcut_to?: FolderID;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+}
+export interface FolderRecordFE extends FolderRecord {
+  clipped_directory_path: DriveClippedFilePath;
+  permission_previews: DirectoryPermissionType[];
 }
 
 /** API key */

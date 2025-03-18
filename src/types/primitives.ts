@@ -129,6 +129,7 @@ export type ApiKeyValue = string;
 
 /** Full path to a file or folder in the drive */
 export type DriveFullFilePath = string;
+export type DriveClippedFilePath = string;
 
 // =========================================================================
 // Enum Definitions

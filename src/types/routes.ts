@@ -4,15 +4,14 @@ import { DirectoryAction } from "./actions";
 import {
   ApiKey,
   ContactFE,
-  DirectoryResourcePermissionFE,
   Disk,
   Drive,
-  FileRecord,
-  FolderRecord,
   Label,
   Group,
   GroupInvite,
   Webhook,
+  FolderRecordFE,
+  FileRecordFE,
 } from "./core";
 import { DirectoryPermissionFE, SystemPermissionFE } from "./permissions";
 import {
@@ -97,6 +96,8 @@ export interface IRequestListDirectory {
   folder_id?: string;
   /** Path to the folder to list contents from */
   path?: string;
+  /** disk id if just getting shortcuts */
+  disk_id?: string;
   /** Filter string for directory contents */
   filters?: string;
   /** Number of items per page */
@@ -110,16 +111,8 @@ export interface IRequestListDirectory {
 /** List Directory Response */
 export interface IResponseListDirectory
   extends ISuccessResponse<{
-    folders: {
-      folder: FolderRecord;
-      permissions: DirectoryResourcePermissionFE[];
-      requester_id: UserID;
-    }[];
-    files: {
-      file: FileRecord;
-      permissions: DirectoryResourcePermissionFE[];
-      requester_id: UserID;
-    }[];
+    folders: FolderRecordFE[];
+    files: FileRecordFE[];
     total_files: number;
     total_folders: number;
     cursor?: string | null;
