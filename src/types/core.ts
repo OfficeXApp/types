@@ -159,6 +159,8 @@ export interface Disk {
   private_note?: string;
   auth_json?: string;
   labels: LabelValue[];
+  root_folder: FolderID;
+  trash_folder: FolderID;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;
