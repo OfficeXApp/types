@@ -11,7 +11,6 @@ import {
   FolderRecord,
 } from "./core";
 import {
-  DirectoryResourceID,
   DiskID,
   ExternalID,
   ExternalPayload,
@@ -28,12 +27,14 @@ import {
 
 /** Payload for GET_FILE action */
 export interface GetFilePayload {
+  id: FileID;
   /** Hash for share tracking */
   share_track_hash?: string;
 }
 
 /** Payload for GET_FOLDER action */
 export interface GetFolderPayload {
+  id: FolderID;
   /** Hash for share tracking */
   share_track_hash?: string;
 }
@@ -44,6 +45,7 @@ export interface GetFolderPayload {
 
 /** Payload for CREATE_FILE action */
 export interface CreateFilePayload {
+  id?: FileID;
   /** Name of the file */
   name: string;
   /** File extension */
@@ -56,6 +58,8 @@ export interface CreateFilePayload {
   raw_url: string;
   /** ID of the disk where the file will be stored */
   disk_id: DiskID;
+  /** ID of the parent folder */
+  parent_folder_uuid: FolderID;
   /** Timestamp when the file expires */
   expires_at?: number;
   /** How to handle file name conflicts */
@@ -70,12 +74,15 @@ export interface CreateFilePayload {
 
 /** Payload for CREATE_FOLDER action */
 export interface CreateFolderPayload {
+  id?: FolderID;
   /** Name of the folder */
   name: string;
   /** Labels to associate with the folder */
   labels: LabelValue[];
   /** ID of the disk where the folder will be stored */
   disk_id: DiskID;
+  /** ID of the parent folder */
+  parent_folder_uuid: FolderID;
   /** Timestamp when the folder expires */
   expires_at?: number;
   /** How to handle file name conflicts */
@@ -94,6 +101,7 @@ export interface CreateFolderPayload {
 
 /** Payload for UPDATE_FILE action */
 export interface UpdateFilePayload {
+  id: FileID;
   /** New name for the file */
   name?: string;
   /** New labels for the file */
@@ -110,6 +118,7 @@ export interface UpdateFilePayload {
 
 /** Payload for UPDATE_FOLDER action */
 export interface UpdateFolderPayload {
+  id: FolderID;
   /** New name for the folder */
   name?: string;
   /** New labels for the folder */
@@ -128,12 +137,14 @@ export interface UpdateFolderPayload {
 
 /** Payload for DELETE_FILE action */
 export interface DeleteFilePayload {
+  id: FileID;
   /** Whether to permanently delete the file or move it to trash */
   permanent: boolean;
 }
 
 /** Payload for DELETE_FOLDER action */
 export interface DeleteFolderPayload {
+  id: FolderID;
   /** Whether to permanently delete the folder or move it to trash */
   permanent: boolean;
 }
@@ -144,6 +155,7 @@ export interface DeleteFolderPayload {
 
 /** Payload for COPY_FILE action */
 export interface CopyFilePayload {
+  id: FileID;
   /** ID of the destination folder */
   destination_folder_id?: FolderID;
   /** Path to the destination folder */
@@ -154,6 +166,7 @@ export interface CopyFilePayload {
 
 /** Payload for COPY_FOLDER action */
 export interface CopyFolderPayload {
+  id: FolderID;
   /** ID of the destination folder */
   destination_folder_id?: FolderID;
   /** Path to the destination folder */
@@ -168,6 +181,7 @@ export interface CopyFolderPayload {
 
 /** Payload for MOVE_FILE action */
 export interface MoveFilePayload {
+  id: FileID;
   /** ID of the destination folder */
   destination_folder_id?: FolderID;
   /** Path to the destination folder */
@@ -178,6 +192,7 @@ export interface MoveFilePayload {
 
 /** Payload for MOVE_FOLDER action */
 export interface MoveFolderPayload {
+  id: FolderID;
   /** ID of the destination folder */
   destination_folder_id?: FolderID;
   /** Path to the destination folder */
@@ -192,6 +207,7 @@ export interface MoveFolderPayload {
 
 /** Payload for RESTORE_TRASH action */
 export interface RestoreTrashPayload {
+  id: FileID | FolderID;
   /** How to handle file conflicts during restore */
   file_conflict_resolution?: FileConflictResolutionEnum;
   /** Custom path to restore to (if not using original path) */
@@ -206,13 +222,6 @@ export interface RestoreTrashPayload {
 export interface DirectoryActionBase<T extends string, P> {
   /** Type of action to perform */
   action: T;
-  /** Target resource identified by path or ID */
-  target: {
-    /** Full path to the resource */
-    resource_path?: string;
-    /** ID of the resource */
-    resource_id?: DirectoryResourceID;
-  };
   /** Payload for the action */
   payload: P;
 }

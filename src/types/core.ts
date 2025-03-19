@@ -29,6 +29,8 @@ import {
   UserID,
   WebhookEventLabel,
   WebhookID,
+  DirectoryPermissionType,
+  DriveClippedFilePath,
 } from "./primitives";
 
 // =========================================================================
@@ -44,7 +46,7 @@ export interface FileRecord {
   prior_version?: FileID;
   next_version?: FileID;
   extension: string;
-  full_file_path: DriveFullFilePath;
+  full_directory_path: DriveFullFilePath;
   labels: LabelValue[];
   created_by: UserID;
   created_at: number;
@@ -55,12 +57,18 @@ export interface FileRecord {
   last_updated_date_ms: number;
   last_updated_by: UserID;
   deleted: boolean;
-  canister_id: ICPPrincipalString;
+  drive_id: ICPPrincipalString;
   expires_at: number;
-  restore_trash_prior_folder_path?: DriveFullFilePath;
+  restore_trash_prior_folder_uuid?: FolderID;
   has_sovereign_permissions: boolean;
+  shortcut_to?: FileID;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+}
+
+export interface FileRecordFE extends FileRecord {
+  clipped_directory_path: DriveClippedFilePath;
+  permission_previews: DirectoryPermissionType[];
 }
 
 /** Folder record */
@@ -70,7 +78,7 @@ export interface FolderRecord {
   parent_folder_uuid?: FolderID;
   subfolder_uuids: FolderID[];
   file_uuids: FileID[];
-  full_folder_path: DriveFullFilePath;
+  full_directory_path: DriveFullFilePath;
   labels: LabelValue[];
   created_by: UserID;
   created_at: number;
@@ -79,11 +87,16 @@ export interface FolderRecord {
   disk_id: DiskID;
   deleted: boolean;
   expires_at: number;
-  canister_id: ICPPrincipalString;
-  restore_trash_prior_folder_path?: DriveFullFilePath;
+  drive_id: DriveID;
+  restore_trash_prior_folder_uuid?: FolderID;
   has_sovereign_permissions: boolean;
+  shortcut_to?: FolderID;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+}
+export interface FolderRecordFE extends FolderRecord {
+  clipped_directory_path: DriveClippedFilePath;
+  permission_previews: DirectoryPermissionType[];
 }
 
 /** API key */
@@ -146,6 +159,8 @@ export interface Disk {
   private_note?: string;
   auth_json?: string;
   labels: LabelValue[];
+  root_folder: FolderID;
+  trash_folder: FolderID;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;
