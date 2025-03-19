@@ -59,7 +59,7 @@ export interface FileRecord {
   deleted: boolean;
   drive_id: ICPPrincipalString;
   expires_at: number;
-  restore_trash_prior_folder_path?: DriveFullFilePath;
+  restore_trash_prior_folder_uuid?: FolderID;
   has_sovereign_permissions: boolean;
   shortcut_to?: FileID;
   external_id?: ExternalID;
@@ -88,7 +88,7 @@ export interface FolderRecord {
   deleted: boolean;
   expires_at: number;
   drive_id: DriveID;
-  restore_trash_prior_folder_path?: DriveFullFilePath;
+  restore_trash_prior_folder_uuid?: FolderID;
   has_sovereign_permissions: boolean;
   shortcut_to?: FolderID;
   external_id?: ExternalID;
