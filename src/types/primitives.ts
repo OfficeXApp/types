@@ -137,11 +137,11 @@ export type DriveClippedFilePath = string;
 
 /** Type of disk storage */
 export enum DiskTypeEnum {
-  BrowserCache = "BrowserCache",
-  LocalSSD = "LocalSSD",
-  AwsBucket = "AwsBucket",
-  StorjWeb3 = "StorjWeb3",
-  IcpCanister = "IcpCanister",
+  BrowserCache = "BROWSER_CACHE",
+  LocalSSD = "LOCAL_SSD",
+  AwsBucket = "AWS_BUCKET",
+  StorjWeb3 = "STORJ_WEB3",
+  IcpCanister = "ICP_CANISTER",
 }
 
 /** Type of directory action to perform */
@@ -230,4 +230,10 @@ export enum WebhookEventLabel {
   LABEL_REMOVED = "label.removed",
   ORG_SUPERSWAP_USER = "org.superswap_user",
   ORG_INBOX_NEW_MAIL = "org.inbox.new_mail",
+}
+
+export enum UploadStatus {
+  QUEUED = "QUEUED",
+  PENDING = "PENDING",
+  COMPLETED = "COMPLETED",
 }

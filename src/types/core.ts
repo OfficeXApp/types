@@ -31,6 +31,7 @@ import {
   WebhookID,
   DirectoryPermissionType,
   DriveClippedFilePath,
+  UploadStatus,
 } from "./primitives";
 
 // =========================================================================
@@ -62,6 +63,7 @@ export interface FileRecord {
   restore_trash_prior_folder_uuid?: FolderID;
   has_sovereign_permissions: boolean;
   shortcut_to?: FileID;
+  upload_status: UploadStatus;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
 }
@@ -85,6 +87,7 @@ export interface FolderRecord {
   last_updated_date_ms: number;
   last_updated_by: UserID;
   disk_id: DiskID;
+  disk_type: DiskTypeEnum;
   deleted: boolean;
   expires_at: number;
   drive_id: DriveID;
