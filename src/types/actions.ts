@@ -12,12 +12,14 @@ import {
 } from "./core";
 import {
   DiskID,
+  DiskTypeEnum,
   ExternalID,
   ExternalPayload,
   FileConflictResolutionEnum,
   FileID,
   FolderID,
   LabelValue,
+  UploadStatus,
   UserID,
 } from "./primitives";
 
@@ -46,29 +48,17 @@ export interface GetFolderPayload {
 /** Payload for CREATE_FILE action */
 export interface CreateFilePayload {
   id?: FileID;
-  /** Name of the file */
   name: string;
-  /** File extension */
-  extension: string;
-  /** Labels to associate with the file */
-  labels: LabelValue[];
-  /** Size of the file in bytes */
-  file_size: number;
-  /** URL where the raw file content can be accessed */
-  raw_url: string;
-  /** ID of the disk where the file will be stored */
-  disk_id: DiskID;
-  /** ID of the parent folder */
   parent_folder_uuid: FolderID;
-  /** Timestamp when the file expires */
+  extension: string;
+  labels: LabelValue[];
+  file_size: number;
+  disk_id: DiskID;
   expires_at?: number;
-  /** How to handle file name conflicts */
   file_conflict_resolution?: FileConflictResolutionEnum;
-  /** Whether the file has sovereign permissions */
   has_sovereign_permissions?: boolean;
-  /** External identifier for integration purposes */
+  shortcut_to?: FileID;
   external_id?: ExternalID;
-  /** Additional data for external integrations */
   external_payload?: ExternalPayload;
 }
 
@@ -81,6 +71,8 @@ export interface CreateFolderPayload {
   labels: LabelValue[];
   /** ID of the disk where the folder will be stored */
   disk_id: DiskID;
+  /** type of the disk where the folder will be stored */
+  disk_type: DiskTypeEnum;
   /** ID of the parent folder */
   parent_folder_uuid: FolderID;
   /** Timestamp when the folder expires */
@@ -89,6 +81,8 @@ export interface CreateFolderPayload {
   file_conflict_resolution?: FileConflictResolutionEnum;
   /** Whether the folder has sovereign permissions */
   has_sovereign_permissions?: boolean;
+  /** ID of the folder to create a shortcut to */
+  shortcut_to?: FolderID;
   /** External identifier for integration purposes */
   external_id?: ExternalID;
   /** Additional data for external integrations */
@@ -106,6 +100,8 @@ export interface UpdateFilePayload {
   name?: string;
   /** New labels for the file */
   labels?: LabelValue[];
+  /** New */
+  upload_status?: UploadStatus;
   /** New URL where the raw file content can be accessed */
   raw_url?: string;
   /** New expiration timestamp */
