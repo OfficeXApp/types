@@ -42,7 +42,7 @@ import {
 export interface FileRecord {
   id: FileID;
   name: string;
-  folder_uuid: FolderID;
+  parent_folder_uuid: FolderID;
   file_version: number;
   prior_version?: FileID;
   next_version?: FileID;
@@ -109,6 +109,7 @@ export interface ApiKey {
   user_id: UserID;
   name: string;
   created_at: number;
+  begins_at: number;
   expires_at: number;
   is_revoked: boolean;
   labels: LabelValue[];
@@ -134,6 +135,8 @@ export interface Contact {
   icp_principal: ICPPrincipalString;
   groups: GroupID[];
   labels: LabelValue[];
+  from_placeholder_user_id?: UserID;
+  redeem_code?: string;
   last_online_ms: number;
   created_at: number;
   external_id?: ExternalID;

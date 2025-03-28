@@ -54,6 +54,7 @@ export interface CreateFilePayload {
   labels: LabelValue[];
   file_size: number;
   disk_id: DiskID;
+  disk_type: DiskTypeEnum;
   expires_at?: number;
   file_conflict_resolution?: FileConflictResolutionEnum;
   has_sovereign_permissions?: boolean;
@@ -71,8 +72,6 @@ export interface CreateFolderPayload {
   labels: LabelValue[];
   /** ID of the disk where the folder will be stored */
   disk_id: DiskID;
-  /** type of the disk where the folder will be stored */
-  disk_type: DiskTypeEnum;
   /** ID of the parent folder */
   parent_folder_uuid: FolderID;
   /** Timestamp when the folder expires */
