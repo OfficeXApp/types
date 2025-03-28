@@ -34,26 +34,30 @@ export enum IDPrefixEnum {
 }
 
 export const GenerateID = {
-  File: () => `${IDPrefixEnum.File}${uuidv4()}`,
-  Folder: () => `${IDPrefixEnum.Folder}${uuidv4()}`,
-  Drive: (icp_principal: string) => `${IDPrefixEnum.Drive}${icp_principal}`,
-  ApiKey: () => `${IDPrefixEnum.ApiKey}${uuidv4()}`,
-  Disk: () => `${IDPrefixEnum.Disk}${uuidv4()}`,
-  Group: () => `${IDPrefixEnum.Group}${uuidv4()}`,
-  GroupInvite: () => `${IDPrefixEnum.GroupInvite}${uuidv4()}`,
-  SystemPermission: () => `${IDPrefixEnum.SystemPermission}${uuidv4()}`,
-  DirectoryPermission: () => `${IDPrefixEnum.DirectoryPermission}${uuidv4()}`,
+  File: () => `${IDPrefixEnum.File}${uuidv4()}` as FileID,
+  Folder: () => `${IDPrefixEnum.Folder}${uuidv4()}` as FolderID,
+  Drive: (icp_principal: string) =>
+    `${IDPrefixEnum.Drive}${icp_principal}` as DriveID,
+  ApiKey: () => `${IDPrefixEnum.ApiKey}${uuidv4()}` as ApiKeyID,
+  Disk: () => `${IDPrefixEnum.Disk}${uuidv4()}` as DiskID,
+  Group: () => `${IDPrefixEnum.Group}${uuidv4()}` as GroupID,
+  GroupInvite: () => `${IDPrefixEnum.GroupInvite}${uuidv4()}` as GroupInviteID,
+  SystemPermission: () =>
+    `${IDPrefixEnum.SystemPermission}${uuidv4()}` as SystemPermissionID,
+  DirectoryPermission: () =>
+    `${IDPrefixEnum.DirectoryPermission}${uuidv4()}` as DirectoryPermissionID,
   PlaceholderPermissionGrantee: () =>
     `${IDPrefixEnum.PlaceholderPermissionGrantee}${uuidv4()}`,
-  Webhook: () => `${IDPrefixEnum.Webhook}${uuidv4()}`,
-  User: (icp_principal: string) => `${IDPrefixEnum.User}${icp_principal}`,
+  Webhook: () => `${IDPrefixEnum.Webhook}${uuidv4()}` as WebhookID,
+  User: (icp_principal: string) =>
+    `${IDPrefixEnum.User}${icp_principal}` as UserID,
   DirectoryActionOutcome: () =>
     `${IDPrefixEnum.DirectoryActionOutcome}${uuidv4()}`,
   PlaceholderGroupInviteeID: () =>
     `${IDPrefixEnum.PlaceholderGroupInviteeID}${uuidv4()}`,
   ShareTrackID: () => `${IDPrefixEnum.ShareTrackID}${uuidv4()}`,
   DriveStateDiffID: () => `${IDPrefixEnum.DriveStateDiffID}${uuidv4()}`,
-  Label: () => `${IDPrefixEnum.LabelID}${uuidv4()}`,
+  Label: () => `${IDPrefixEnum.LabelID}${uuidv4()}` as LabelID,
   RedeemCode: () => `${IDPrefixEnum.RedeemCode}${uuidv4()}`,
 };
 

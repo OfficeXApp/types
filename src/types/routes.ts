@@ -37,6 +37,7 @@ import {
   WebhookEventLabel,
   WebhookID,
   InboxNotifID,
+  ApiKeyValue,
 } from "./primitives";
 
 /**
@@ -158,6 +159,7 @@ export interface IRequestCreateApiKey {
   name: string;
   /** ID of the user to create the API key for */
   user_id?: UserID;
+  begins_at?: number;
   /** Timestamp when the key expires, -1 for never expires */
   expires_at?: number;
   /** External identifier */
@@ -176,6 +178,7 @@ export interface IRequestUpdateApiKey {
   /** New name for the API key */
   name?: string;
   /** New expiration timestamp, -1 for never expires */
+  begins_at?: number;
   expires_at?: number;
   /** Whether to revoke the API key */
   is_revoked?: boolean;
@@ -230,12 +233,16 @@ export interface IRequestCreateContact {
   icp_principal: string;
   /** Nickname for the contact */
   name: string;
+  /** Determines if a placeholder user id */
+  from_placeholder_user_id?: UserID;
   /** EVM public address */
   evm_public_address?: string;
   /** Public note about the contact */
   public_note?: string;
   /** Private note about the contact */
   private_note?: string;
+  /** Determines if placeholder */
+  is_placeholder?: boolean;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -291,9 +298,12 @@ export interface IRequestRedeemContact {
   new_user_id: UserID;
   redeem_code: String;
 }
-
 /** Redeem Contact Response */
-export interface IResponseRedeemContact extends ISuccessResponse<ContactFE> {}
+export interface IResponseRedeemContact
+  extends ISuccessResponse<{
+    contact: ContactFE;
+    api_key: ApiKeyValue;
+  }> {}
 
 // =========================================================================
 // Disks Routes
@@ -1270,3 +1280,13 @@ export interface IResponseInboxOrg
     timestamp_ms: number;
     note: String;
   }> {}
+
+export interface IResponseWhoAmI {
+  driveID: DriveID;
+  drive_nickname: string;
+  evm_public_address: string;
+  icp_principal: ICPPrincipalString;
+  is_owner: boolean;
+  nickname: string;
+  userID: UserID;
+}
