@@ -64,8 +64,8 @@ export interface DirectoryPermission {
 }
 
 export interface DirectoryPermissionFE {
-  id: string;
-  resource_id: string;
+  id: DirectoryPermissionID;
+  resource_id: DirectoryResourceID;
   resource_path: string;
   granted_to: string;
   granted_by: string;
@@ -80,6 +80,10 @@ export interface DirectoryPermissionFE {
   labels: string[];
   external_id?: string;
   external_payload?: string;
+  resource_name?: string;
+  grantee_name?: string;
+  grantee_avatar?: string;
+  granter_name?: string;
   permission_previews: SystemPermissionType[];
 }
 

@@ -565,6 +565,34 @@ export interface IRequestGetDirectoryPermission {
 export interface IResponseGetDirectoryPermission
   extends ISuccessResponse<DirectoryPermissionFE> {}
 
+/** List Directory Permissions Request */
+export interface IRequestListDirectoryPermissions {
+  /** Filters for system permissions */
+  filters: {
+    /** Filter by resource IDs */
+    resource_id: DirectoryResourceID;
+  };
+  /** Number of items per page */
+  page_size?: number;
+  /** Sort direction */
+  direction?: SortDirection;
+  /** Cursor for pagination */
+  cursor?: string | null;
+}
+
+/** List Directory Permissions Response */
+export interface IResponseListDirectoryPermissions
+  extends ISuccessResponse<{
+    /** Directory permissions matching the request */
+    items: DirectoryPermissionFE[];
+    /** Number of items per page */
+    page_size: number;
+    /** Total number of matching permissions */
+    total: number;
+    /** Cursor for pagination */
+    cursor?: string | null;
+  }> {}
+
 /** Create Directory Permission Request */
 export interface IRequestCreateDirectoryPermission {
   id?: DirectoryPermissionID;
