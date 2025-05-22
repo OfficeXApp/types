@@ -73,7 +73,8 @@ export type ApiKeyID = string;
 /** Unique identifier for a user */
 export type UserID = string;
 
-export type GiftCardID = string;
+export type GiftcardSpawnOrgID = string;
+export type GiftcardRefuelID = string;
 
 /** Unique identifier for a group */
 export type GroupID = string;
@@ -86,6 +87,9 @@ export type GranteeID = UserID | GroupID;
 
 /** Unique identifier for a disk */
 export type DiskID = string;
+
+/** Search result resource ID */
+export type SearchResultResourceID = string;
 
 /** Unique identifier for a drive */
 export type DriveID = string;
