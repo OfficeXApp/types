@@ -6,9 +6,11 @@
  */
 
 import {
-  DirectoryResourcePermissionFE,
+  FilePathBreadcrumb,
   FileRecord,
+  FileRecordFE,
   FolderRecord,
+  FolderRecordFE,
 } from "./core";
 import {
   DiskID,
@@ -20,7 +22,6 @@ import {
   FolderID,
   LabelValue,
   UploadStatus,
-  UserID,
 } from "./primitives";
 
 // =========================================================================
@@ -72,6 +73,8 @@ export interface CreateFolderPayload {
   labels: LabelValue[];
   /** ID of the disk where the folder will be stored */
   disk_id: DiskID;
+  /** ID of the disk where the folder will be stored */
+  disk_type: DiskTypeEnum;
   /** ID of the parent folder */
   parent_folder_uuid: FolderID;
   /** Timestamp when the folder expires */
@@ -323,15 +326,13 @@ export interface IResponseDirectoryAction {
  * Directory Action-specific Response Types
  */
 export type GetFileResponse = {
-  file: FileRecord;
-  permissions: DirectoryResourcePermissionFE[];
-  requester_id: UserID;
+  file: FileRecordFE;
+  breadcrumbs: FilePathBreadcrumb[];
 };
 
 export type GetFolderResponse = {
-  folder: FolderRecord;
-  permissions: DirectoryResourcePermissionFE[];
-  requester_id: UserID;
+  folder: FolderRecordFE;
+  breadcrumbs: FilePathBreadcrumb[];
 };
 
 export type CreateFileResponse = {

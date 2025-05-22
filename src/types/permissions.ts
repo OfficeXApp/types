@@ -59,6 +59,7 @@ export interface DirectoryPermission {
   last_modified_at: number;
   from_placeholder_grantee?: string;
   labels: string[];
+  redeem_code?: string;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
 }
@@ -78,6 +79,8 @@ export interface DirectoryPermissionFE {
   last_modified_at: number;
   from_placeholder_grantee?: string;
   labels: string[];
+  metadata: any;
+  redeem_code?: string;
   external_id?: string;
   external_payload?: string;
   resource_name?: string;
@@ -101,6 +104,7 @@ export interface SystemPermission {
   last_modified_at: number;
   from_placeholder_grantee?: string;
   labels: string[];
+  redeem_code?: string;
   metadata?: Record<string, any>;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
@@ -122,6 +126,7 @@ export interface SystemPermissionFE {
   metadata?: Record<string, any>;
   external_id?: string;
   external_payload?: string;
+  redeem_code?: string;
   resource_name?: string;
   grantee_name?: string;
   grantee_avatar?: string;

@@ -32,6 +32,7 @@ import {
   DirectoryPermissionType,
   DriveClippedFilePath,
   UploadStatus,
+  SearchResultResourceID,
 } from "./primitives";
 
 // =========================================================================
@@ -170,6 +171,7 @@ export interface Disk {
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;
+  endpoint?: string;
 }
 
 export interface DiskFE extends Disk {
@@ -263,6 +265,7 @@ export interface GroupInvite {
   last_modified_at: number;
   from_placeholder_invitee?: string;
   labels: LabelValue[];
+  redeem_code?: string;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
 }
@@ -314,4 +317,54 @@ export interface StateDiffRecord {
   diff_backward: string;
   checksum_forward: string;
   checksum_backward: string;
+}
+
+export interface FilePathBreadcrumb {
+  resource_id: string;
+  resource_name: string;
+  visibility_preview: BreadcrumbVisibilityPreviewEnum[];
+}
+
+export enum BreadcrumbVisibilityPreviewEnum {
+  PUBLIC_VIEW = "PUBLIC_VIEW",
+  PUBLIC_MODIFY = "PUBLIC_MODIFY",
+  PRIVATE_VIEW = "PRIVATE_VIEW",
+  PRIVATE_MODIFY = "PRIVATE_MODIFY",
+}
+
+/** Search category enum */
+export enum SearchCategoryEnum {
+  ALL = "ALL",
+  FILES = "FILES",
+  FOLDERS = "FOLDERS",
+  CONTACTS = "CONTACTS",
+  DISKS = "DISKS",
+  DRIVES = "DRIVES",
+  GROUPS = "GROUPS",
+}
+
+/** Search sort by enum */
+export enum SearchSortByEnum {
+  RELEVANCE = "RELEVANCE",
+  ALPHABETICAL = "ALPHABETICAL",
+  SCORE = "SCORE",
+  CREATED_AT = "CREATED_AT",
+  UPDATED_AT = "UPDATED_AT",
+}
+
+/** Search result item */
+export interface SearchResult {
+  /** Title of the search result */
+  title: string;
+  /** Preview text */
+  preview: string;
+  /** Relevance score */
+  score: number;
+  /** Resource ID with type information */
+  resource_id: SearchResultResourceID;
+  /** Category of the search result */
+  category: SearchCategoryEnum;
+  metadata?: string;
+  created_at: number;
+  updated_at: number;
 }

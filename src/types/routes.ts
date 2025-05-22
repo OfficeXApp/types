@@ -12,6 +12,10 @@ import {
   Webhook,
   FolderRecordFE,
   FileRecordFE,
+  FilePathBreadcrumb,
+  SearchResult,
+  SearchCategoryEnum,
+  SearchSortByEnum,
 } from "./core";
 import { DirectoryPermissionFE, SystemPermissionFE } from "./permissions";
 import {
@@ -23,7 +27,7 @@ import {
   DriveID,
   ExternalID,
   ExternalPayload,
-  GiftCardID,
+  GiftcardSpawnOrgID,
   GranteeID,
   ICPPrincipalString,
   SortDirection,
@@ -38,6 +42,7 @@ import {
   WebhookID,
   InboxNotifID,
   ApiKeyValue,
+  GiftcardRefuelID,
 } from "./primitives";
 
 /**
@@ -117,6 +122,7 @@ export interface IResponseListDirectory
     total_files: number;
     total_folders: number;
     cursor?: string | null;
+    breadcrumbs: FilePathBreadcrumb[];
   }> {}
 
 /** Directory Action Request */
@@ -296,7 +302,8 @@ export interface IResponseDeleteContact
 export interface IRequestRedeemContact {
   current_user_id: UserID;
   new_user_id: UserID;
-  redeem_code: String;
+  redeem_code: string;
+  note?: string;
 }
 /** Redeem Contact Response */
 export interface IResponseRedeemContact
@@ -342,6 +349,7 @@ export interface IRequestCreateDisk {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  endpoint?: string;
 }
 
 /** Create Disk Response */
@@ -363,6 +371,7 @@ export interface IRequestUpdateDisk {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  endpoint?: string;
 }
 
 /** Update Disk Response */
@@ -486,38 +495,36 @@ export interface IResponseReplayDrive
     final_checksum: string;
   }> {}
 
-/** Search Drive Request */
-export interface IRequestSearchDrive {
-  /** Search query */
-  query: string;
-  /** Categories to search in */
-  categories?: Array<"FILES" | "FOLDERS" | "METADATA">;
-  /** Number of items per page */
-  page_size?: number;
-  /** Cursor for previous page */
-  cursor_up?: string;
-  /** Cursor for next page */
-  cursor_down?: string;
-  /** Field to sort by */
-  sort_by?: "CREATED_AT" | "UPDATED_AT";
-  /** Sort direction */
-  direction?: SortDirection;
-}
-
 /** Search Drive Response */
 export interface IResponseSearchDrive
   extends ISuccessResponse<{
     /** Search result items */
-    items: any[];
+    items: SearchResult[];
     /** Number of items per page */
     page_size: number;
     /** Total number of items */
     total: number;
-    /** Cursor for previous page */
-    cursor_up?: string;
-    /** Cursor for next page */
-    cursor_down?: string;
+    /** Current sort direction */
+    direction: SortDirection;
+    /** Cursor for pagination */
+    cursor?: string;
   }> {}
+
+/** Search Drive Request Body */
+export interface SearchDriveRequestBody {
+  /** Search query string */
+  query: string;
+  /** Categories to search in */
+  categories?: SearchCategoryEnum[];
+  /** Number of items per page (1-1000) */
+  page_size?: number;
+  /** Pagination cursor */
+  cursor?: string;
+  /** Field to sort results by */
+  sort_by?: SearchSortByEnum;
+  /** Sort direction */
+  direction?: SortDirection;
+}
 
 /** Reindex Drive Request */
 export interface IRequestReindexDrive {
@@ -628,10 +635,6 @@ export interface IResponseCreateDirectoryPermission
 export interface IRequestUpdateDirectoryPermission {
   /** ID of the permission to update */
   id: DirectoryPermissionID;
-  /** ID of the resource to grant permission for */
-  resource_id?: DirectoryResourceID;
-  /** ID of the user/group to grant permission to */
-  granted_to?: GranteeID;
   /** Types of permissions to grant */
   permission_types?: Array<
     "VIEW" | "UPLOAD" | "EDIT" | "DELETE" | "INVITE" | "MANAGE"
@@ -696,6 +699,8 @@ export interface IRequestRedeemDirectoryPermission {
   permission_id: DirectoryPermissionID;
   /** ID of the user to redeem the permission for */
   user_id: UserID;
+  redeem_code: string;
+  note?: string;
 }
 
 /** Redeem Directory Permission Response */
@@ -844,6 +849,8 @@ export interface IRequestRedeemSystemPermission {
   permission_id: SystemPermissionID;
   /** ID of the user to redeem the permission for */
   user_id: UserID;
+  redeem_code: string;
+  note?: string;
 }
 
 /** Redeem System Permission Response */
@@ -1040,6 +1047,7 @@ export interface IRequestRedeemGroupInvite {
   invite_id: GroupInviteID;
   /** ID of the user to redeem the invite for */
   user_id: UserID;
+  note?: string;
 }
 
 /** Redeem Group Invite Response */
@@ -1250,37 +1258,38 @@ export interface IResponseDeleteWebhook
 
 /** Superswap User Request */
 export interface IRequestSuperswapUser {
-  current_user_id: String;
-  new_user_id: String;
+  current_user_id: string;
+  new_user_id: string;
 }
 
 /** Superswap User Response */
 export interface IResponseSuperswapUser
   extends ISuccessResponse<{
     success: boolean;
-    message: String;
+    message: string;
   }> {}
 
 /** Redeem Gift Card Request */
-export interface IRequestRedeemGiftCard {
-  giftcard_id: GiftCardID;
+export interface IRequestRedeemGiftcardSpawnOrg {
+  giftcard_id: GiftcardSpawnOrgID;
   owner_icp_principal: ICPPrincipalString;
-  owner_name?: String;
-  organization_name?: String;
+  owner_name?: string;
+  organization_name?: string;
 }
 
 /** Redeem Gift Card Response */
-export interface IResponseRedeemGiftCard
+export interface IResponseRedeemGiftcardSpawnOrg
   extends ISuccessResponse<{
     owner_id: UserID;
     drive_id: DriveID;
     endpoint_url: URLEndpoint;
-    redeem_code: String;
+    redeem_code: string;
+    disk_auth_json?: string;
   }> {}
 
 /** Redeem Org Request */
 export interface IRequestRedeemOrg {
-  redeem_code: String;
+  redeem_code: string;
 }
 
 /** Redeem Org Response */
@@ -1288,15 +1297,30 @@ export interface IResponseRedeemOrg
   extends ISuccessResponse<{
     drive_id: DriveID; // spawned drive id
     endpoint_url: URLEndpoint; // spawned drive url endpoint
-    api_key: String; // admin api key for the spawned drive
-    note: String; // note about the spawned drive, particularly info about the factory
-    admin_login_password: String; // admin login password for the spawned drive
+    api_key: string; // admin api key for the spawned drive
+    note: string; // note about the spawned drive, particularly info about the factory
+    admin_login_password: string; // admin login password for the spawned drive
+  }> {}
+
+/** Redeem Gift Card Request */
+export interface IRequestRedeemGiftcardRefuel {
+  giftcard_id: string;
+  icp_principal: string;
+}
+
+/** Redeem Gift Card Response */
+export interface IResponseRedeemGiftcardRefuel
+  extends ISuccessResponse<{
+    giftcard_id: GiftcardRefuelID;
+    icp_principal: string;
+    redeem_code: string;
+    timestamp_ms: number;
   }> {}
 
 /** Inbox Org Request */
 export interface IRequestInboxOrg {
   drive_id: DriveID;
-  topic: String;
+  topic: string;
   payload: any;
 }
 
@@ -1306,7 +1330,7 @@ export interface IResponseInboxOrg
     inbox_notif_id: InboxNotifID;
     drive_id: DriveID;
     timestamp_ms: number;
-    note: String;
+    note: string;
   }> {}
 
 export interface IResponseWhoAmI {
