@@ -33,6 +33,9 @@ import {
   DriveClippedFilePath,
   UploadStatus,
   SearchResultResourceID,
+  FactoryApiKeyID,
+  GiftcardRefuelID,
+  GiftcardSpawnOrgID,
 } from "./primitives";
 
 // =========================================================================
@@ -367,4 +370,55 @@ export interface SearchResult {
   metadata?: string;
   created_at: number;
   updated_at: number;
+}
+
+/** API key */
+export interface FactoryApiKey {
+  id: FactoryApiKeyID;
+  value: ApiKeyValue;
+  user_id: UserID;
+  name: string;
+  created_at: number;
+  expires_at: number;
+  is_revoked: boolean;
+}
+
+export interface GiftcardRefuel {
+  id: GiftcardRefuelID;
+  usd_revenue_cents: number;
+  note: string;
+  gas_cycles_included: number;
+  timestamp_ms: number;
+  external_id: string;
+  redeemed: boolean;
+}
+
+export interface FactoryRefuelHistoryRecord {
+  note: string;
+  giftcard_id: GiftcardRefuelID;
+  gas_cycles_included: number;
+  timestamp_ms: number;
+  icp_principal: ICPPrincipalString;
+}
+
+export interface FactorySpawnHistoryRecord {
+  owner_id: UserID;
+  drive_id: DriveID;
+  endpoint: string;
+  version: string;
+  note: string;
+  giftcard_id: GiftcardSpawnOrgID;
+  gas_cycles_included: number;
+  timestamp_ms: number;
+}
+
+export interface GiftcardSpawnOrg {
+  id: GiftcardSpawnOrgID;
+  usd_revenue_cents: number;
+  note: string;
+  gas_cycles_included: number;
+  timestamp_ms: number;
+  external_id: string;
+  redeemed: boolean;
+  disk_auth_json: string;
 }

@@ -16,6 +16,9 @@ import {
   SearchResult,
   SearchCategoryEnum,
   SearchSortByEnum,
+  FactorySpawnHistoryRecord,
+  GiftcardSpawnOrg,
+  FactoryApiKey,
 } from "./core";
 import { DirectoryPermissionFE, SystemPermissionFE } from "./permissions";
 import {
@@ -1341,4 +1344,79 @@ export interface IResponseWhoAmI {
   is_owner: boolean;
   nickname: string;
   userID: UserID;
+}
+
+// factory routes
+// Additional types to add to your existing types.ts
+
+export interface FactoryCreateApiKeyRequestBody {
+  action: "CREATE";
+  name: string;
+  user_id?: string;
+  expires_at?: number;
+  external_id?: string;
+  external_payload?: string;
+}
+
+export interface FactoryUpdateApiKeyRequestBody {
+  action: "UPDATE";
+  id: string;
+  name?: string;
+  expires_at?: number;
+  is_revoked?: boolean;
+  external_id?: string;
+  external_payload?: string;
+}
+
+export type FactoryUpsertApiKeyRequestBody =
+  | FactoryCreateApiKeyRequestBody
+  | FactoryUpdateApiKeyRequestBody;
+
+export interface FactoryDeleteApiKeyRequestBody {
+  id: string;
+}
+
+export interface FactoryDeletedApiKeyData {
+  id: string;
+  deleted: boolean;
+}
+
+export interface FactoryApiResponse<T> {
+  status: "success" | "error";
+  data?: T;
+  error?: {
+    code: number;
+    message: string;
+  };
+  timestamp: number;
+}
+
+export interface FactoryStateSnapshot {
+  // System info
+  canister_id: string;
+  version: string;
+  owner_id: UserID;
+  endpoint_url: string;
+
+  // API keys state
+  apikeys_by_value: Record<string, string>;
+  apikeys_by_id: Record<string, FactoryApiKey>;
+  users_apikeys: Record<string, string[]>;
+  apikeys_history: string[];
+
+  // GiftcardSpawnOrg state
+  deployments_by_giftcard_id: Record<string, FactorySpawnHistoryRecord>;
+  historical_giftcards: string[];
+  drive_to_giftcard_hashtable: Record<string, string>;
+  user_to_giftcards_hashtable: Record<string, string[]>;
+  giftcard_by_id: Record<string, GiftcardSpawnOrg>;
+
+  // Timestamp
+  timestamp_ns: number;
+}
+
+export interface FactorySnapshotResponse {
+  status: string;
+  data: FactoryStateSnapshot;
+  timestamp: number;
 }

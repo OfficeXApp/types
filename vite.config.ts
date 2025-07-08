@@ -42,13 +42,14 @@ export default defineConfig({
       },
     }),
     dts({
-      insertTypesEntry: true, // Ensures the entry for types is added to package.json
+      insertTypesEntry: true,
+      rollupTypes: true,
     }),
   ],
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: resolve(__dirname, "src/main.tsx"),
+      entry: resolve(__dirname, "src/main.ts"),
       name: "OfficeXFramework",
       // the proper extensions will be added
       fileName: "officex-types",

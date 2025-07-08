@@ -62,6 +62,8 @@ export interface CreateFilePayload {
   shortcut_to?: FileID;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  raw_url?: string;
+  notes?: string;
 }
 
 /** Payload for CREATE_FOLDER action */
@@ -89,6 +91,8 @@ export interface CreateFolderPayload {
   external_id?: ExternalID;
   /** Additional data for external integrations */
   external_payload?: ExternalPayload;
+
+  notes?: string;
 }
 
 // =========================================================================
@@ -112,6 +116,7 @@ export interface UpdateFilePayload {
   external_id?: ExternalID;
   /** Additional data for external integrations */
   external_payload?: ExternalPayload;
+  notes?: string;
 }
 
 /** Payload for UPDATE_FOLDER action */
@@ -127,6 +132,7 @@ export interface UpdateFolderPayload {
   external_id?: ExternalID;
   /** Additional data for external integrations */
   external_payload?: ExternalPayload;
+  notes?: string;
 }
 
 // =========================================================================

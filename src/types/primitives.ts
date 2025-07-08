@@ -31,6 +31,7 @@ export enum IDPrefixEnum {
   DriveStateDiffID = "DriveStateDiffID_",
   LabelID = "LabelID_",
   RedeemCode = "RedeemCodeID_",
+  FactoryApiKey = "FactoryApiKeyID_",
 }
 
 export const GenerateID = {
@@ -39,6 +40,8 @@ export const GenerateID = {
   Drive: (icp_principal: string) =>
     `${IDPrefixEnum.Drive}${icp_principal}` as DriveID,
   ApiKey: () => `${IDPrefixEnum.ApiKey}${uuidv4()}` as ApiKeyID,
+  FactoryApiKey: () =>
+    `${IDPrefixEnum.FactoryApiKey}${uuidv4()}` as FactoryApiKeyID,
   Disk: () => `${IDPrefixEnum.Disk}${uuidv4()}` as DiskID,
   Group: () => `${IDPrefixEnum.Group}${uuidv4()}` as GroupID,
   GroupInvite: () => `${IDPrefixEnum.GroupInvite}${uuidv4()}` as GroupInviteID,
@@ -69,6 +72,9 @@ export type FolderID = string;
 
 /** Unique identifier for an API key */
 export type ApiKeyID = string;
+
+/** Unique identifier for a factory API key */
+export type FactoryApiKeyID = string;
 
 /** Unique identifier for a user */
 export type UserID = string;
