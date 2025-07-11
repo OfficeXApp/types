@@ -32,6 +32,8 @@ export enum IDPrefixEnum {
   LabelID = "LabelID_",
   RedeemCode = "RedeemCodeID_",
   FactoryApiKey = "FactoryApiKeyID_",
+  GiftcardSpawnOrg = "GiftcardSpawnOrgID_",
+  GiftcardRefuel = "GiftcardRefuelID_",
 }
 
 export const GenerateID = {

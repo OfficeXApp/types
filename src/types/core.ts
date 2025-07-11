@@ -34,8 +34,8 @@ import {
   UploadStatus,
   SearchResultResourceID,
   FactoryApiKeyID,
-  GiftcardRefuelID,
   GiftcardSpawnOrgID,
+  GiftcardRefuelID,
 } from "./primitives";
 
 // =========================================================================
@@ -112,6 +112,7 @@ export interface ApiKey {
   value: ApiKeyValue;
   user_id: UserID;
   name: string;
+  private_note?: string;
   created_at: number;
   begins_at: number;
   expires_at: number;
@@ -139,6 +140,7 @@ export interface Contact {
   icp_principal: ICPPrincipalString;
   groups: GroupID[];
   labels: LabelValue[];
+  seed_phrase?: string;
   from_placeholder_user_id?: UserID;
   redeem_code?: string;
   last_online_ms: number;
@@ -213,6 +215,8 @@ export interface Label {
   labels: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  public_note?: string;
+  private_note?: string;
 }
 
 export interface LabelFE extends Label {
@@ -383,6 +387,17 @@ export interface FactoryApiKey {
   is_revoked: boolean;
 }
 
+export interface GiftcardSpawnOrg {
+  id: GiftcardSpawnOrgID;
+  usd_revenue_cents: number;
+  note: string;
+  gas_cycles_included: number;
+  timestamp_ms: number;
+  external_id: string;
+  redeemed: boolean;
+  disk_auth_json?: string;
+}
+
 export interface GiftcardRefuel {
   id: GiftcardRefuelID;
   usd_revenue_cents: number;
@@ -393,32 +408,14 @@ export interface GiftcardRefuel {
   redeemed: boolean;
 }
 
-export interface FactoryRefuelHistoryRecord {
-  note: string;
-  giftcard_id: GiftcardRefuelID;
-  gas_cycles_included: number;
-  timestamp_ms: number;
-  icp_principal: ICPPrincipalString;
+export interface ExternalIDvsInternalIDMap {
+  success: boolean;
+  message: string;
+  external_id: ExternalID;
+  internal_ids: string[];
 }
 
-export interface FactorySpawnHistoryRecord {
-  owner_id: UserID;
-  drive_id: DriveID;
-  endpoint: string;
-  version: string;
-  note: string;
-  giftcard_id: GiftcardSpawnOrgID;
-  gas_cycles_included: number;
-  timestamp_ms: number;
-}
-
-export interface GiftcardSpawnOrg {
-  id: GiftcardSpawnOrgID;
-  usd_revenue_cents: number;
-  note: string;
-  gas_cycles_included: number;
-  timestamp_ms: number;
-  external_id: string;
-  redeemed: boolean;
-  disk_auth_json: string;
+/** Data structure for the response when resolving external IDs. */
+export interface ExternalIDsDriveResponseData {
+  results: ExternalIDvsInternalIDMap[];
 }

@@ -16,9 +16,10 @@ import {
   SearchResult,
   SearchCategoryEnum,
   SearchSortByEnum,
-  FactorySpawnHistoryRecord,
-  GiftcardSpawnOrg,
   FactoryApiKey,
+  GiftcardSpawnOrg,
+  GiftcardRefuel,
+  ExternalIDsDriveResponseData,
 } from "./core";
 import { DirectoryPermissionFE, SystemPermissionFE } from "./permissions";
 import {
@@ -81,9 +82,7 @@ export interface IPaginationParams {
   /** Sort direction */
   direction?: SortDirection;
   /** Cursor for previous page */
-  cursor_up?: string | null;
-  /** Cursor for next page */
-  cursor_down?: string | null;
+  cursor?: string | null;
 }
 
 /** Common paginated response */
@@ -91,8 +90,8 @@ export interface IPaginatedResponse<T> {
   items: T[];
   page_size: number;
   total: number;
-  cursor_up?: string | null;
-  cursor_down?: string | null;
+  cursor?: string | null;
+  direction?: SortDirection;
 }
 
 // =========================================================================
@@ -242,6 +241,14 @@ export interface IRequestCreateContact {
   icp_principal: string;
   /** Nickname for the contact */
   name: string;
+  /** Avatar URL for the contact */
+  avatar?: string;
+  /** Notifications URL for the contact */
+  notifications_url?: string;
+  /** Email address for the contact */
+  email?: string;
+  /** Seed phrase for the contact */
+  seed_phrase?: string;
   /** Determines if a placeholder user id */
   from_placeholder_user_id?: UserID;
   /** EVM public address */
@@ -267,6 +274,7 @@ export interface IRequestUpdateContact {
   id: UserID;
   /** New nickname for the contact */
   name?: string;
+  avatar?: string;
   /** New nickname for the contact */
   email?: string;
   /** New nickname for the contact */
@@ -545,6 +553,18 @@ export interface IResponseReindexDrive
     /** Number of items indexed */
     indexed_count: number;
   }> {}
+
+export interface ExternalIDsDriveRequestBody {
+  /**
+   * A list of external IDs to resolve.
+   * Note: The backend validation requires each external ID to be 256 characters or less.
+   */
+  external_ids: ExternalID[];
+}
+
+/** API response for resolving external IDs. */
+export type ExternalIDsDriveResponse =
+  ApiResponse<ExternalIDsDriveResponseData>;
 
 /** Transfer Drive Ownership Request */
 export interface IRequestTransferDriveOwnership {
@@ -888,6 +908,8 @@ export interface IRequestCreateGroup {
   id?: GroupID;
   /** Name for the group */
   name: string;
+  /** Avatar for the group */
+  avatar?: string;
   /** Public note about the group */
   public_note?: string;
   /** Private note about the group */
@@ -909,6 +931,8 @@ export interface IRequestUpdateGroup {
   id: GroupID;
   /** New name for the group */
   name?: string;
+  /** New avatar for the group */
+  avatar?: string;
   /** Public note about the group */
   public_note?: string;
   /** Private note about the group */
@@ -1048,6 +1072,7 @@ export interface IResponseDeleteGroupInvite
 export interface IRequestRedeemGroupInvite {
   /** ID of the group invite to redeem */
   invite_id: GroupInviteID;
+  redeem_code: String;
   /** ID of the user to redeem the invite for */
   user_id: UserID;
   note?: string;
@@ -1085,9 +1110,7 @@ export interface IRequestListLabels {
   /** Sort direction */
   direction?: SortDirection;
   /** Cursor for previous page */
-  cursor_up?: string;
-  /** Cursor for next page */
-  cursor_down?: string;
+  cursor?: string;
 }
 
 /** List Labels Response */
@@ -1107,6 +1130,8 @@ export interface IRequestCreateLabel {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  public_note?: string;
+  private_note?: string;
 }
 
 /** Create Label Response */
@@ -1126,6 +1151,8 @@ export interface IRequestUpdateLabel {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  public_note?: string;
+  private_note?: string;
 }
 
 /** Update Label Response */
@@ -1381,6 +1408,16 @@ export interface FactoryDeletedApiKeyData {
   deleted: boolean;
 }
 
+export interface ApiResponse<T> {
+  status: "success" | "error";
+  data?: T;
+  error?: {
+    code: number;
+    message: string;
+  };
+  timestamp: number;
+}
+
 export interface FactoryApiResponse<T> {
   status: "success" | "error";
   data?: T;
@@ -1420,3 +1457,176 @@ export interface FactorySnapshotResponse {
   data: FactoryStateSnapshot;
   timestamp: number;
 }
+
+export interface ListGiftcardRefuelsRequestBody {
+  filters?: string;
+  page_size?: number;
+  direction?: SortDirection;
+  cursor?: string;
+}
+
+export interface CreateGiftcardRefuelRequestBody {
+  action: "CREATE";
+  usd_revenue_cents: number;
+  note: string;
+  gas_cycles_included: number;
+  external_id: string;
+}
+
+export interface UpdateGiftcardRefuelRequestBody {
+  action: "UPDATE";
+  id: GiftcardRefuelID;
+  note?: string;
+  usd_revenue_cents?: number;
+  gas_cycles_included?: number;
+  external_id?: string;
+}
+
+export type UpsertGiftcardRefuelRequestBody =
+  | CreateGiftcardRefuelRequestBody
+  | UpdateGiftcardRefuelRequestBody;
+
+export interface DeleteGiftcardRefuelRequestBody {
+  id: string;
+}
+
+export interface DeletedGiftcardRefuelData {
+  id: string;
+  deleted: boolean;
+}
+
+export interface RedeemGiftcardRefuelData {
+  giftcard_id: GiftcardRefuelID;
+  icp_principal: string;
+}
+
+export interface RedeemGiftcardRefuelResult {
+  giftcard_id: GiftcardRefuelID;
+  icp_principal: string;
+  redeem_code: string;
+  timestamp_ms: number;
+}
+
+export interface FactoryRefuelHistoryRecord {
+  id: string;
+  note: string;
+  giftcard_id: GiftcardRefuelID;
+  gas_cycles_included: number;
+  timestamp_ms: number;
+  icp_principal: string; // Corresponds to ICPPrincipalString(PublicKeyICP)
+}
+
+// Responses
+export interface ListGiftcardRefuelsResponseData {
+  items: GiftcardRefuel[];
+  page_size: number;
+  total: number;
+  direction: SortDirection;
+  cursor: string | null;
+}
+
+export type CreateGiftcardRefuelResponse = FactoryApiResponse<GiftcardRefuel>;
+export type UpdateGiftcardRefuelResponse = FactoryApiResponse<GiftcardRefuel>;
+export type DeleteGiftcardRefuelResponse =
+  FactoryApiResponse<DeletedGiftcardRefuelData>;
+export type GetGiftcardRefuelResponse = FactoryApiResponse<GiftcardRefuel>;
+export type ListGiftcardRefuelsResponse =
+  FactoryApiResponse<ListGiftcardRefuelsResponseData>;
+export type RedeemGiftcardRefuelResponse =
+  FactoryApiResponse<RedeemGiftcardRefuelResult>;
+
+// --- GiftcardSpawnOrg Types ---
+export interface ListGiftcardSpawnOrgsRequestBody {
+  filters?: string;
+  page_size?: number;
+  direction?: SortDirection;
+  cursor?: string;
+}
+
+export interface ListGiftcardSpawnOrgsResponseData {
+  items: GiftcardSpawnOrg[];
+  page_size: number;
+  total: number;
+  direction: SortDirection;
+  cursor: string | null;
+}
+
+export interface CreateGiftcardSpawnOrgRequestBody {
+  action: "CREATE";
+  usd_revenue_cents: number;
+  note: string;
+  gas_cycles_included: number;
+  external_id: string;
+  disk_auth_json?: string;
+}
+
+export interface UpdateGiftcardSpawnOrgRequestBody {
+  action: "UPDATE";
+  id: GiftcardSpawnOrgID;
+  note?: string;
+  usd_revenue_cents?: number;
+  gas_cycles_included?: number;
+  external_id?: string;
+  disk_auth_json?: string;
+}
+
+export type UpsertGiftcardSpawnOrgRequestBody =
+  | CreateGiftcardSpawnOrgRequestBody
+  | UpdateGiftcardSpawnOrgRequestBody;
+
+export interface DeleteGiftcardSpawnOrgRequestBody {
+  id: GiftcardSpawnOrgID;
+}
+
+export interface DeletedGiftcardSpawnOrgData {
+  id: GiftcardSpawnOrgID;
+  deleted: boolean;
+}
+
+export interface RedeemGiftcardSpawnOrgData {
+  giftcard_id: GiftcardSpawnOrgID;
+  owner_icp_principal: string;
+  owner_name?: string;
+  organization_name?: string;
+}
+
+export interface RedeemGiftcardSpawnOrgResult {
+  owner_id: UserID;
+  drive_id: DriveID;
+  endpoint: string;
+  redeem_code: string;
+  disk_auth_json?: string;
+}
+
+export interface FactorySpawnHistoryRecord {
+  id: string;
+  owner_id: UserID;
+  drive_id: DriveID;
+  endpoint: string;
+  version: string;
+  note: string;
+  giftcard_id: GiftcardSpawnOrgID;
+  gas_cycles_included: number;
+  timestamp_ms: number;
+}
+
+export interface SpawnInitArgs {
+  owner: string;
+  title?: string;
+  owner_name?: string;
+  note?: string;
+  spawn_redeem_code?: string;
+}
+
+// Responses
+export type CreateGiftcardSpawnOrgResponse =
+  FactoryApiResponse<GiftcardSpawnOrg>;
+export type UpdateGiftcardSpawnOrgResponse =
+  FactoryApiResponse<GiftcardSpawnOrg>;
+export type DeleteGiftcardSpawnOrgResponse =
+  FactoryApiResponse<DeletedGiftcardSpawnOrgData>;
+export type GetGiftcardSpawnOrgResponse = FactoryApiResponse<GiftcardSpawnOrg>;
+export type ListGiftcardSpawnOrgsResponse =
+  FactoryApiResponse<ListGiftcardSpawnOrgsResponseData>;
+export type RedeemGiftcardSpawnOrgResponse =
+  FactoryApiResponse<RedeemGiftcardSpawnOrgResult>;
