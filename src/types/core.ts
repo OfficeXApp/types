@@ -36,6 +36,8 @@ import {
   FactoryApiKeyID,
   GiftcardSpawnOrgID,
   GiftcardRefuelID,
+  FileVersionID,
+  GroupInviteeID,
 } from "./primitives";
 
 // =========================================================================
@@ -70,6 +72,8 @@ export interface FileRecord {
   upload_status: UploadStatus;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  version_id: FileVersionID;
+  notes?: string;
 }
 
 export interface FileRecordFE extends FileRecord {
@@ -100,6 +104,7 @@ export interface FolderRecord {
   shortcut_to?: FolderID;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  notes?: string;
 }
 export interface FolderRecordFE extends FolderRecord {
   clipped_directory_path: DriveClippedFilePath;
@@ -138,7 +143,6 @@ export interface Contact {
   private_note?: string;
   evm_public_address: EvmPublicAddress;
   icp_principal: ICPPrincipalString;
-  groups: GroupID[];
   labels: LabelValue[];
   seed_phrase?: string;
   from_placeholder_user_id?: UserID;
@@ -263,7 +267,7 @@ export interface GroupInvite {
   id: GroupInviteID;
   group_id: GroupID;
   inviter_id: UserID;
-  invitee_id: UserID;
+  invitee_id: GroupInviteeID;
   role: GroupRole;
   note: string;
   active_from: number;
@@ -300,6 +304,7 @@ export interface Webhook {
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;
+  note?: string;
 }
 
 export interface WebhookFE extends Webhook {
@@ -315,7 +320,7 @@ export interface DirectoryResourcePermissionFE {
 /** State diff record */
 export interface StateDiffRecord {
   id: StateDiffRecordID;
-  timestamp_ns: number;
+  timestamp_ns: bigint;
   notes?: string;
   drive_id: DriveID;
   endpoint_url: URLEndpoint;
