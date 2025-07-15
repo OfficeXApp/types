@@ -41,6 +41,35 @@ import {
 } from "./primitives";
 
 // =========================================================================
+// Auth Models
+// =========================================================================
+
+export enum AuthTypeEnum {
+  Signature = "SIGNATURE",
+  ApiKey = "API_KEY",
+}
+
+export interface Challenge {
+  timestamp_ms: number;
+  self_auth_principal: number[]; // Raw public key bytes
+  canonical_principal: string;
+  // Add other fields from your Rust Challenge if any
+}
+
+export interface SignatureProof {
+  auth_type: AuthTypeEnum.Signature;
+  challenge: Challenge;
+  signature: number[]; // Signature bytes
+}
+
+export interface ApiKeyProof {
+  auth_type: AuthTypeEnum.ApiKey;
+  value: string;
+}
+
+export type AuthJsonDecoded = SignatureProof | ApiKeyProof;
+
+// =========================================================================
 // Core Data Models
 // =========================================================================
 
