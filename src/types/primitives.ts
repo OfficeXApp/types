@@ -30,12 +30,13 @@ export enum IDPrefixEnum {
   ShareTrackID = "ShareTrackID_",
   DriveStateDiffID = "DriveStateDiffID_",
   LabelID = "LabelID_",
-  RedeemCode = "RedeemCodeID_",
+  RedeemCode = "RedeemTokenID_",
   FactoryApiKey = "FactoryApiKeyID_",
   GiftcardSpawnOrg = "GiftcardSpawnOrgID_",
   GiftcardRefuel = "GiftcardRefuelID_",
   InboxNotifID = "InboxNotifID_",
   FileVersionID = "FileVersionID_",
+  RedeemTokenID = "RedeemTokenID_",
 }
 
 export const GenerateID = {
