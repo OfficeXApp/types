@@ -657,7 +657,7 @@ export interface IRequestCreateDirectoryPermission {
 
 /** Create Directory Permission Response */
 export interface IResponseCreateDirectoryPermission
-  extends ISuccessResponse<DirectoryPermissionFE> {}
+  extends ISuccessResponse<{ permission: DirectoryPermissionFE }> {}
 
 /** Update Directory Permission Request */
 export interface IRequestUpdateDirectoryPermission {
@@ -683,7 +683,7 @@ export interface IRequestUpdateDirectoryPermission {
 
 /** Update Directory Permission Response */
 export interface IResponseUpdateDirectoryPermission
-  extends ISuccessResponse<DirectoryPermissionFE> {}
+  extends ISuccessResponse<{ permission: DirectoryPermissionFE }> {}
 
 /** Delete Directory Permission Request */
 export interface IRequestDeleteDirectoryPermission {
@@ -805,7 +805,7 @@ export interface IRequestCreateSystemPermission {
 
 /** Create System Permission Response */
 export interface IResponseCreateSystemPermission
-  extends ISuccessResponse<SystemPermissionFE> {}
+  extends ISuccessResponse<{ permission: SystemPermissionFE }> {}
 
 /** Update System Permission Request */
 export interface IRequestUpdateSystemPermission {
@@ -833,7 +833,7 @@ export interface IRequestUpdateSystemPermission {
 
 /** Update System Permission Response */
 export interface IResponseUpdateSystemPermission
-  extends ISuccessResponse<SystemPermissionFE> {}
+  extends ISuccessResponse<{ permission: SystemPermissionFE }> {}
 
 /** Delete System Permission Request */
 export interface IRequestDeleteSystemPermission {
