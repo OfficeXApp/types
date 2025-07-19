@@ -1080,11 +1080,10 @@ export interface IRequestRedeemGroupInvite {
 }
 
 /** Redeem Group Invite Response */
-export interface IResponseRedeemGroupInvite
-  extends ISuccessResponse<{
-    /** The redeemed invite */
-    invite: GroupInvite;
-  }> {}
+export interface IResponseRedeemGroupInvite {
+  /** The redeemed invite */
+  invite: GroupInvite;
+}
 
 // =========================================================================
 // Labels Routes
