@@ -88,7 +88,7 @@ export interface IPaginationParams {
   /** Sort direction */
   direction?: SortDirection;
   /** Cursor for previous page */
-  cursor?: string | null;
+  cursor?: string;
 }
 
 /** Common paginated response */
@@ -96,7 +96,7 @@ export interface IPaginatedResponse<T> {
   items: T[];
   page_size: number;
   total: number;
-  cursor?: string | null;
+  cursor?: string;
   direction?: SortDirection;
 }
 
@@ -119,7 +119,7 @@ export interface IRequestListDirectory {
   /** Sort direction */
   direction?: SortDirection;
   /** Cursor for pagination */
-  cursor?: string | null;
+  cursor?: string;
 }
 
 /** List Directory Response */
@@ -129,7 +129,7 @@ export interface IResponseListDirectory
     files: FileRecordFE[];
     total_files: number;
     total_folders: number;
-    cursor?: string | null;
+    cursor?: string;
     breadcrumbs: FilePathBreadcrumb[];
   }> {}
 
@@ -613,7 +613,7 @@ export interface IRequestListDirectoryPermissions {
   /** Sort direction */
   direction?: SortDirection;
   /** Cursor for pagination */
-  cursor?: string | null;
+  cursor?: string;
 }
 
 /** List Directory Permissions Response */
@@ -626,7 +626,7 @@ export interface IResponseListDirectoryPermissions
     /** Total number of matching permissions */
     total: number;
     /** Cursor for pagination */
-    cursor?: string | null;
+    cursor?: string;
   }> {}
 
 /** Create Directory Permission Request */
@@ -764,7 +764,7 @@ export interface IRequestListSystemPermissions {
   /** Sort direction */
   direction?: SortDirection;
   /** Cursor for pagination */
-  cursor?: string | null;
+  cursor?: string;
 }
 
 /** List System Permissions Response */
@@ -777,7 +777,7 @@ export interface IResponseListSystemPermissions
     /** Total number of matching permissions */
     total: number;
     /** Cursor for pagination */
-    cursor?: string | null;
+    cursor?: string;
   }> {}
 
 /** Create System Permission Request */
