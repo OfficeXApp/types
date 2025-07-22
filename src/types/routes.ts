@@ -16,8 +16,16 @@ import {
   SearchResult,
   SearchCategoryEnum,
   SearchSortByEnum,
+  FactoryApiKey,
+  GiftcardSpawnOrg,
+  GiftcardRefuel,
+  ExternalIDsDriveResponseData,
 } from "./core";
-import { DirectoryPermissionFE, SystemPermissionFE } from "./permissions";
+import {
+  DirectoryPermissionFE,
+  PermissionMetadata,
+  SystemPermissionFE,
+} from "./permissions";
 import {
   ApiKeyID,
   DirectoryPermissionID,
@@ -43,6 +51,8 @@ import {
   InboxNotifID,
   ApiKeyValue,
   GiftcardRefuelID,
+  SystemPermissionType,
+  DirectoryPermissionType,
 } from "./primitives";
 
 /**
@@ -78,9 +88,7 @@ export interface IPaginationParams {
   /** Sort direction */
   direction?: SortDirection;
   /** Cursor for previous page */
-  cursor_up?: string | null;
-  /** Cursor for next page */
-  cursor_down?: string | null;
+  cursor?: string;
 }
 
 /** Common paginated response */
@@ -88,8 +96,8 @@ export interface IPaginatedResponse<T> {
   items: T[];
   page_size: number;
   total: number;
-  cursor_up?: string | null;
-  cursor_down?: string | null;
+  cursor?: string;
+  direction?: SortDirection;
 }
 
 // =========================================================================
@@ -111,7 +119,7 @@ export interface IRequestListDirectory {
   /** Sort direction */
   direction?: SortDirection;
   /** Cursor for pagination */
-  cursor?: string | null;
+  cursor?: string;
 }
 
 /** List Directory Response */
@@ -121,7 +129,7 @@ export interface IResponseListDirectory
     files: FileRecordFE[];
     total_files: number;
     total_folders: number;
-    cursor?: string | null;
+    cursor?: string;
     breadcrumbs: FilePathBreadcrumb[];
   }> {}
 
@@ -239,6 +247,14 @@ export interface IRequestCreateContact {
   icp_principal: string;
   /** Nickname for the contact */
   name: string;
+  /** Avatar URL for the contact */
+  avatar?: string;
+  /** Notifications URL for the contact */
+  notifications_url?: string;
+  /** Email address for the contact */
+  email?: string;
+  /** Seed phrase for the contact */
+  seed_phrase?: string;
   /** Determines if a placeholder user id */
   from_placeholder_user_id?: UserID;
   /** EVM public address */
@@ -264,6 +280,7 @@ export interface IRequestUpdateContact {
   id: UserID;
   /** New nickname for the contact */
   name?: string;
+  avatar?: string;
   /** New nickname for the contact */
   email?: string;
   /** New nickname for the contact */
@@ -543,6 +560,18 @@ export interface IResponseReindexDrive
     indexed_count: number;
   }> {}
 
+export interface ExternalIDsDriveRequestBody {
+  /**
+   * A list of external IDs to resolve.
+   * Note: The backend validation requires each external ID to be 256 characters or less.
+   */
+  external_ids: ExternalID[];
+}
+
+/** API response for resolving external IDs. */
+export type ExternalIDsDriveResponse =
+  ISuccessResponse<ExternalIDsDriveResponseData>;
+
 /** Transfer Drive Ownership Request */
 export interface IRequestTransferDriveOwnership {
   /** ID of the user to transfer ownership to */
@@ -584,7 +613,7 @@ export interface IRequestListDirectoryPermissions {
   /** Sort direction */
   direction?: SortDirection;
   /** Cursor for pagination */
-  cursor?: string | null;
+  cursor?: string;
 }
 
 /** List Directory Permissions Response */
@@ -597,7 +626,7 @@ export interface IResponseListDirectoryPermissions
     /** Total number of matching permissions */
     total: number;
     /** Cursor for pagination */
-    cursor?: string | null;
+    cursor?: string;
   }> {}
 
 /** Create Directory Permission Request */
@@ -608,9 +637,7 @@ export interface IRequestCreateDirectoryPermission {
   /** ID of the user/group to grant permission to */
   granted_to?: GranteeID;
   /** Types of permissions to grant */
-  permission_types: Array<
-    "VIEW" | "UPLOAD" | "EDIT" | "DELETE" | "INVITE" | "MANAGE"
-  >;
+  permission_types: DirectoryPermissionType[];
   /** When the permission becomes active */
   begin_date_ms?: number;
   /** When the permission expires */
@@ -620,7 +647,8 @@ export interface IRequestCreateDirectoryPermission {
   /** Note about the permission */
   note?: string;
   /** Additional metadata for the permission */
-  metadata?: Record<string, any>;
+  metadata?: PermissionMetadata;
+
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -629,16 +657,14 @@ export interface IRequestCreateDirectoryPermission {
 
 /** Create Directory Permission Response */
 export interface IResponseCreateDirectoryPermission
-  extends ISuccessResponse<DirectoryPermissionFE> {}
+  extends ISuccessResponse<{ permission: DirectoryPermissionFE }> {}
 
 /** Update Directory Permission Request */
 export interface IRequestUpdateDirectoryPermission {
   /** ID of the permission to update */
   id: DirectoryPermissionID;
   /** Types of permissions to grant */
-  permission_types?: Array<
-    "VIEW" | "UPLOAD" | "EDIT" | "DELETE" | "INVITE" | "MANAGE"
-  >;
+  permission_types: DirectoryPermissionType[];
   /** When the permission becomes active */
   begin_date_ms?: number;
   /** When the permission expires */
@@ -648,7 +674,7 @@ export interface IRequestUpdateDirectoryPermission {
   /** Note about the permission */
   note?: string;
   /** Additional metadata for the permission */
-  metadata?: Record<string, any>;
+  metadata?: PermissionMetadata;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -657,7 +683,7 @@ export interface IRequestUpdateDirectoryPermission {
 
 /** Update Directory Permission Response */
 export interface IResponseUpdateDirectoryPermission
-  extends ISuccessResponse<DirectoryPermissionFE> {}
+  extends ISuccessResponse<{ permission: DirectoryPermissionFE }> {}
 
 /** Delete Directory Permission Request */
 export interface IRequestDeleteDirectoryPermission {
@@ -688,9 +714,7 @@ export interface IResponseCheckDirectoryPermissions
     /** ID of the grantee checked (as string) */
     grantee_id: string;
     /** Permissions the grantee has for the resource */
-    permissions: Array<
-      "VIEW" | "UPLOAD" | "EDIT" | "DELETE" | "INVITE" | "MANAGE"
-    >;
+    permissions: DirectoryPermissionType[];
   }> {}
 
 /** Redeem Directory Permission Request */
@@ -740,7 +764,7 @@ export interface IRequestListSystemPermissions {
   /** Sort direction */
   direction?: SortDirection;
   /** Cursor for pagination */
-  cursor?: string | null;
+  cursor?: string;
 }
 
 /** List System Permissions Response */
@@ -753,7 +777,7 @@ export interface IResponseListSystemPermissions
     /** Total number of matching permissions */
     total: number;
     /** Cursor for pagination */
-    cursor?: string | null;
+    cursor?: string;
   }> {}
 
 /** Create System Permission Request */
@@ -764,7 +788,7 @@ export interface IRequestCreateSystemPermission {
   /** ID of the user/group to grant permission to */
   granted_to?: string;
   /** Types of permissions to grant */
-  permission_types: Array<"CREATE" | "UPDATE" | "DELETE" | "VIEW" | "INVITE">;
+  permission_types: SystemPermissionType[];
   /** When the permission becomes active */
   begin_date_ms?: number;
   /** When the permission expires */
@@ -772,7 +796,7 @@ export interface IRequestCreateSystemPermission {
   /** Note about the permission */
   note?: string;
   /** Additional metadata for the permission */
-  metadata?: Record<string, any>;
+  metadata?: PermissionMetadata;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -781,7 +805,7 @@ export interface IRequestCreateSystemPermission {
 
 /** Create System Permission Response */
 export interface IResponseCreateSystemPermission
-  extends ISuccessResponse<SystemPermissionFE> {}
+  extends ISuccessResponse<{ permission: SystemPermissionFE }> {}
 
 /** Update System Permission Request */
 export interface IRequestUpdateSystemPermission {
@@ -792,7 +816,7 @@ export interface IRequestUpdateSystemPermission {
   /** ID of the user/group to grant permission to */
   granted_to?: string;
   /** Types of permissions to grant */
-  permission_types?: Array<"CREATE" | "UPDATE" | "DELETE" | "VIEW" | "INVITE">;
+  permission_types?: SystemPermissionType[];
   /** When the permission becomes active */
   begin_date_ms?: number;
   /** When the permission expires */
@@ -800,7 +824,7 @@ export interface IRequestUpdateSystemPermission {
   /** Note about the permission */
   note?: string;
   /** Additional metadata for the permission */
-  metadata?: Record<string, any>;
+  metadata?: PermissionMetadata;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -809,7 +833,7 @@ export interface IRequestUpdateSystemPermission {
 
 /** Update System Permission Response */
 export interface IResponseUpdateSystemPermission
-  extends ISuccessResponse<SystemPermissionFE> {}
+  extends ISuccessResponse<{ permission: SystemPermissionFE }> {}
 
 /** Delete System Permission Request */
 export interface IRequestDeleteSystemPermission {
@@ -840,7 +864,7 @@ export interface IResponseCheckSystemPermissions
     /** ID of the grantee checked (as string) */
     grantee_id: string;
     /** Permissions the grantee has for the resource */
-    permissions: Array<"CREATE" | "UPDATE" | "DELETE" | "VIEW" | "INVITE">;
+    permissions: SystemPermissionType[];
   }> {}
 
 /** Redeem System Permission Request */
@@ -885,6 +909,8 @@ export interface IRequestCreateGroup {
   id?: GroupID;
   /** Name for the group */
   name: string;
+  /** Avatar for the group */
+  avatar?: string;
   /** Public note about the group */
   public_note?: string;
   /** Private note about the group */
@@ -906,6 +932,8 @@ export interface IRequestUpdateGroup {
   id: GroupID;
   /** New name for the group */
   name?: string;
+  /** New avatar for the group */
+  avatar?: string;
   /** Public note about the group */
   public_note?: string;
   /** Private note about the group */
@@ -1045,17 +1073,17 @@ export interface IResponseDeleteGroupInvite
 export interface IRequestRedeemGroupInvite {
   /** ID of the group invite to redeem */
   invite_id: GroupInviteID;
+  redeem_code: String;
   /** ID of the user to redeem the invite for */
   user_id: UserID;
   note?: string;
 }
 
 /** Redeem Group Invite Response */
-export interface IResponseRedeemGroupInvite
-  extends ISuccessResponse<{
-    /** The redeemed invite */
-    invite: GroupInvite;
-  }> {}
+export interface IResponseRedeemGroupInvite {
+  /** The redeemed invite */
+  invite: GroupInvite;
+}
 
 // =========================================================================
 // Labels Routes
@@ -1082,9 +1110,7 @@ export interface IRequestListLabels {
   /** Sort direction */
   direction?: SortDirection;
   /** Cursor for previous page */
-  cursor_up?: string;
-  /** Cursor for next page */
-  cursor_down?: string;
+  cursor?: string;
 }
 
 /** List Labels Response */
@@ -1104,6 +1130,8 @@ export interface IRequestCreateLabel {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  public_note?: string;
+  private_note?: string;
 }
 
 /** Create Label Response */
@@ -1123,6 +1151,8 @@ export interface IRequestUpdateLabel {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  public_note?: string;
+  private_note?: string;
 }
 
 /** Update Label Response */
@@ -1342,3 +1372,266 @@ export interface IResponseWhoAmI {
   nickname: string;
   userID: UserID;
 }
+
+// factory routes
+// Additional types to add to your existing types.ts
+
+export interface FactoryCreateApiKeyRequestBody {
+  action: "CREATE";
+  name: string;
+  user_id?: string;
+  expires_at?: number;
+  external_id?: string;
+  external_payload?: string;
+}
+
+export interface FactoryUpdateApiKeyRequestBody {
+  action: "UPDATE";
+  id: string;
+  name?: string;
+  expires_at?: number;
+  is_revoked?: boolean;
+  external_id?: string;
+  external_payload?: string;
+}
+
+export type FactoryUpsertApiKeyRequestBody =
+  | FactoryCreateApiKeyRequestBody
+  | FactoryUpdateApiKeyRequestBody;
+
+export interface FactoryDeleteApiKeyRequestBody {
+  id: string;
+}
+
+export interface FactoryDeletedApiKeyData {
+  id: string;
+  deleted: boolean;
+}
+
+export interface ApiResponse<T> {
+  ok: {
+    data: T;
+  };
+}
+
+export interface ApiError {
+  err: {
+    code: number;
+    message: string;
+  };
+}
+
+export interface FactoryStateSnapshot {
+  // System info
+  canister_id: string;
+  version: string;
+  owner_id: UserID;
+  endpoint_url: string;
+
+  // API keys state
+  apikeys_by_value: Record<string, string>;
+  apikeys_by_id: Record<string, FactoryApiKey>;
+  users_apikeys: Record<string, string[]>;
+  apikeys_history: string[];
+
+  // GiftcardSpawnOrg state
+  deployments_by_giftcard_id: Record<string, FactorySpawnHistoryRecord>;
+  historical_giftcards: string[];
+  drive_to_giftcard_hashtable: Record<string, string>;
+  user_to_giftcards_hashtable: Record<string, string[]>;
+  giftcard_by_id: Record<string, GiftcardSpawnOrg>;
+
+  // Timestamp
+  timestamp_ns: number;
+}
+
+export interface FactorySnapshotResponse {
+  status: string;
+  data: FactoryStateSnapshot;
+  timestamp: number;
+}
+
+export interface ListGiftcardRefuelsRequestBody {
+  filters?: string;
+  page_size?: number;
+  direction?: SortDirection;
+  cursor?: string;
+}
+
+export interface CreateGiftcardRefuelRequestBody {
+  action: "CREATE";
+  usd_revenue_cents: number;
+  note: string;
+  gas_cycles_included: number;
+  external_id: string;
+}
+
+export interface UpdateGiftcardRefuelRequestBody {
+  action: "UPDATE";
+  id: GiftcardRefuelID;
+  note?: string;
+  usd_revenue_cents?: number;
+  gas_cycles_included?: number;
+  external_id?: string;
+}
+
+export type UpsertGiftcardRefuelRequestBody =
+  | CreateGiftcardRefuelRequestBody
+  | UpdateGiftcardRefuelRequestBody;
+
+export interface DeleteGiftcardRefuelRequestBody {
+  id: string;
+}
+
+export interface DeletedGiftcardRefuelData {
+  id: string;
+  deleted: boolean;
+}
+
+export interface RedeemGiftcardRefuelData {
+  giftcard_id: GiftcardRefuelID;
+  icp_principal: string;
+}
+
+export interface RedeemGiftcardRefuelResult {
+  giftcard_id: GiftcardRefuelID;
+  icp_principal: string;
+  redeem_code: string;
+  timestamp_ms: number;
+}
+
+export interface FactoryRefuelHistoryRecord {
+  id: string;
+  note: string;
+  giftcard_id: GiftcardRefuelID;
+  gas_cycles_included: number;
+  timestamp_ms: number;
+  icp_principal: string; // Corresponds to ICPPrincipalString(PublicKeyICP)
+}
+
+// Responses
+export interface ListGiftcardRefuelsResponseData {
+  items: GiftcardRefuel[];
+  page_size: number;
+  total: number;
+  direction: SortDirection;
+  cursor: string | null;
+}
+
+export type CreateGiftcardRefuelResponse = ApiResponse<GiftcardRefuel>;
+export type UpdateGiftcardRefuelResponse = ApiResponse<GiftcardRefuel>;
+export type DeleteGiftcardRefuelResponse =
+  ApiResponse<DeletedGiftcardRefuelData>;
+export type GetGiftcardRefuelResponse = ApiResponse<GiftcardRefuel>;
+export type ListGiftcardRefuelsResponse =
+  ApiResponse<ListGiftcardRefuelsResponseData>;
+export type RedeemGiftcardRefuelResponse =
+  ApiResponse<RedeemGiftcardRefuelResult>;
+
+// --- GiftcardSpawnOrg Types ---
+export interface ListGiftcardSpawnOrgsRequestBody {
+  filters?: string;
+  page_size?: number;
+  direction?: SortDirection;
+  cursor?: string;
+}
+
+export interface ListGiftcardSpawnOrgsResponseData {
+  items: GiftcardSpawnOrg[];
+  page_size: number;
+  total: number;
+  direction: SortDirection;
+  cursor: string | null;
+}
+
+export interface CreateGiftcardSpawnOrgRequestBody {
+  action: "CREATE";
+  usd_revenue_cents: number;
+  note: string;
+  gas_cycles_included: number;
+  external_id: string;
+  disk_auth_json?: string;
+}
+
+export interface UpdateGiftcardSpawnOrgRequestBody {
+  action: "UPDATE";
+  id: GiftcardSpawnOrgID;
+  note?: string;
+  usd_revenue_cents?: number;
+  gas_cycles_included?: number;
+  external_id?: string;
+  disk_auth_json?: string;
+}
+
+export type UpsertGiftcardSpawnOrgRequestBody =
+  | CreateGiftcardSpawnOrgRequestBody
+  | UpdateGiftcardSpawnOrgRequestBody;
+
+export interface DeleteGiftcardSpawnOrgRequestBody {
+  id: GiftcardSpawnOrgID;
+}
+
+export interface DeletedGiftcardSpawnOrgData {
+  id: GiftcardSpawnOrgID;
+  deleted: boolean;
+}
+
+export interface RedeemGiftcardSpawnOrgData {
+  giftcard_id: GiftcardSpawnOrgID;
+  owner_icp_principal: string;
+  owner_name?: string;
+  organization_name?: string;
+}
+
+export interface RedeemGiftcardSpawnOrgResult {
+  owner_id: UserID;
+  drive_id: DriveID;
+  endpoint: string;
+  redeem_code: string;
+  disk_auth_json?: string;
+}
+
+export interface FactorySpawnHistoryRecord {
+  id: string;
+  owner_id: UserID;
+  drive_id: DriveID;
+  endpoint: string;
+  version: string;
+  note: string;
+  giftcard_id: GiftcardSpawnOrgID;
+  gas_cycles_included: number;
+  timestamp_ms: number;
+}
+
+export interface SpawnInitArgs {
+  owner: string;
+  title?: string;
+  owner_name?: string;
+  note?: string;
+  spawn_redeem_code?: string;
+}
+
+// Responses
+export type CreateGiftcardSpawnOrgResponse = ApiResponse<GiftcardSpawnOrg>;
+export type UpdateGiftcardSpawnOrgResponse = ApiResponse<GiftcardSpawnOrg>;
+export type DeleteGiftcardSpawnOrgResponse =
+  ApiResponse<DeletedGiftcardSpawnOrgData>;
+export type GetGiftcardSpawnOrgResponse = ApiResponse<GiftcardSpawnOrg>;
+export type ListGiftcardSpawnOrgsResponse =
+  ApiResponse<ListGiftcardSpawnOrgsResponseData>;
+export type RedeemGiftcardSpawnOrgResponse =
+  ApiResponse<RedeemGiftcardSpawnOrgResult>;
+
+export interface AboutDriveResponseData {
+  gas_cycles: string;
+  organization_name: string;
+  organization_id: DriveID;
+  owner: UserID;
+  endpoint: string;
+  canister_id: string;
+  daily_idle_cycle_burn_rate: string;
+  controllers: string[];
+  version: string;
+}
+
+export type AboutDriveResponse = ISuccessResponse<AboutDriveResponseData>;

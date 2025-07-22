@@ -33,7 +33,41 @@ import {
   DriveClippedFilePath,
   UploadStatus,
   SearchResultResourceID,
+  FactoryApiKeyID,
+  GiftcardSpawnOrgID,
+  GiftcardRefuelID,
+  FileVersionID,
+  GroupInviteeID,
 } from "./primitives";
+
+// =========================================================================
+// Auth Models
+// =========================================================================
+
+export enum AuthTypeEnum {
+  Signature = "SIGNATURE",
+  ApiKey = "API_KEY",
+}
+
+export interface Challenge {
+  timestamp_ms: number;
+  self_auth_principal: number[]; // Raw public key bytes
+  canonical_principal: string;
+  // Add other fields from your Rust Challenge if any
+}
+
+export interface SignatureProof {
+  auth_type: AuthTypeEnum.Signature;
+  challenge: Challenge;
+  signature: number[]; // Signature bytes
+}
+
+export interface ApiKeyProof {
+  auth_type: AuthTypeEnum.ApiKey;
+  value: string;
+}
+
+export type AuthJsonDecoded = SignatureProof | ApiKeyProof;
 
 // =========================================================================
 // Core Data Models
@@ -67,6 +101,8 @@ export interface FileRecord {
   upload_status: UploadStatus;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  version_id: FileVersionID;
+  notes?: string;
 }
 
 export interface FileRecordFE extends FileRecord {
@@ -97,6 +133,7 @@ export interface FolderRecord {
   shortcut_to?: FolderID;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  notes?: string;
 }
 export interface FolderRecordFE extends FolderRecord {
   clipped_directory_path: DriveClippedFilePath;
@@ -109,6 +146,7 @@ export interface ApiKey {
   value: ApiKeyValue;
   user_id: UserID;
   name: string;
+  private_note?: string;
   created_at: number;
   begins_at: number;
   expires_at: number;
@@ -134,8 +172,8 @@ export interface Contact {
   private_note?: string;
   evm_public_address: EvmPublicAddress;
   icp_principal: ICPPrincipalString;
-  groups: GroupID[];
   labels: LabelValue[];
+  seed_phrase?: string;
   from_placeholder_user_id?: UserID;
   redeem_code?: string;
   last_online_ms: number;
@@ -210,6 +248,8 @@ export interface Label {
   labels: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  public_note?: string;
+  private_note?: string;
 }
 
 export interface LabelFE extends Label {
@@ -256,7 +296,7 @@ export interface GroupInvite {
   id: GroupInviteID;
   group_id: GroupID;
   inviter_id: UserID;
-  invitee_id: UserID;
+  invitee_id: GroupInviteeID;
   role: GroupRole;
   note: string;
   active_from: number;
@@ -293,6 +333,7 @@ export interface Webhook {
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;
+  note?: string;
 }
 
 export interface WebhookFE extends Webhook {
@@ -308,7 +349,7 @@ export interface DirectoryResourcePermissionFE {
 /** State diff record */
 export interface StateDiffRecord {
   id: StateDiffRecordID;
-  timestamp_ns: number;
+  timestamp_ns: bigint;
   notes?: string;
   drive_id: DriveID;
   endpoint_url: URLEndpoint;
@@ -367,4 +408,48 @@ export interface SearchResult {
   metadata?: string;
   created_at: number;
   updated_at: number;
+}
+
+/** API key */
+export interface FactoryApiKey {
+  id: FactoryApiKeyID;
+  value: ApiKeyValue;
+  user_id: UserID;
+  name: string;
+  created_at: number;
+  expires_at: number;
+  is_revoked: boolean;
+}
+
+export interface GiftcardSpawnOrg {
+  id: GiftcardSpawnOrgID;
+  usd_revenue_cents: number;
+  note: string;
+  gas_cycles_included: number;
+  timestamp_ms: number;
+  external_id: string;
+  redeemed: boolean;
+  disk_auth_json?: string;
+}
+
+export interface GiftcardRefuel {
+  id: GiftcardRefuelID;
+  usd_revenue_cents: number;
+  note: string;
+  gas_cycles_included: number;
+  timestamp_ms: number;
+  external_id: string;
+  redeemed: boolean;
+}
+
+export interface ExternalIDvsInternalIDMap {
+  success: boolean;
+  message: string;
+  external_id: ExternalID;
+  internal_ids: string[];
+}
+
+/** Data structure for the response when resolving external IDs. */
+export interface ExternalIDsDriveResponseData {
+  results: ExternalIDvsInternalIDMap[];
 }

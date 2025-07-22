@@ -62,6 +62,8 @@ export interface CreateFilePayload {
   shortcut_to?: FileID;
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
+  raw_url?: string;
+  notes?: string;
 }
 
 /** Payload for CREATE_FOLDER action */
@@ -89,6 +91,8 @@ export interface CreateFolderPayload {
   external_id?: ExternalID;
   /** Additional data for external integrations */
   external_payload?: ExternalPayload;
+
+  notes?: string;
 }
 
 // =========================================================================
@@ -112,6 +116,8 @@ export interface UpdateFilePayload {
   external_id?: ExternalID;
   /** Additional data for external integrations */
   external_payload?: ExternalPayload;
+  notes?: string;
+  shortcut_to?: FileID;
 }
 
 /** Payload for UPDATE_FOLDER action */
@@ -127,6 +133,8 @@ export interface UpdateFolderPayload {
   external_id?: ExternalID;
   /** Additional data for external integrations */
   external_payload?: ExternalPayload;
+  notes?: string;
+  shortcut_to?: FolderID;
 }
 
 // =========================================================================
@@ -380,11 +388,13 @@ export type DirectoryActionResponse = {
     | DeleteFileResponse
     | DeleteFolderResponse
     | RestoreTrashResponse;
-  error?: {
-    code: number;
-    message: string;
-  };
+  error?: DirectoryActionErrorInfo;
 };
+
+export interface DirectoryActionErrorInfo {
+  code: number;
+  message: string;
+}
 
 export type DirectoryActionOutcome = {
   id: string;
@@ -392,3 +402,8 @@ export type DirectoryActionOutcome = {
   request: DirectoryAction;
   response: DirectoryActionResponse;
 };
+
+export interface DiskUploadResponse {
+  url: string;
+  fields: Record<string, string>;
+}

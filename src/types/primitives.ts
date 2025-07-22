@@ -30,7 +30,13 @@ export enum IDPrefixEnum {
   ShareTrackID = "ShareTrackID_",
   DriveStateDiffID = "DriveStateDiffID_",
   LabelID = "LabelID_",
-  RedeemCode = "RedeemCodeID_",
+  RedeemCode = "RedeemTokenID_",
+  FactoryApiKey = "FactoryApiKeyID_",
+  GiftcardSpawnOrg = "GiftcardSpawnOrgID_",
+  GiftcardRefuel = "GiftcardRefuelID_",
+  InboxNotifID = "InboxNotifID_",
+  FileVersionID = "FileVersionID_",
+  RedeemTokenID = "RedeemTokenID_",
 }
 
 export const GenerateID = {
@@ -39,6 +45,8 @@ export const GenerateID = {
   Drive: (icp_principal: string) =>
     `${IDPrefixEnum.Drive}${icp_principal}` as DriveID,
   ApiKey: () => `${IDPrefixEnum.ApiKey}${uuidv4()}` as ApiKeyID,
+  FactoryApiKey: () =>
+    `${IDPrefixEnum.FactoryApiKey}${uuidv4()}` as FactoryApiKeyID,
   Disk: () => `${IDPrefixEnum.Disk}${uuidv4()}` as DiskID,
   Group: () => `${IDPrefixEnum.Group}${uuidv4()}` as GroupID,
   GroupInvite: () => `${IDPrefixEnum.GroupInvite}${uuidv4()}` as GroupInviteID,
@@ -59,6 +67,8 @@ export const GenerateID = {
   DriveStateDiffID: () => `${IDPrefixEnum.DriveStateDiffID}${uuidv4()}`,
   Label: () => `${IDPrefixEnum.LabelID}${uuidv4()}` as LabelID,
   RedeemCode: () => `${IDPrefixEnum.RedeemCode}${uuidv4()}`,
+  InboxNotifID: () => `${IDPrefixEnum.InboxNotifID}${uuidv4()}`,
+  FileVersionID: () => `${IDPrefixEnum.FileVersionID}${uuidv4()}`,
 };
 
 /** Unique identifier for a file */
@@ -70,8 +80,13 @@ export type FolderID = string;
 /** Unique identifier for an API key */
 export type ApiKeyID = string;
 
+/** Unique identifier for a factory API key */
+export type FactoryApiKeyID = string;
+
 /** Unique identifier for a user */
 export type UserID = string;
+
+export type DriveStateDiffID = string;
 
 export type GiftcardSpawnOrgID = string;
 export type GiftcardRefuelID = string;
@@ -83,7 +98,11 @@ export type GroupID = string;
 export type GroupInviteID = string;
 
 /** Either a UserID or GroupID */
-export type GranteeID = UserID | GroupID;
+export type GranteeID =
+  | UserID
+  | GroupID
+  | `PlaceholderPermissionGranteeID_${string}`
+  | "PUBLIC";
 
 /** Unique identifier for a disk */
 export type DiskID = string;
@@ -125,6 +144,8 @@ export type URLEndpoint = string;
 
 /** External identifier for integration purposes */
 export type ExternalID = string;
+
+export type FileVersionID = string;
 
 /** Additional data for external integrations */
 export type ExternalPayload = string;
@@ -245,3 +266,26 @@ export enum UploadStatus {
   PENDING = "PENDING",
   COMPLETED = "COMPLETED",
 }
+
+export type SystemRecordIDEnum =
+  | DriveID
+  | DiskID
+  | UserID
+  | GroupID
+  | ApiKeyID
+  | SystemPermissionID
+  | DirectoryPermissionID
+  | WebhookID
+  | LabelID
+  | `Unknown_${string}`;
+
+export enum GroupInviteeTypeEnum {
+  USER = "USER",
+  PLACEHOLDER_GROUP_INVITEE = "PLACEHOLDER_GROUP_INVITEE",
+  PUBLIC = "PUBLIC",
+}
+
+export type GroupInviteeID =
+  | UserID
+  | `PlaceholderGroupInviteeID_${string}`
+  | "PUBLIC";
