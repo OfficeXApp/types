@@ -20,9 +20,11 @@ import {
   GiftcardSpawnOrg,
   GiftcardRefuel,
   ExternalIDsDriveResponseData,
+  JobRunFE,
 } from "./core";
 import {
   DirectoryPermissionFE,
+  JobRunStatus,
   PermissionMetadata,
   SystemPermissionFE,
 } from "./permissions";
@@ -53,6 +55,7 @@ import {
   GiftcardRefuelID,
   SystemPermissionType,
   DirectoryPermissionType,
+  JobRunID,
 } from "./primitives";
 
 /**
@@ -99,6 +102,87 @@ export interface IPaginatedResponse<T> {
   cursor?: string;
   direction?: SortDirection;
 }
+
+// =========================================================================
+// JobRuns Routes
+// =========================================================================
+
+/** Request body for listing JobRuns. */
+export interface IRequestListJobRuns extends IPaginationParams {}
+
+/** Response data for listing JobRuns. */
+export interface IResponseListJobRuns
+  extends ISuccessResponse<IPaginatedResponse<JobRunFE>> {}
+
+/** Request body for getting a JobRun. */
+export interface IRequestGetJobRun {
+  id: JobRunID;
+}
+
+/** Response data for getting a JobRun. */
+export type IResponseGetJobRun = ISuccessResponse<JobRunFE>;
+
+/** Request body for creating a new JobRun. */
+export interface IRequestCreateJobRun {
+  id?: JobRunID;
+  template_id?: string;
+  title: string;
+  vendor_name: string;
+  vendor_id: UserID;
+  about_url: string;
+  status?: JobRunStatus;
+  description?: string;
+  billing_url?: string;
+  support_url?: string;
+  delivery_url?: string;
+  verification_url?: string;
+  installation_url?: string;
+  subtitle?: string;
+  pricing?: string;
+  vendor_notes?: string;
+  notes?: string;
+  related_resources?: string[];
+  tracer?: string;
+  labels?: string[];
+  external_id?: string;
+  external_payload?: string;
+}
+
+/** Response data for creating a JobRun. */
+export type IResponseCreateJobRun = ISuccessResponse<JobRunFE>;
+
+/** Request body for updating an existing JobRun. */
+export interface IRequestUpdateJobRun {
+  id: JobRunID;
+  status?: JobRunStatus;
+  billing_url?: string;
+  support_url?: string;
+  delivery_url?: string;
+  verification_url?: string;
+  installation_url?: string;
+  subtitle?: string;
+  pricing?: string;
+  vendor_notes?: string;
+  related_resources?: string[];
+  tracer?: string;
+  labels?: string[];
+  external_id?: string;
+  external_payload?: string;
+}
+
+/** Response data for updating a JobRun. */
+export type IResponseUpdateJobRun = ISuccessResponse<JobRunFE>;
+
+/** Request body for deleting a JobRun. */
+export interface IRequestDeleteJobRun {
+  id: JobRunID;
+}
+
+/** Response data after deleting a JobRun. */
+export type IResponseDeleteJobRun = ISuccessResponse<{
+  id: JobRunID;
+  deleted: boolean;
+}>;
 
 // =========================================================================
 // Directory Routes

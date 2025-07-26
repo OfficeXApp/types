@@ -9,9 +9,11 @@ import {
   DirectoryPermissionID,
   DirectoryPermissionType,
   DirectoryResourceID,
+  DriveID,
   ExternalID,
   ExternalPayload,
   GranteeID,
+  JobRunID,
   SystemPermissionID,
   SystemPermissionType,
   SystemRecordIDEnum,
@@ -33,6 +35,7 @@ export enum SystemTableValueEnum {
   WEBHOOKS = "WEBHOOKS",
   LABELS = "LABELS",
   INBOX = "INBOX",
+  JOB_RUNS = "JOB_RUNS",
 }
 
 /** Unique identifier for a system table resource */
@@ -219,3 +222,71 @@ export interface CheckSystemPermissionResult {
   grantee_id: string;
   permissions: SystemPermissionType[];
 }
+
+export interface JobRun {
+  id: JobRunID;
+  template_id?: string; // no guarnatees on this, only set on create
+  vendor_name: string; // cannot be updated, only set on create
+  vendor_id: UserID; // cannot be updated, only set on create
+  status: JobRunStatus; // can be updated by vendor
+  description: string; // cannot be updated, only set on create
+  about_url: string;
+  billing_url: string; // can be updated by vendor
+  support_url: string; // can be updated by vendor
+  delivery_url: string; // can be updated by vendor
+  verification_url: string; // can be updated by vendor
+  installation_url: string; // the script to run to install the job
+  title: string; // cannot be updated, only set on create
+  subtitle: string; // can be updated
+  pricing: string; // can be updated
+  vendor_notes: string; // can be updated by vendor
+  notes: string; // cannot be viewed or updated by vendor
+  created_at: number;
+  updated_at: number;
+  last_updated_at: number;
+  labels: string[]; // can be updated by vendor
+  related_resources: string[]; // list of ID strings, can be updated
+  tracer?: string; // can be updated by vendor
+  external_id?: string; // can be updated by vendor
+  external_payload?: string; // can be updated by vendor
+}
+export enum JobRunStatus {
+  REQUESTED = "REQUESTED",
+  AWAITING = "AWAITING",
+  RUNNING = "RUNNING",
+  BLOCKED = "BLOCKED",
+  COMPLETED = "COMPLETED",
+  FAILED = "FAILED",
+  CANCELED = "CANCELED",
+  REFUNDED = "REFUNDED",
+  ARCHIVED = "ARCHIVED",
+  UNKNOWN = "UNKNOWN",
+}
+
+export interface InitJobRunRequestBody {
+  job_id: JobRunID;
+  customer_notes: string;
+  template_id?: string;
+  drive_id: DriveID;
+  drive_endpoint: string;
+  init_password: string;
+  temp_auth_token: string;
+  callback_url?: string;
+  tracer?: string;
+  metadata?: string; // json string encoded object
+}
+
+// Example Install Scripts
+/**
+
+  JobRun: Buy Storage Giftcard from Amazon
+
+  1. Receive install request body with temp auth
+  2. Create contact for vendor
+  3. Create job run record
+  4. Create disk
+  5. Grant vendor permission to disk root & trash
+  6. Update the job run record
+  7. End the job run
+
+ */
