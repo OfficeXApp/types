@@ -240,6 +240,7 @@ export interface JobRun {
   title: string; // can be updated, only set on create
   subtitle: string; // can be updated
   pricing: string; // can be updated
+  next_delivery_date: number; // can be updated
   vendor_notes: string; // can be updated by vendor
   notes: string; // can be viewed or updated by vendor
   created_at: number;

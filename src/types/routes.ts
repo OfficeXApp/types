@@ -141,6 +141,7 @@ export interface IRequestCreateJobRun {
   installation_url?: string;
   subtitle?: string;
   pricing?: string;
+  next_delivery_date?: number;
   vendor_notes?: string;
   notes?: string;
   related_resources?: string[];
@@ -171,6 +172,7 @@ export interface IRequestUpdateJobRun {
   installation_url?: string;
   subtitle?: string;
   pricing?: string;
+  next_delivery_date?: number;
   vendor_notes?: string;
   related_resources?: string[];
   tracer?: string;
@@ -230,12 +232,6 @@ export interface IResponseListDirectory
 export interface IRequestDirectoryAction {
   actions: DirectoryAction[];
 }
-
-/** Directory Action Response */
-export type IResponseDirectoryAction = ISuccessResponse<{
-  success: boolean;
-  message?: string;
-}>;
 
 /** Get File Asset (uses 302 redirect) Request */
 export interface IRequestGetFileAsset {
