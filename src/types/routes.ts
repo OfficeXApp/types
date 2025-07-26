@@ -1487,7 +1487,6 @@ export interface IResponseWhoAmI
 
 /** Factory Create API Key Request Body */
 export interface IRequestFactoryCreateApiKey {
-  action: "CREATE";
   name: string;
   user_id?: string;
   expires_at?: number;
@@ -1497,7 +1496,6 @@ export interface IRequestFactoryCreateApiKey {
 
 /** Factory Update API Key Request Body */
 export interface IRequestFactoryUpdateApiKey {
-  action: "UPDATE";
   id: string;
   name?: string;
   expires_at?: number;
@@ -1638,7 +1636,6 @@ export interface IResponseListGiftcardSpawnOrgsData {
 
 /** Create Giftcard Spawn Org Request Body */
 export interface IRequestCreateGiftcardSpawnOrg {
-  action: "CREATE";
   usd_revenue_cents: number;
   note: string;
   gas_cycles_included: number;
@@ -1648,7 +1645,6 @@ export interface IRequestCreateGiftcardSpawnOrg {
 
 /** Update Giftcard Spawn Org Request Body */
 export interface IRequestUpdateGiftcardSpawnOrg {
-  action: "UPDATE";
   id: GiftcardSpawnOrgID;
   note?: string;
   usd_revenue_cents?: number;
