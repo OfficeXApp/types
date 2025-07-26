@@ -127,9 +127,10 @@ export interface IRequestCreateJobRun {
   id?: JobRunID;
   template_id?: string;
   title: string;
-  vendor_name: string;
-  vendor_id: UserID;
-  about_url: string;
+  vendor_name?: string;
+  vendor_id?: UserID;
+  about_url?: string;
+  run_url?: string;
   status?: JobRunStatus;
   description?: string;
   billing_url?: string;
@@ -154,7 +155,14 @@ export type IResponseCreateJobRun = ISuccessResponse<JobRunFE>;
 /** Request body for updating an existing JobRun. */
 export interface IRequestUpdateJobRun {
   id: JobRunID;
+  template_id?: string;
+  title?: string;
+  vendor_name?: string;
+  vendor_id?: UserID;
+  about_url?: string;
+  run_url?: string;
   status?: JobRunStatus;
+  description?: string;
   billing_url?: string;
   support_url?: string;
   delivery_url?: string;

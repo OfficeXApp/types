@@ -226,21 +226,22 @@ export interface CheckSystemPermissionResult {
 export interface JobRun {
   id: JobRunID;
   template_id?: string; // no guarnatees on this, only set on create
-  vendor_name: string; // cannot be updated, only set on create
-  vendor_id: UserID; // cannot be updated, only set on create
+  vendor_name: string; // can be updated, only set on create
+  vendor_id: UserID; // can be updated, only set on create
   status: JobRunStatus; // can be updated by vendor
-  description: string; // cannot be updated, only set on create
-  about_url: string;
+  description: string; // can be updated, only set on create
+  about_url: string; // can be updated by vendor
+  run_url: string; // can be updated by vendor
   billing_url: string; // can be updated by vendor
   support_url: string; // can be updated by vendor
   delivery_url: string; // can be updated by vendor
   verification_url: string; // can be updated by vendor
   installation_url: string; // the script to run to install the job
-  title: string; // cannot be updated, only set on create
+  title: string; // can be updated, only set on create
   subtitle: string; // can be updated
   pricing: string; // can be updated
   vendor_notes: string; // can be updated by vendor
-  notes: string; // cannot be viewed or updated by vendor
+  notes: string; // can be viewed or updated by vendor
   created_at: number;
   updated_at: number;
   last_updated_at: number;
@@ -266,10 +267,11 @@ export enum JobRunStatus {
 export interface InitJobRunRequestBody {
   job_id: JobRunID;
   customer_notes: string;
+  payload?: string; // json string encoded object
   template_id?: string;
   drive_id: DriveID;
   drive_endpoint: string;
-  init_password: string;
+  init_password?: string;
   temp_auth_token: string;
   callback_url?: string;
   tracer?: string;
@@ -279,8 +281,8 @@ export interface InitJobRunRequestBody {
 // Example Install Scripts
 /**
 
+  Example #1
   JobRun: Buy Storage Giftcard from Amazon
-
   1. Receive install request body with temp auth
   2. Create contact for vendor
   3. Create job run record
@@ -288,5 +290,12 @@ export interface InitJobRunRequestBody {
   5. Grant vendor permission to disk root & trash
   6. Update the job run record
   7. End the job run
+
+  Example #2
+  JobRun: YouTube Downloader
+
+
+  Example #3
+  JobRun: Delegate Reddit Farming
 
  */
