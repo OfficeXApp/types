@@ -5,6 +5,7 @@
  * Derived from OpenAPI v3.0.3 specification
  */
 
+import { JobRun } from "../main";
 import {
   ApiKeyID,
   ApiKeyValue,
@@ -452,4 +453,8 @@ export interface ExternalIDvsInternalIDMap {
 /** Data structure for the response when resolving external IDs. */
 export interface ExternalIDsDriveResponseData {
   results: ExternalIDvsInternalIDMap[];
+}
+
+export interface JobRunFE extends JobRun {
+  permission_previews: SystemPermissionType[];
 }
