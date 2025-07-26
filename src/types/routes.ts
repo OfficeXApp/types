@@ -68,6 +68,7 @@ import {
 // =========================================================================
 
 /** Common structure for successful API responses */
+
 export interface ISuccessResponse<T> {
   ok: {
     data: T;
@@ -230,11 +231,22 @@ export interface IRequestDirectoryAction {
   actions: DirectoryAction[];
 }
 
-/** Get File Asset (uses 302 redirect) */
+/** Directory Action Response */
+export type IResponseDirectoryAction = ISuccessResponse<{
+  success: boolean;
+  message?: string;
+}>;
+
+/** Get File Asset (uses 302 redirect) Request */
 export interface IRequestGetFileAsset {
   /** File ID with file extension */
   file_id_with_extension: string;
 }
+
+// Note: IResponseGetFileAsset typically implies a direct file download/redirect, not a JSON response.
+// If you expect a JSON response for metadata, you'd define it here.
+// For now, it's commented out as it's a redirect.
+// export type IResponseGetFileAsset = ISuccessResponse<Blob>;
 
 // =========================================================================
 // API Keys Routes
@@ -373,9 +385,9 @@ export interface IRequestUpdateContact {
   /** New nickname for the contact */
   name?: string;
   avatar?: string;
-  /** New nickname for the contact */
+  /** New email for the contact */
   email?: string;
-  /** New nickname for the contact */
+  /** New notifications URL for the contact */
   notifications_url?: string;
   /** Public note about the contact */
   public_note?: string;
@@ -604,6 +616,22 @@ export interface IResponseReplayDrive
     final_checksum: string;
   }> {}
 
+/** Search Drive Request Body */
+export interface IRequestSearchDrive {
+  /** Search query string */
+  query: string;
+  /** Categories to search in */
+  categories?: SearchCategoryEnum[];
+  /** Number of items per page (1-1000) */
+  page_size?: number;
+  /** Pagination cursor */
+  cursor?: string;
+  /** Field to sort results by */
+  sort_by?: SearchSortByEnum;
+  /** Sort direction */
+  direction?: SortDirection;
+}
+
 /** Search Drive Response */
 export interface IResponseSearchDrive
   extends ISuccessResponse<{
@@ -618,22 +646,6 @@ export interface IResponseSearchDrive
     /** Cursor for pagination */
     cursor?: string;
   }> {}
-
-/** Search Drive Request Body */
-export interface SearchDriveRequestBody {
-  /** Search query string */
-  query: string;
-  /** Categories to search in */
-  categories?: SearchCategoryEnum[];
-  /** Number of items per page (1-1000) */
-  page_size?: number;
-  /** Pagination cursor */
-  cursor?: string;
-  /** Field to sort results by */
-  sort_by?: SearchSortByEnum;
-  /** Sort direction */
-  direction?: SortDirection;
-}
 
 /** Reindex Drive Request */
 export interface IRequestReindexDrive {
@@ -652,7 +664,8 @@ export interface IResponseReindexDrive
     indexed_count: number;
   }> {}
 
-export interface ExternalIDsDriveRequestBody {
+/** External IDs Drive Request Body */
+export interface IRequestExternalIDsDrive {
   /**
    * A list of external IDs to resolve.
    * Note: The backend validation requires each external ID to be 256 characters or less.
@@ -661,7 +674,7 @@ export interface ExternalIDsDriveRequestBody {
 }
 
 /** API response for resolving external IDs. */
-export type ExternalIDsDriveResponse =
+export type IResponseExternalIDsDrive =
   ISuccessResponse<ExternalIDsDriveResponseData>;
 
 /** Transfer Drive Ownership Request */
@@ -756,7 +769,7 @@ export interface IRequestUpdateDirectoryPermission {
   /** ID of the permission to update */
   id: DirectoryPermissionID;
   /** Types of permissions to grant */
-  permission_types: DirectoryPermissionType[];
+  permission_types?: DirectoryPermissionType[];
   /** When the permission becomes active */
   begin_date_ms?: number;
   /** When the permission expires */
@@ -1165,17 +1178,18 @@ export interface IResponseDeleteGroupInvite
 export interface IRequestRedeemGroupInvite {
   /** ID of the group invite to redeem */
   invite_id: GroupInviteID;
-  redeem_code: String;
+  redeem_code: string;
   /** ID of the user to redeem the invite for */
   user_id: UserID;
   note?: string;
 }
 
 /** Redeem Group Invite Response */
-export interface IResponseRedeemGroupInvite {
-  /** The redeemed invite */
-  invite: GroupInvite;
-}
+export interface IResponseRedeemGroupInvite
+  extends ISuccessResponse<{
+    /** The redeemed invite */
+    invite: GroupInvite;
+  }> {}
 
 // =========================================================================
 // Labels Routes
@@ -1391,7 +1405,7 @@ export interface IResponseSuperswapUser
     message: string;
   }> {}
 
-/** Redeem Gift Card Request */
+/** Redeem Gift Card Spawn Org Request */
 export interface IRequestRedeemGiftcardSpawnOrg {
   giftcard_id: GiftcardSpawnOrgID;
   owner_icp_principal: ICPPrincipalString;
@@ -1399,7 +1413,7 @@ export interface IRequestRedeemGiftcardSpawnOrg {
   organization_name?: string;
 }
 
-/** Redeem Gift Card Response */
+/** Redeem Gift Card Spawn Org Response */
 export interface IResponseRedeemGiftcardSpawnOrg
   extends ISuccessResponse<{
     owner_id: UserID;
@@ -1424,13 +1438,13 @@ export interface IResponseRedeemOrg
     admin_login_password: string; // admin login password for the spawned drive
   }> {}
 
-/** Redeem Gift Card Request */
+/** Redeem Gift Card Refuel Request */
 export interface IRequestRedeemGiftcardRefuel {
   giftcard_id: string;
   icp_principal: string;
 }
 
-/** Redeem Gift Card Response */
+/** Redeem Gift Card Refuel Response */
 export interface IResponseRedeemGiftcardRefuel
   extends ISuccessResponse<{
     giftcard_id: GiftcardRefuelID;
@@ -1446,7 +1460,7 @@ export interface IRequestInboxOrg {
   payload: any;
 }
 
-/** Redeem Org Response */
+/** Inbox Org Response */
 export interface IResponseInboxOrg
   extends ISuccessResponse<{
     inbox_notif_id: InboxNotifID;
@@ -1455,20 +1469,24 @@ export interface IResponseInboxOrg
     note: string;
   }> {}
 
-export interface IResponseWhoAmI {
-  driveID: DriveID;
-  drive_nickname: string;
-  evm_public_address: string;
-  icp_principal: ICPPrincipalString;
-  is_owner: boolean;
-  nickname: string;
-  userID: UserID;
-}
+/** Who Am I Response */
+export interface IResponseWhoAmI
+  extends ISuccessResponse<{
+    driveID: DriveID;
+    drive_nickname: string;
+    evm_public_address: string;
+    icp_principal: ICPPrincipalString;
+    is_owner: boolean;
+    nickname: string;
+    userID: UserID;
+  }> {}
 
-// factory routes
-// Additional types to add to your existing types.ts
+// =========================================================================
+// Factory Routes
+// =========================================================================
 
-export interface FactoryCreateApiKeyRequestBody {
+/** Factory Create API Key Request Body */
+export interface IRequestFactoryCreateApiKey {
   action: "CREATE";
   name: string;
   user_id?: string;
@@ -1477,7 +1495,8 @@ export interface FactoryCreateApiKeyRequestBody {
   external_payload?: string;
 }
 
-export interface FactoryUpdateApiKeyRequestBody {
+/** Factory Update API Key Request Body */
+export interface IRequestFactoryUpdateApiKey {
   action: "UPDATE";
   id: string;
   name?: string;
@@ -1487,33 +1506,19 @@ export interface FactoryUpdateApiKeyRequestBody {
   external_payload?: string;
 }
 
-export type FactoryUpsertApiKeyRequestBody =
-  | FactoryCreateApiKeyRequestBody
-  | FactoryUpdateApiKeyRequestBody;
-
-export interface FactoryDeleteApiKeyRequestBody {
+/** Factory Delete API Key Request Body */
+export interface IRequestFactoryDeleteApiKey {
   id: string;
 }
 
-export interface FactoryDeletedApiKeyData {
+/** Factory Deleted API Key Data */
+export interface IFactoryDeletedApiKeyData {
   id: string;
   deleted: boolean;
 }
 
-export interface ApiResponse<T> {
-  ok: {
-    data: T;
-  };
-}
-
-export interface ApiError {
-  err: {
-    code: number;
-    message: string;
-  };
-}
-
-export interface FactoryStateSnapshot {
+/** Factory State Snapshot */
+export interface IFactoryStateSnapshot {
   // System info
   canister_id: string;
   version: string;
@@ -1527,7 +1532,7 @@ export interface FactoryStateSnapshot {
   apikeys_history: string[];
 
   // GiftcardSpawnOrg state
-  deployments_by_giftcard_id: Record<string, FactorySpawnHistoryRecord>;
+  deployments_by_giftcard_id: Record<string, IFactorySpawnHistoryRecord>;
   historical_giftcards: string[];
   drive_to_giftcard_hashtable: Record<string, string>;
   user_to_giftcards_hashtable: Record<string, string[]>;
@@ -1537,20 +1542,15 @@ export interface FactoryStateSnapshot {
   timestamp_ns: number;
 }
 
-export interface FactorySnapshotResponse {
-  status: string;
-  data: FactoryStateSnapshot;
-  timestamp: number;
-}
+/** Factory Snapshot Response */
+export interface IResponseFactorySnapshot
+  extends ISuccessResponse<IFactoryStateSnapshot> {}
 
-export interface ListGiftcardRefuelsRequestBody {
-  filters?: string;
-  page_size?: number;
-  direction?: SortDirection;
-  cursor?: string;
-}
+/** List Giftcard Refuels Request Body */
+export interface IRequestListGiftcardRefuels extends IPaginationParams {}
 
-export interface CreateGiftcardRefuelRequestBody {
+/** Create Giftcard Refuel Request Body */
+export interface IRequestCreateGiftcardRefuel {
   action: "CREATE";
   usd_revenue_cents: number;
   note: string;
@@ -1558,7 +1558,8 @@ export interface CreateGiftcardRefuelRequestBody {
   external_id: string;
 }
 
-export interface UpdateGiftcardRefuelRequestBody {
+/** Update Giftcard Refuel Request Body */
+export interface IRequestUpdateGiftcardRefuel {
   action: "UPDATE";
   id: GiftcardRefuelID;
   note?: string;
@@ -1567,32 +1568,33 @@ export interface UpdateGiftcardRefuelRequestBody {
   external_id?: string;
 }
 
-export type UpsertGiftcardRefuelRequestBody =
-  | CreateGiftcardRefuelRequestBody
-  | UpdateGiftcardRefuelRequestBody;
-
-export interface DeleteGiftcardRefuelRequestBody {
+/** Delete Giftcard Refuel Request Body */
+export interface IRequestDeleteGiftcardRefuel {
   id: string;
 }
 
-export interface DeletedGiftcardRefuelData {
+/** Deleted Giftcard Refuel Data */
+export interface IDeletedGiftcardRefuelData {
   id: string;
   deleted: boolean;
 }
 
-export interface RedeemGiftcardRefuelData {
+/** Redeem Giftcard Refuel Data */
+export interface IRedeemGiftcardRefuelData {
   giftcard_id: GiftcardRefuelID;
   icp_principal: string;
 }
 
-export interface RedeemGiftcardRefuelResult {
+/** Redeem Giftcard Refuel Result */
+export interface IRedeemGiftcardRefuelResult {
   giftcard_id: GiftcardRefuelID;
   icp_principal: string;
   redeem_code: string;
   timestamp_ms: number;
 }
 
-export interface FactoryRefuelHistoryRecord {
+/** Factory Refuel History Record */
+export interface IFactoryRefuelHistoryRecord {
   id: string;
   note: string;
   giftcard_id: GiftcardRefuelID;
@@ -1601,8 +1603,9 @@ export interface FactoryRefuelHistoryRecord {
   icp_principal: string; // Corresponds to ICPPrincipalString(PublicKeyICP)
 }
 
-// Responses
-export interface ListGiftcardRefuelsResponseData {
+// Factory Responses
+/** List Giftcard Refuels Response Data */
+export interface IResponseListGiftcardRefuelsData {
   items: GiftcardRefuel[];
   page_size: number;
   total: number;
@@ -1610,25 +1613,22 @@ export interface ListGiftcardRefuelsResponseData {
   cursor: string | null;
 }
 
-export type CreateGiftcardRefuelResponse = ApiResponse<GiftcardRefuel>;
-export type UpdateGiftcardRefuelResponse = ApiResponse<GiftcardRefuel>;
-export type DeleteGiftcardRefuelResponse =
-  ApiResponse<DeletedGiftcardRefuelData>;
-export type GetGiftcardRefuelResponse = ApiResponse<GiftcardRefuel>;
-export type ListGiftcardRefuelsResponse =
-  ApiResponse<ListGiftcardRefuelsResponseData>;
-export type RedeemGiftcardRefuelResponse =
-  ApiResponse<RedeemGiftcardRefuelResult>;
+export type IResponseCreateGiftcardRefuel = ISuccessResponse<GiftcardRefuel>;
+export type IResponseUpdateGiftcardRefuel = ISuccessResponse<GiftcardRefuel>;
+export type IResponseDeleteGiftcardRefuel =
+  ISuccessResponse<IDeletedGiftcardRefuelData>;
+export type IResponseGetGiftcardRefuel = ISuccessResponse<GiftcardRefuel>;
+export type IResponseListGiftcardRefuels =
+  ISuccessResponse<IResponseListGiftcardRefuelsData>;
+export type IResponseRedeemGiftcardRefuelResult =
+  ISuccessResponse<IRedeemGiftcardRefuelResult>;
 
 // --- GiftcardSpawnOrg Types ---
-export interface ListGiftcardSpawnOrgsRequestBody {
-  filters?: string;
-  page_size?: number;
-  direction?: SortDirection;
-  cursor?: string;
-}
+/** List Giftcard Spawn Orgs Request Body */
+export interface IRequestListGiftcardSpawnOrgs extends IPaginationParams {}
 
-export interface ListGiftcardSpawnOrgsResponseData {
+/** List Giftcard Spawn Orgs Response Data */
+export interface IResponseListGiftcardSpawnOrgsData {
   items: GiftcardSpawnOrg[];
   page_size: number;
   total: number;
@@ -1636,7 +1636,8 @@ export interface ListGiftcardSpawnOrgsResponseData {
   cursor: string | null;
 }
 
-export interface CreateGiftcardSpawnOrgRequestBody {
+/** Create Giftcard Spawn Org Request Body */
+export interface IRequestCreateGiftcardSpawnOrg {
   action: "CREATE";
   usd_revenue_cents: number;
   note: string;
@@ -1645,7 +1646,8 @@ export interface CreateGiftcardSpawnOrgRequestBody {
   disk_auth_json?: string;
 }
 
-export interface UpdateGiftcardSpawnOrgRequestBody {
+/** Update Giftcard Spawn Org Request Body */
+export interface IRequestUpdateGiftcardSpawnOrg {
   action: "UPDATE";
   id: GiftcardSpawnOrgID;
   note?: string;
@@ -1655,27 +1657,27 @@ export interface UpdateGiftcardSpawnOrgRequestBody {
   disk_auth_json?: string;
 }
 
-export type UpsertGiftcardSpawnOrgRequestBody =
-  | CreateGiftcardSpawnOrgRequestBody
-  | UpdateGiftcardSpawnOrgRequestBody;
-
-export interface DeleteGiftcardSpawnOrgRequestBody {
+/** Delete Giftcard Spawn Org Request Body */
+export interface IRequestDeleteGiftcardSpawnOrg {
   id: GiftcardSpawnOrgID;
 }
 
-export interface DeletedGiftcardSpawnOrgData {
+/** Deleted Giftcard Spawn Org Data */
+export interface IDeletedGiftcardSpawnOrgData {
   id: GiftcardSpawnOrgID;
   deleted: boolean;
 }
 
-export interface RedeemGiftcardSpawnOrgData {
+/** Redeem Giftcard Spawn Org Data */
+export interface IRedeemGiftcardSpawnOrgData {
   giftcard_id: GiftcardSpawnOrgID;
   owner_icp_principal: string;
   owner_name?: string;
   organization_name?: string;
 }
 
-export interface RedeemGiftcardSpawnOrgResult {
+/** Redeem Giftcard Spawn Org Result */
+export interface IRedeemGiftcardSpawnOrgResult {
   owner_id: UserID;
   drive_id: DriveID;
   endpoint: string;
@@ -1683,7 +1685,8 @@ export interface RedeemGiftcardSpawnOrgResult {
   disk_auth_json?: string;
 }
 
-export interface FactorySpawnHistoryRecord {
+/** Factory Spawn History Record */
+export interface IFactorySpawnHistoryRecord {
   id: string;
   owner_id: UserID;
   drive_id: DriveID;
@@ -1695,7 +1698,8 @@ export interface FactorySpawnHistoryRecord {
   timestamp_ms: number;
 }
 
-export interface SpawnInitArgs {
+/** Spawn Init Args */
+export interface IRequestSpawnInitArgs {
   owner: string;
   title?: string;
   owner_name?: string;
@@ -1704,17 +1708,20 @@ export interface SpawnInitArgs {
 }
 
 // Responses
-export type CreateGiftcardSpawnOrgResponse = ApiResponse<GiftcardSpawnOrg>;
-export type UpdateGiftcardSpawnOrgResponse = ApiResponse<GiftcardSpawnOrg>;
-export type DeleteGiftcardSpawnOrgResponse =
-  ApiResponse<DeletedGiftcardSpawnOrgData>;
-export type GetGiftcardSpawnOrgResponse = ApiResponse<GiftcardSpawnOrg>;
-export type ListGiftcardSpawnOrgsResponse =
-  ApiResponse<ListGiftcardSpawnOrgsResponseData>;
-export type RedeemGiftcardSpawnOrgResponse =
-  ApiResponse<RedeemGiftcardSpawnOrgResult>;
+export type IResponseCreateGiftcardSpawnOrg =
+  ISuccessResponse<GiftcardSpawnOrg>;
+export type IResponseUpdateGiftcardSpawnOrg =
+  ISuccessResponse<GiftcardSpawnOrg>;
+export type IResponseDeleteGiftcardSpawnOrg =
+  ISuccessResponse<IDeletedGiftcardSpawnOrgData>;
+export type IResponseGetGiftcardSpawnOrg = ISuccessResponse<GiftcardSpawnOrg>;
+export type IResponseListGiftcardSpawnOrgs =
+  ISuccessResponse<IResponseListGiftcardSpawnOrgsData>;
+export type IResponseRedeemGiftcardSpawnOrgResult =
+  ISuccessResponse<IRedeemGiftcardSpawnOrgResult>;
 
-export interface AboutDriveResponseData {
+/** About Drive Response Data */
+export interface IAboutDriveResponseData {
   gas_cycles: string;
   organization_name: string;
   organization_id: DriveID;
@@ -1726,4 +1733,4 @@ export interface AboutDriveResponseData {
   version: string;
 }
 
-export type AboutDriveResponse = ISuccessResponse<AboutDriveResponseData>;
+export type IResponseAboutDrive = ISuccessResponse<IAboutDriveResponseData>;
