@@ -9,7 +9,6 @@ import {
   DirectoryPermissionID,
   DirectoryPermissionType,
   DirectoryResourceID,
-  DriveID,
   ExternalID,
   ExternalPayload,
   GranteeID,
@@ -36,6 +35,11 @@ export enum SystemTableValueEnum {
   LABELS = "LABELS",
   INBOX = "INBOX",
   JOB_RUNS = "JOB_RUNS",
+}
+
+export enum SystemPermitPrefixEnum {
+  Table = "TABLE_",
+  Record = "RECORD_",
 }
 
 /** Unique identifier for a system table resource */
@@ -263,6 +267,7 @@ export enum JobRunStatus {
   REFUNDED = "REFUNDED",
   ARCHIVED = "ARCHIVED",
   PAYMENT_REQUIRED = "PAYMENT_REQUIRED",
+  PAYMENT_FAILED = "PAYMENT_FAILED",
   UNKNOWN = "UNKNOWN",
 }
 
