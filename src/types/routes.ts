@@ -141,6 +141,7 @@ export interface IRequestCreateJobRun {
   installation_url?: string;
   subtitle?: string;
   pricing?: string;
+  next_delivery_date?: number;
   vendor_notes?: string;
   notes?: string;
   related_resources?: string[];
@@ -171,6 +172,7 @@ export interface IRequestUpdateJobRun {
   installation_url?: string;
   subtitle?: string;
   pricing?: string;
+  next_delivery_date?: number;
   vendor_notes?: string;
   related_resources?: string[];
   tracer?: string;
@@ -231,12 +233,6 @@ export interface IRequestDirectoryAction {
   actions: DirectoryAction[];
 }
 
-/** Directory Action Response */
-export type IResponseDirectoryAction = ISuccessResponse<{
-  success: boolean;
-  message?: string;
-}>;
-
 /** Get File Asset (uses 302 redirect) Request */
 export interface IRequestGetFileAsset {
   /** File ID with file extension */
@@ -277,6 +273,7 @@ export interface IRequestCreateApiKey {
   name: string;
   /** ID of the user to create the API key for */
   user_id?: UserID;
+  private_note?: string;
   begins_at?: number;
   /** Timestamp when the key expires, -1 for never expires */
   expires_at?: number;
@@ -295,6 +292,7 @@ export interface IRequestUpdateApiKey {
   id: ApiKeyID;
   /** New name for the API key */
   name?: string;
+  private_note?: string;
   /** New expiration timestamp, -1 for never expires */
   begins_at?: number;
   expires_at?: number;
@@ -921,7 +919,7 @@ export interface IRequestUpdateSystemPermission {
   /** ID of the user/group to grant permission to */
   granted_to?: string;
   /** Types of permissions to grant */
-  permission_types?: SystemPermissionType[];
+
   /** When the permission becomes active */
   begin_date_ms?: number;
   /** When the permission expires */

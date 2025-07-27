@@ -9,7 +9,6 @@ import {
   DirectoryPermissionID,
   DirectoryPermissionType,
   DirectoryResourceID,
-  DriveID,
   ExternalID,
   ExternalPayload,
   GranteeID,
@@ -36,6 +35,11 @@ export enum SystemTableValueEnum {
   LABELS = "LABELS",
   INBOX = "INBOX",
   JOB_RUNS = "JOB_RUNS",
+}
+
+export enum SystemPermitPrefixEnum {
+  Table = "TABLE_",
+  Record = "RECORD_",
 }
 
 /** Unique identifier for a system table resource */
@@ -240,6 +244,7 @@ export interface JobRun {
   title: string; // can be updated, only set on create
   subtitle: string; // can be updated
   pricing: string; // can be updated
+  next_delivery_date: number; // can be updated
   vendor_notes: string; // can be updated by vendor
   notes: string; // can be viewed or updated by vendor
   created_at: number;
@@ -261,21 +266,9 @@ export enum JobRunStatus {
   CANCELED = "CANCELED",
   REFUNDED = "REFUNDED",
   ARCHIVED = "ARCHIVED",
+  PAYMENT_REQUIRED = "PAYMENT_REQUIRED",
+  PAYMENT_FAILED = "PAYMENT_FAILED",
   UNKNOWN = "UNKNOWN",
-}
-
-export interface InitJobRunRequestBody {
-  job_id: JobRunID;
-  customer_notes: string;
-  payload?: string; // json string encoded object
-  template_id?: string;
-  drive_id: DriveID;
-  drive_endpoint: string;
-  init_password?: string;
-  temp_auth_token: string;
-  callback_url?: string;
-  tracer?: string;
-  metadata?: string; // json string encoded object
 }
 
 // Example Install Scripts
