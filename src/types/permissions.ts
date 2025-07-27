@@ -262,21 +262,8 @@ export enum JobRunStatus {
   CANCELED = "CANCELED",
   REFUNDED = "REFUNDED",
   ARCHIVED = "ARCHIVED",
+  PAYMENT_REQUIRED = "PAYMENT_REQUIRED",
   UNKNOWN = "UNKNOWN",
-}
-
-export interface InitJobRunRequestBody {
-  job_id: JobRunID;
-  customer_notes: string;
-  payload?: string; // json string encoded object
-  template_id?: string;
-  drive_id: DriveID;
-  drive_endpoint: string;
-  init_password?: string;
-  temp_auth_token: string;
-  callback_url?: string;
-  tracer?: string;
-  metadata?: string; // json string encoded object
 }
 
 // Example Install Scripts
