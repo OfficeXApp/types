@@ -326,7 +326,7 @@ export interface DirectoryActionRequestBody {
 /**
  * Directory Action Response
  */
-export interface IResponseDirectoryAction {
+export interface DirectoryActionResponseBody {
   data: DirectoryActionOutcome[];
 }
 

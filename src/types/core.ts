@@ -479,6 +479,7 @@ export interface VendorOffer {
   installationUrl: string;
   needsAuth: boolean;
   needsCloudOfficeX: boolean;
+  checkoutVideo?: string;
 }
 
 export interface VendorOfferReqField {
@@ -556,6 +557,7 @@ export interface CheckoutRun {
   callToAction: string;
   needsAuth: boolean;
   needsCloudOfficeX: boolean;
+  checkoutVideo?: string;
 }
 
 export interface IRequestCheckoutPayload {
