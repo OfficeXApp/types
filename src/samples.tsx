@@ -1,5 +1,5 @@
 export const sayHello = () => {
-  console.log("Hello from lib");
+  console.log("Hello from library");
 };
 
 const DemoComponent = () => {
