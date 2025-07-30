@@ -131,14 +131,13 @@ export interface IRequestCreateJobRun {
   vendor_name?: string;
   vendor_id?: UserID;
   about_url?: string;
-  run_url?: string;
   status?: JobRunStatus;
   description?: string;
   billing_url?: string;
   support_url?: string;
   delivery_url?: string;
   verification_url?: string;
-  installation_url?: string;
+  auth_installation_url?: string;
   subtitle?: string;
   pricing?: string;
   vendor_notes?: string;
@@ -148,6 +147,7 @@ export interface IRequestCreateJobRun {
   labels?: string[];
   external_id?: string;
   external_payload?: string;
+  next_delivery_date?: number;
 }
 
 /** Response data for creating a JobRun. */
@@ -161,14 +161,12 @@ export interface IRequestUpdateJobRun {
   vendor_name?: string;
   vendor_id?: UserID;
   about_url?: string;
-  run_url?: string;
   status?: JobRunStatus;
   description?: string;
   billing_url?: string;
   support_url?: string;
   delivery_url?: string;
   verification_url?: string;
-  installation_url?: string;
   subtitle?: string;
   pricing?: string;
   vendor_notes?: string;
@@ -177,6 +175,7 @@ export interface IRequestUpdateJobRun {
   labels?: string[];
   external_id?: string;
   external_payload?: string;
+  next_delivery_date?: number;
 }
 
 /** Response data for updating a JobRun. */
@@ -282,6 +281,7 @@ export interface IRequestCreateApiKey {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  private_note?: string;
 }
 
 /** Create API Key Response */
@@ -302,6 +302,7 @@ export interface IRequestUpdateApiKey {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  private_note?: string;
 }
 
 /** Update API Key Response */
