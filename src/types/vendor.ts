@@ -1,3 +1,4 @@
+import { JobRunStatus } from "./permissions";
 import {
   ApiKeyValue,
   DiskTypeEnum,
@@ -49,12 +50,13 @@ export interface VendorOffer {
   call_to_action: string;
   description: string;
   vendor_disclaimer?: string;
-  about_url?: string;
+  about_url: string;
   checkout_options: CheckoutOption[];
 }
 
 export interface CheckoutOption {
   offer_id: OfferID;
+  about_url: string;
   checkout_flow_id: CheckoutFlowID;
   title: string;
   note: string;
@@ -160,15 +162,46 @@ export interface IRequestCheckoutFinalize {
   sweep_tokens?: string[];
 }
 export interface IResponseCheckoutFinalize {
+  success: boolean;
+  message: string;
+  tracer?: string;
+  receipt?: {
+    vendor_disclaimer?: string;
+    checkout_session_id: CheckoutSessionID;
+    checkout_flow_id: CheckoutFlowID;
+    redeem_code?: string;
+    skip_to_final_redirect?: string;
+    skip_to_final_cta?: string;
+    vendor_name?: string; // can be updated, only set on create
+    vendor_id?: UserID; // can be updated, only set on create
+    status?: JobRunStatus; // can be updated by vendor
+    description?: string; // can be updated, only set on create
+    about_url?: string; // can be updated by vendor
+    billing_url?: string; // can be updated by vendor
+    support_url?: string; // can be updated by vendor
+    delivery_url?: string; // can be updated by vendor
+    verification_url?: string; // can be updated by vendor
+    auth_installation_url?: string; // the script to run to install the job
+    title?: string; // can be updated, only set on create
+    subtitle?: string; // can be updated
+    pricing?: string; // can be updated
+    next_delivery_date?: number; // can be updated
+    vendor_notes?: string; // can be updated by vendor
+  };
+}
+
+export interface IRequestCheckoutTopup {
+  checkout_session_id: CheckoutSessionID;
+  note?: string;
+  tracer?: string;
+  sweep_tokens: string[];
+}
+export interface IResponseCheckoutTopup {
   vendor_disclaimer?: string;
   checkout_session_id: CheckoutSessionID;
   success: boolean;
   message: string;
   tracer?: string;
-  checkout_flow_id: CheckoutFlowID;
-  redeem_code?: string;
-  skip_to_final_redirect?: string;
-  skip_to_final_cta?: string;
 }
 
 // -------- CRYPTO CHECKOUT -------- //
@@ -219,7 +252,7 @@ export type IResponseCheckoutFinalize_External = IResponseCheckoutFinalize;
 // =========================================================================
 
 export interface CheckoutRun {
-  vendorID: string;
+  vendorID: UserID;
   vendorName: string;
   vendorAvatar: string;
   aboutUrl: string;
