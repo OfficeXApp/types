@@ -1729,3 +1729,73 @@ export interface IAboutDriveResponseData {
 }
 
 export type IResponseAboutDrive = ISuccessResponse<IAboutDriveResponseData>;
+
+export interface RedeemDiskGiftCard_BTOA {
+  name: string;
+  disk_type: string;
+  public_note: string;
+  auth_json: string;
+  endpoint: string;
+}
+
+export interface fileRawUrl_BTOA {
+  note: string;
+  original: FileRecordFE;
+}
+
+export interface RedeemDirectoryPermission_BTOA {
+  resource_id: DirectoryResourceID;
+  permission_id: DirectoryPermissionID;
+  redeem_code: string;
+  redirect_url: string;
+  resource_name: string;
+  org_name: string;
+  permissions: DirectoryPermissionType[];
+  daterange: { begins_at: number; expires_at: number };
+}
+
+export interface AutoLogin_BTOA {
+  org_name: string;
+  org_id: DriveID;
+  org_endpoint: string;
+  profile_id: UserID;
+  profile_name: string;
+  profile_api_key: ApiKeyValue;
+  profile_seed_phrase?: string;
+}
+
+export interface SelfCustodySuperswapLogin_BTOA extends IRequestRedeemContact {
+  type: "SelfCustodySuperswapLogin_BTOA";
+  org_name: string;
+  profile_name: string;
+  redirect_url?: string;
+}
+
+export interface OrgOwnedContactApiKeyLogin_BTOA {
+  type: "OrgOwnedContactApiKeyLogin_BTOA";
+  api_key: string;
+  org_name: string;
+  profile_name: string;
+  profile_id: UserID;
+  redirect_url?: string;
+  daterange: { begins_at: number; expires_at: number };
+}
+
+export interface SovereignStrangerLogin_BTOA {
+  type: "SovereignStrangerLogin_BTOA";
+  org_name: string;
+  profile_name: string;
+  profile_id: UserID;
+  redirect_url?: string;
+  api_key?: string;
+}
+
+export interface RedeemGroupInvite_BTOA {
+  invite_id: GroupInviteID;
+  redeem_code: string;
+  redirect_url: string;
+  group_name: string;
+  role: GroupRole;
+  org_name: string;
+  daterange: { begins_at: number; expires_at: number };
+}
