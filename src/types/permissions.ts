@@ -235,12 +235,11 @@ export interface JobRun {
   status: JobRunStatus; // can be updated by vendor
   description: string; // can be updated, only set on create
   about_url: string; // can be updated by vendor
-  run_url: string; // can be updated by vendor
   billing_url: string; // can be updated by vendor
   support_url: string; // can be updated by vendor
   delivery_url: string; // can be updated by vendor
   verification_url: string; // can be updated by vendor
-  installation_url: string; // the script to run to install the job
+  auth_installation_url: string; // the script to run to install the job
   title: string; // can be updated, only set on create
   subtitle: string; // can be updated
   pricing: string; // can be updated
@@ -266,6 +265,7 @@ export enum JobRunStatus {
   CANCELED = "CANCELED",
   REFUNDED = "REFUNDED",
   ARCHIVED = "ARCHIVED",
+  PAID = "PAID",
   PAYMENT_REQUIRED = "PAYMENT_REQUIRED",
   PAYMENT_FAILED = "PAYMENT_FAILED",
   UNKNOWN = "UNKNOWN",
