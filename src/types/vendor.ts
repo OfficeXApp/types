@@ -202,6 +202,7 @@ export interface IResponseCheckoutTopup {
   success: boolean;
   message: string;
   tracer?: string;
+  updatedValue: number;
 }
 
 // -------- CRYPTO CHECKOUT -------- //
