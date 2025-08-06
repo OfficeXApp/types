@@ -383,6 +383,7 @@ export enum SearchCategoryEnum {
   DISKS = "DISKS",
   DRIVES = "DRIVES",
   GROUPS = "GROUPS",
+  JOB_RUNS = "JOB_RUNS",
 }
 
 /** Search sort by enum */

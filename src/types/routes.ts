@@ -199,7 +199,7 @@ export type IResponseDeleteJobRun = ISuccessResponse<{
 /** List Directory Request */
 export interface IRequestListDirectory {
   /** ID of the folder to list contents from */
-  folder_id?: string;
+  folder_id?: string; // omit folder_id and path but include disk_id to get disk root shortcuts (aka shared with me)
   /** Path to the folder to list contents from */
   path?: string;
   /** disk id if just getting shortcuts */
@@ -1178,8 +1178,6 @@ export interface IRequestRedeemGroupInvite {
   /** ID of the group invite to redeem */
   invite_id: GroupInviteID;
   redeem_code: string;
-  /** ID of the user to redeem the invite for */
-  user_id: UserID;
   note?: string;
 }
 

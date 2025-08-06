@@ -205,6 +205,14 @@ export interface IResponseCheckoutTopup {
   updatedValue: number;
 }
 
+export interface IRequestValidateCustomerProductAuth {
+  token: string;
+}
+export interface IResponseValidateCustomerProductAuth {
+  success: boolean;
+  message: string;
+}
+
 // -------- CRYPTO CHECKOUT -------- //
 
 // crypto - init checkout
