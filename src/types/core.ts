@@ -5,7 +5,7 @@
  * Derived from OpenAPI v3.0.3 specification
  */
 
-import { JobRun } from "../main";
+import { Purchase } from "../main";
 import {
   ApiKeyID,
   ApiKeyValue,
@@ -383,7 +383,7 @@ export enum SearchCategoryEnum {
   DISKS = "DISKS",
   DRIVES = "DRIVES",
   GROUPS = "GROUPS",
-  JOB_RUNS = "JOB_RUNS",
+  PURCHASES = "PURCHASES",
 }
 
 /** Search sort by enum */
@@ -456,6 +456,6 @@ export interface ExternalIDsDriveResponseData {
   results: ExternalIDvsInternalIDMap[];
 }
 
-export interface JobRunFE extends JobRun {
+export interface PurchaseFE extends Purchase {
   permission_previews: SystemPermissionType[];
 }

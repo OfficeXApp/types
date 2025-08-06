@@ -12,7 +12,7 @@ import {
   ExternalID,
   ExternalPayload,
   GranteeID,
-  JobRunID,
+  PurchaseID,
   SystemPermissionID,
   SystemPermissionType,
   SystemRecordIDEnum,
@@ -34,7 +34,7 @@ export enum SystemTableValueEnum {
   WEBHOOKS = "WEBHOOKS",
   LABELS = "LABELS",
   INBOX = "INBOX",
-  JOB_RUNS = "JOB_RUNS",
+  PURCHASES = "PURCHASES",
 }
 
 export enum SystemPermitPrefixEnum {
@@ -227,19 +227,19 @@ export interface CheckSystemPermissionResult {
   permissions: SystemPermissionType[];
 }
 
-export interface JobRun {
-  id: JobRunID;
+export interface Purchase {
+  id: PurchaseID;
   template_id?: string; // no guarnatees on this, only set on create
   vendor_name: string; // can be updated, only set on create
   vendor_id: UserID; // can be updated, only set on create
-  status: JobRunStatus; // can be updated by vendor
+  status: PurchaseStatus; // can be updated by vendor
   description: string; // can be updated, only set on create
   about_url: string; // can be updated by vendor
   billing_url: string; // can be updated by vendor
   support_url: string; // can be updated by vendor
   delivery_url: string; // can be updated by vendor
   verification_url: string; // can be updated by vendor
-  auth_installation_url: string; // the script to run to install the job
+  auth_installation_url: string; // the script to run to install the purchase
   title: string; // can be updated, only set on create
   subtitle: string; // can be updated
   pricing: string; // can be updated
@@ -255,7 +255,7 @@ export interface JobRun {
   external_id?: string; // can be updated by vendor
   external_payload?: string; // can be updated by vendor
 }
-export enum JobRunStatus {
+export enum PurchaseStatus {
   REQUESTED = "REQUESTED",
   AWAITING = "AWAITING",
   RUNNING = "RUNNING",
@@ -275,20 +275,20 @@ export enum JobRunStatus {
 /**
 
   Example #1
-  JobRun: Buy Storage Giftcard from Amazon
+  Purchase: Buy Storage Giftcard from Amazon
   1. Receive install request body with temp auth
   2. Create contact for vendor
-  3. Create job run record
+  3. Create purchase run record
   4. Create disk
   5. Grant vendor permission to disk root & trash
-  6. Update the job run record
-  7. End the job run
+  6. Update the purchase run record
+  7. End the purchase run
 
   Example #2
-  JobRun: YouTube Downloader
+  Purchase: YouTube Downloader
 
 
   Example #3
-  JobRun: Delegate Reddit Farming
+  Purchase: Delegate Reddit Farming
 
  */
