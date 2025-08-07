@@ -26,7 +26,7 @@ import {
   GroupID,
   GroupInviteID,
   GroupRole,
-  URLEndpoint,
+  HostURL,
   UserID,
   WebhookEventLabel,
   WebhookID,
@@ -224,7 +224,7 @@ export interface Drive {
   icp_principal: ICPPrincipalString;
   public_note?: string;
   private_note?: string;
-  endpoint_url: URLEndpoint;
+  host_url: HostURL;
   last_indexed_ms?: number;
   labels: string[];
   external_id?: ExternalID;
@@ -270,7 +270,7 @@ export interface Group {
   created_at: number;
   last_modified_at: number;
   drive_id: DriveID;
-  endpoint_url: URLEndpoint;
+  host_url: HostURL;
   labels: string[];
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
@@ -353,7 +353,7 @@ export interface StateDiffRecord {
   timestamp_ns: bigint;
   notes?: string;
   drive_id: DriveID;
-  endpoint_url: URLEndpoint;
+  host_url: HostURL;
   implementation: "RUST_ICP_CANISTER" | "JAVASCRIPT_RUNTIME";
   diff_forward: string;
   diff_backward: string;

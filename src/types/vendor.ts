@@ -156,7 +156,7 @@ export interface IRequestCheckoutFinalize {
   tracer?: string;
   proxy_buyer_data?: {
     org_id: DriveID;
-    org_endpoint: string;
+    org_host: string;
     user_id: UserID;
   };
   sweep_tokens?: string[];
@@ -278,7 +278,7 @@ export interface IRequestAuthInstallation {
   checkout_session_id: CheckoutSessionID;
   requirements?: Record<string, string>;
   org_id?: DriveID;
-  org_endpoint?: string;
+  org_host?: string;
   org_api_key?: ApiKeyValue;
   user_id?: UserID;
   redeem_code?: string;
