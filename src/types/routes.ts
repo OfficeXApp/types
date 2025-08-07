@@ -20,11 +20,11 @@ import {
   GiftcardSpawnOrg,
   GiftcardRefuel,
   ExternalIDsDriveResponseData,
-  JobRunFE,
+  PurchaseFE,
 } from "./core";
 import {
   DirectoryPermissionFE,
-  JobRunStatus,
+  PurchaseStatus,
   PermissionMetadata,
   SystemPermissionFE,
 } from "./permissions";
@@ -55,7 +55,7 @@ import {
   GiftcardRefuelID,
   SystemPermissionType,
   DirectoryPermissionType,
-  JobRunID,
+  PurchaseID,
 } from "./primitives";
 
 /**
@@ -105,33 +105,33 @@ export interface IPaginatedResponse<T> {
 }
 
 // =========================================================================
-// JobRuns Routes
+// Purchases Routes
 // =========================================================================
 
-/** Request body for listing JobRuns. */
-export interface IRequestListJobRuns extends IPaginationParams {}
+/** Request body for listing Purchases. */
+export interface IRequestListPurchases extends IPaginationParams {}
 
-/** Response data for listing JobRuns. */
-export interface IResponseListJobRuns
-  extends ISuccessResponse<IPaginatedResponse<JobRunFE>> {}
+/** Response data for listing Purchases. */
+export interface IResponseListPurchases
+  extends ISuccessResponse<IPaginatedResponse<PurchaseFE>> {}
 
-/** Request body for getting a JobRun. */
-export interface IRequestGetJobRun {
-  id: JobRunID;
+/** Request body for getting a Purchase. */
+export interface IRequestGetPurchase {
+  id: PurchaseID;
 }
 
-/** Response data for getting a JobRun. */
-export type IResponseGetJobRun = ISuccessResponse<JobRunFE>;
+/** Response data for getting a Purchase. */
+export type IResponseGetPurchase = ISuccessResponse<PurchaseFE>;
 
-/** Request body for creating a new JobRun. */
-export interface IRequestCreateJobRun {
-  id?: JobRunID;
+/** Request body for creating a new Purchase. */
+export interface IRequestCreatePurchase {
+  id?: PurchaseID;
   template_id?: string;
   title: string;
   vendor_name?: string;
   vendor_id?: UserID;
   about_url?: string;
-  status?: JobRunStatus;
+  status?: PurchaseStatus;
   description?: string;
   billing_url?: string;
   support_url?: string;
@@ -150,18 +150,18 @@ export interface IRequestCreateJobRun {
   next_delivery_date?: number;
 }
 
-/** Response data for creating a JobRun. */
-export type IResponseCreateJobRun = ISuccessResponse<JobRunFE>;
+/** Response data for creating a Purchase. */
+export type IResponseCreatePurchase = ISuccessResponse<PurchaseFE>;
 
-/** Request body for updating an existing JobRun. */
-export interface IRequestUpdateJobRun {
-  id: JobRunID;
+/** Request body for updating an existing Purchase. */
+export interface IRequestUpdatePurchase {
+  id: PurchaseID;
   template_id?: string;
   title?: string;
   vendor_name?: string;
   vendor_id?: UserID;
   about_url?: string;
-  status?: JobRunStatus;
+  status?: PurchaseStatus;
   description?: string;
   billing_url?: string;
   support_url?: string;
@@ -178,17 +178,17 @@ export interface IRequestUpdateJobRun {
   next_delivery_date?: number;
 }
 
-/** Response data for updating a JobRun. */
-export type IResponseUpdateJobRun = ISuccessResponse<JobRunFE>;
+/** Response data for updating a Purchase. */
+export type IResponseUpdatePurchase = ISuccessResponse<PurchaseFE>;
 
-/** Request body for deleting a JobRun. */
-export interface IRequestDeleteJobRun {
-  id: JobRunID;
+/** Request body for deleting a Purchase. */
+export interface IRequestDeletePurchase {
+  id: PurchaseID;
 }
 
-/** Response data after deleting a JobRun. */
-export type IResponseDeleteJobRun = ISuccessResponse<{
-  id: JobRunID;
+/** Response data after deleting a Purchase. */
+export type IResponseDeletePurchase = ISuccessResponse<{
+  id: PurchaseID;
   deleted: boolean;
 }>;
 
@@ -199,7 +199,7 @@ export type IResponseDeleteJobRun = ISuccessResponse<{
 /** List Directory Request */
 export interface IRequestListDirectory {
   /** ID of the folder to list contents from */
-  folder_id?: string;
+  folder_id?: string; // omit folder_id and path but include disk_id to get disk root shortcuts (aka shared with me)
   /** Path to the folder to list contents from */
   path?: string;
   /** disk id if just getting shortcuts */
@@ -1178,8 +1178,6 @@ export interface IRequestRedeemGroupInvite {
   /** ID of the group invite to redeem */
   invite_id: GroupInviteID;
   redeem_code: string;
-  /** ID of the user to redeem the invite for */
-  user_id: UserID;
   note?: string;
 }
 

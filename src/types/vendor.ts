@@ -1,10 +1,10 @@
-import { JobRunStatus } from "./permissions";
+import { PurchaseStatus } from "./permissions";
 import {
   ApiKeyValue,
   DiskTypeEnum,
   DriveID,
   IDPrefixEnum,
-  JobRunID,
+  PurchaseID,
   UserID,
 } from "./primitives";
 
@@ -151,7 +151,7 @@ export interface IResponseCheckoutValidate {
 export interface IRequestCheckoutFinalize {
   checkout_flow_id: CheckoutFlowID;
   checkout_session_id: CheckoutSessionID;
-  officex_purchase_id: JobRunID;
+  officex_purchase_id: PurchaseID;
   note?: string; // depends on vendor server,
   tracer?: string;
   proxy_buyer_data?: {
@@ -174,14 +174,14 @@ export interface IResponseCheckoutFinalize {
     skip_to_final_cta?: string;
     vendor_name?: string; // can be updated, only set on create
     vendor_id?: UserID; // can be updated, only set on create
-    status?: JobRunStatus; // can be updated by vendor
+    status?: PurchaseStatus; // can be updated by vendor
     description?: string; // can be updated, only set on create
     about_url?: string; // can be updated by vendor
     billing_url?: string; // can be updated by vendor
     support_url?: string; // can be updated by vendor
     delivery_url?: string; // can be updated by vendor
     verification_url?: string; // can be updated by vendor
-    auth_installation_url?: string; // the script to run to install the job
+    auth_installation_url?: string; // the script to run to install the purchase
     title?: string; // can be updated, only set on create
     subtitle?: string; // can be updated
     pricing?: string; // can be updated
@@ -203,6 +203,14 @@ export interface IResponseCheckoutTopup {
   message: string;
   tracer?: string;
   updatedValue: number;
+}
+
+export interface IRequestValidateCustomerProductAuth {
+  token: string;
+}
+export interface IResponseValidateCustomerProductAuth {
+  success: boolean;
+  message: string;
 }
 
 // -------- CRYPTO CHECKOUT -------- //
@@ -281,5 +289,5 @@ export interface IResponseAuthInstallation {
   message?: string;
   redirect_url?: string;
   redirect_cta?: string;
-  job_run_id?: JobRunID;
+  purchase_id?: PurchaseID;
 }

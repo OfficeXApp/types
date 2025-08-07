@@ -118,6 +118,8 @@ export interface UpdateFilePayload {
   external_payload?: ExternalPayload;
   notes?: string;
   shortcut_to?: FileID;
+  // whether to request a presigned upload URL for the file (used for updating)
+  request_presigned_url?: boolean;
 }
 
 /** Payload for UPDATE_FOLDER action */
@@ -345,16 +347,23 @@ export type GetFolderResponse = {
 
 export type CreateFileResponse = {
   file: FileRecord;
-  upload: {
+  upload?: {
     url: string;
     fields: Record<string, string>;
   };
-  notes: string;
+  notes?: string;
 };
 
 export type CreateFolderResponse = FolderRecord;
 
-export type UpdateFileResponse = FileRecord;
+export type UpdateFileResponse = {
+  file: FileRecord;
+  upload?: {
+    url: string;
+    fields: Record<string, string>;
+  };
+  notes?: string;
+};
 
 export type UpdateFolderResponse = FolderRecord;
 

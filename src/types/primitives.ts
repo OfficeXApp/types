@@ -37,7 +37,7 @@ export enum IDPrefixEnum {
   InboxNotifID = "InboxNotifID_",
   FileVersionID = "FileVersionID_",
   RedeemTokenID = "RedeemTokenID_",
-  JobRunID = "JobRunID_",
+  PurchaseID = "PurchaseID_",
 }
 
 export const GenerateID = {
@@ -70,7 +70,7 @@ export const GenerateID = {
   RedeemCode: () => `${IDPrefixEnum.RedeemCode}${uuidv4()}`,
   InboxNotifID: () => `${IDPrefixEnum.InboxNotifID}${uuidv4()}`,
   FileVersionID: () => `${IDPrefixEnum.FileVersionID}${uuidv4()}`,
-  JobRunID: () => `${IDPrefixEnum.JobRunID}${uuidv4()}`,
+  PurchaseID: () => `${IDPrefixEnum.PurchaseID}${uuidv4()}`,
 };
 
 /** Unique identifier for a file */
@@ -138,7 +138,7 @@ export type SystemPermissionID = string;
 /** ICP principal identifier */
 export type ICPPrincipalString = string;
 
-export type JobRunID = string;
+export type PurchaseID = string;
 
 /** EVM public address */
 export type EvmPublicAddress = string;
