@@ -46,7 +46,7 @@ import {
   GroupID,
   GroupInviteID,
   GroupRole,
-  URLEndpoint,
+  HostURL,
   UserID,
   WebhookEventLabel,
   WebhookID,
@@ -544,7 +544,7 @@ export interface IRequestCreateDrive {
   /** Private note about the drive */
   private_note?: string;
   /** URL endpoint for the drive */
-  endpoint_url?: URLEndpoint;
+  host_url?: HostURL;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -565,7 +565,7 @@ export interface IRequestUpdateDrive {
   /** Private note about the drive */
   private_note?: string;
   /** URL endpoint for the drive */
-  endpoint_url?: URLEndpoint;
+  host_url?: HostURL;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -1020,7 +1020,7 @@ export interface IRequestCreateGroup {
   /** Private note about the group */
   private_note?: string;
   /** URL endpoint for the group */
-  endpoint_url?: URLEndpoint;
+  host_url?: HostURL;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -1043,7 +1043,7 @@ export interface IRequestUpdateGroup {
   /** Private note about the group */
   private_note?: string;
   /** URL endpoint for the group */
-  endpoint_url?: URLEndpoint;
+  host_url?: HostURL;
   /** External identifier */
   external_id?: string;
   /** Additional data for external systems */
@@ -1415,7 +1415,7 @@ export interface IResponseRedeemGiftcardSpawnOrg
   extends ISuccessResponse<{
     owner_id: UserID;
     drive_id: DriveID;
-    endpoint_url: URLEndpoint;
+    host_url: HostURL;
     redeem_code: string;
     disk_auth_json?: string;
   }> {}
@@ -1429,10 +1429,11 @@ export interface IRequestRedeemOrg {
 export interface IResponseRedeemOrg
   extends ISuccessResponse<{
     drive_id: DriveID; // spawned drive id
-    endpoint_url: URLEndpoint; // spawned drive url endpoint
+    host_url: HostURL; // spawned drive url endpoint
     api_key: string; // admin api key for the spawned drive
     note: string; // note about the spawned drive, particularly info about the factory
-    admin_login_password: string; // admin login password for the spawned drive
+    admin_login_password: string;
+    auto_login_url: string;
   }> {}
 
 /** Redeem Gift Card Refuel Request */
@@ -1518,7 +1519,7 @@ export interface IFactoryStateSnapshot {
   canister_id: string;
   version: string;
   owner_id: UserID;
-  endpoint_url: string;
+  host_url: string;
 
   // API keys state
   apikeys_by_value: Record<string, string>;
@@ -1673,7 +1674,7 @@ export interface IRedeemGiftcardSpawnOrgData {
 export interface IRedeemGiftcardSpawnOrgResult {
   owner_id: UserID;
   drive_id: DriveID;
-  endpoint: string;
+  host: string;
   redeem_code: string;
   disk_auth_json?: string;
 }
@@ -1683,7 +1684,7 @@ export interface IFactorySpawnHistoryRecord {
   id: string;
   owner_id: UserID;
   drive_id: DriveID;
-  endpoint: string;
+  host: string;
   version: string;
   note: string;
   giftcard_id: GiftcardSpawnOrgID;
@@ -1719,7 +1720,7 @@ export interface IAboutDriveResponseData {
   organization_name: string;
   organization_id: DriveID;
   owner: UserID;
-  endpoint: string;
+  host: string;
   canister_id: string;
   daily_idle_cycle_burn_rate: string;
   controllers: string[];
@@ -1755,7 +1756,7 @@ export interface RedeemDirectoryPermission_BTOA {
 export interface AutoLogin_BTOA {
   org_name: string;
   org_id: DriveID;
-  org_endpoint: string;
+  org_host: string;
   profile_id: UserID;
   profile_name: string;
   profile_api_key: ApiKeyValue;

@@ -144,7 +144,7 @@ export type PurchaseID = string;
 export type EvmPublicAddress = string;
 
 /** URL endpoint */
-export type URLEndpoint = string;
+export type HostURL = string;
 
 /** External identifier for integration purposes */
 export type ExternalID = string;

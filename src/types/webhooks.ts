@@ -9,7 +9,7 @@ import {
   GroupInvite,
   StateDiffRecord,
 } from "./core";
-import { DriveID, LabelID, URLEndpoint, UserID, WebhookID } from "./primitives";
+import { DriveID, LabelID, HostURL, UserID, WebhookID } from "./primitives";
 import { IRequestInboxOrg } from "./routes";
 
 /** Corresponds to Rust's `ShareTrackID` type alias. */
@@ -65,7 +65,7 @@ export interface ShareTrackingWebhookData {
   resource_name: string;
   drive_id: DriveID;
   timestamp_ms: number;
-  endpoint_url: URLEndpoint;
+  host_url: HostURL;
   metadata?: string;
 }
 
