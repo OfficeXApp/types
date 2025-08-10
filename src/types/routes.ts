@@ -606,7 +606,7 @@ export interface IRequestReplayDrive {
 export interface IResponseReplayDrive
   extends ISuccessResponse<{
     /** Timestamp in nanoseconds when replay completed */
-    timestamp_ns: number;
+    timestamp_ms: number;
     /** Number of diffs that were applied */
     diffs_applied: number;
     /** ID of the checkpoint diff */
@@ -1535,7 +1535,7 @@ export interface IFactoryStateSnapshot {
   giftcard_by_id: Record<string, GiftcardSpawnOrg>;
 
   // Timestamp
-  timestamp_ns: number;
+  timestamp_ms: number;
 }
 
 /** Factory Snapshot Response */

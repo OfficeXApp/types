@@ -350,7 +350,7 @@ export interface DirectoryResourcePermissionFE {
 /** State diff record */
 export interface StateDiffRecord {
   id: StateDiffRecordID;
-  timestamp_ns: bigint;
+  timestamp_ms: number;
   notes?: string;
   drive_id: DriveID;
   host_url: HostURL;
