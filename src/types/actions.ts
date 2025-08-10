@@ -365,7 +365,9 @@ export type UpdateFileResponse = {
   notes?: string;
 };
 
-export type UpdateFolderResponse = FolderRecord;
+export type UpdateFolderResponse = {
+  folder: FolderRecord;
+};
 
 export type DeleteFileResponse = {
   file_id: FileID;

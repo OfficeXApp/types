@@ -106,6 +106,7 @@ export interface IRequestCheckoutInit {
   checkout_flow_id: CheckoutFlowID;
   org_id?: DriveID;
   user_id?: UserID;
+  host?: string;
   tracer?: string;
   email?: string;
 }
