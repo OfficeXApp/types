@@ -459,3 +459,8 @@ export interface ExternalIDsDriveResponseData {
 export interface PurchaseFE extends Purchase {
   permission_previews: SystemPermissionType[];
 }
+
+export interface ShortLink {
+  slug: string; // slug of the short link
+  url: string; // redirect to this original url
+}

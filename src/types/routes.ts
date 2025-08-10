@@ -1798,3 +1798,13 @@ export interface RedeemGroupInvite_BTOA {
   org_name: string;
   daterange: { begins_at: number; expires_at: number };
 }
+
+export interface IRequestShortLink {
+  slug?: string;
+  original_url?: string;
+}
+
+export type IResponseShortLink = ISuccessResponse<{
+  slug: string;
+  original_url: string;
+}>;
