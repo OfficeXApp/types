@@ -345,9 +345,8 @@ export interface IResponseListContacts
 
 /** Create Contact Request */
 export interface IRequestCreateContact {
+  /** ID of the contact to create */
   id?: UserID;
-  /** ICP principal associated with the contact */
-  icp_principal: string;
   /** Nickname for the contact */
   name: string;
   /** Avatar URL for the contact */
@@ -356,6 +355,8 @@ export interface IRequestCreateContact {
   notifications_url?: string;
   /** Email address for the contact */
   email?: string;
+  /** Secret entropy for the contact */
+  secret_entropy?: string;
   /** Seed phrase for the contact */
   seed_phrase?: string;
   /** Determines if a placeholder user id */
@@ -1405,7 +1406,7 @@ export interface IResponseSuperswapUser
 /** Redeem Gift Card Spawn Org Request */
 export interface IRequestRedeemGiftcardSpawnOrg {
   giftcard_id: GiftcardSpawnOrgID;
-  owner_icp_principal: ICPPrincipalString;
+  owner_user_id: UserID;
   owner_name?: string;
   organization_name?: string;
 }
@@ -1807,4 +1808,33 @@ export interface IRequestShortLink {
 export type IResponseShortLink = ISuccessResponse<{
   slug: string;
   original_url: string;
+  shortlink_url: string;
+}>;
+
+export type IRequestGenerateCryptoIdentity = {
+  secret_entropy?: string;
+  seed_phrase?: string;
+};
+
+export type IResponseGenerateCryptoIdentity = ISuccessResponse<{
+  user_id: UserID;
+  icp_principal: string;
+  evm_public_key: string;
+  evm_private_key: string;
+  origin: {
+    secret_entropy?: string;
+    seed_phrase?: string;
+  };
+}>;
+
+// the user_id must be a contact first
+export type IRequestAutoLoginLink = {
+  user_id: UserID;
+  profile_api_key: ApiKeyValue;
+};
+
+export type IResponseAutoLoginLink = ISuccessResponse<{
+  user_id: UserID;
+  auto_login_link: string;
+  full_login_instructions: string;
 }>;

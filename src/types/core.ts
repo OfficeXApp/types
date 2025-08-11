@@ -174,6 +174,7 @@ export interface Contact {
   evm_public_address: EvmPublicAddress;
   icp_principal: ICPPrincipalString;
   labels: LabelValue[];
+  secret_entropy?: string;
   seed_phrase?: string;
   from_placeholder_user_id?: UserID;
   redeem_code?: string;
