@@ -2,7 +2,6 @@
 
 import { DirectoryAction, DirectoryActionResponseBody } from "./actions";
 import {
-  ApiKey,
   ContactFE,
   Disk,
   Drive,
@@ -21,6 +20,8 @@ import {
   GiftcardRefuel,
   ExternalIDsDriveResponseData,
   PurchaseFE,
+  ApiKeyFE,
+  IFrameInjectedAuth,
 } from "./core";
 import {
   DirectoryPermissionFE,
@@ -256,7 +257,7 @@ export interface IRequestGetApiKey {
 }
 
 /** Get API Key Response */
-export interface IResponseGetApiKey extends ISuccessResponse<ApiKey> {}
+export interface IResponseGetApiKey extends ISuccessResponse<ApiKeyFE> {}
 
 /** List API Keys Request */
 export interface IRequestListApiKeys {
@@ -265,7 +266,7 @@ export interface IRequestListApiKeys {
 }
 
 /** List API Keys Response */
-export interface IResponseListApiKeys extends ISuccessResponse<ApiKey[]> {}
+export interface IResponseListApiKeys extends ISuccessResponse<ApiKeyFE[]> {}
 
 /** Create API Key Request */
 export interface IRequestCreateApiKey {
@@ -285,7 +286,7 @@ export interface IRequestCreateApiKey {
 }
 
 /** Create API Key Response */
-export interface IResponseCreateApiKey extends ISuccessResponse<ApiKey> {}
+export interface IResponseCreateApiKey extends ISuccessResponse<ApiKeyFE> {}
 
 /** Update API Key Request */
 export interface IRequestUpdateApiKey {
@@ -306,7 +307,7 @@ export interface IRequestUpdateApiKey {
 }
 
 /** Update API Key Response */
-export interface IResponseUpdateApiKey extends ISuccessResponse<ApiKey> {}
+export interface IResponseUpdateApiKey extends ISuccessResponse<ApiKeyFE> {}
 
 /** Delete API Key Request */
 export interface IRequestDeleteApiKey {
@@ -550,6 +551,7 @@ export interface IRequestCreateDrive {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  email?: string;
 }
 
 /** Create Drive Response */
@@ -571,6 +573,7 @@ export interface IRequestUpdateDrive {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  email?: string;
 }
 
 /** Update Drive Response */
@@ -1409,6 +1412,8 @@ export interface IRequestRedeemGiftcardSpawnOrg {
   owner_user_id: UserID;
   owner_name?: string;
   organization_name?: string;
+  external_id?: string;
+  email?: string;
 }
 
 /** Redeem Gift Card Spawn Org Response */
@@ -1548,16 +1553,14 @@ export interface IRequestListGiftcardRefuels extends IPaginationParams {}
 
 /** Create Giftcard Refuel Request Body */
 export interface IRequestCreateGiftcardRefuel {
-  action: "CREATE";
-  usd_revenue_cents: number;
-  note: string;
-  gas_cycles_included: number;
-  external_id: string;
+  usd_revenue_cents?: number;
+  note?: string;
+  gas_cycles_included?: number;
+  external_id?: string;
 }
 
 /** Update Giftcard Refuel Request Body */
 export interface IRequestUpdateGiftcardRefuel {
-  action: "UPDATE";
   id: GiftcardRefuelID;
   note?: string;
   usd_revenue_cents?: number;
@@ -1669,6 +1672,7 @@ export interface IRedeemGiftcardSpawnOrgData {
   owner_icp_principal: string;
   owner_name?: string;
   organization_name?: string;
+  external_id?: string;
 }
 
 /** Redeem Giftcard Spawn Org Result */
@@ -1678,6 +1682,7 @@ export interface IRedeemGiftcardSpawnOrgResult {
   host: string;
   redeem_code: string;
   disk_auth_json?: string;
+  external_id?: string;
 }
 
 /** Factory Spawn History Record */
@@ -1691,6 +1696,7 @@ export interface IFactorySpawnHistoryRecord {
   giftcard_id: GiftcardSpawnOrgID;
   gas_cycles_included: number;
   timestamp_ms: number;
+  external_id?: string;
 }
 
 /** Spawn Init Args */
@@ -1726,6 +1732,9 @@ export interface IAboutDriveResponseData {
   daily_idle_cycle_burn_rate: string;
   controllers: string[];
   version: string;
+  frontend_url: string;
+  external_id?: string;
+  email?: string;
 }
 
 export type IResponseAboutDrive = ISuccessResponse<IAboutDriveResponseData>;
@@ -1837,4 +1846,33 @@ export type IResponseAutoLoginLink = ISuccessResponse<{
   user_id: UserID;
   auto_login_link: string;
   full_login_instructions: string;
+}>;
+
+export interface IRequestQuickstart {
+  email?: string;
+  note?: string;
+  org_name?: string;
+  admin?: string;
+  members?: { name: string; entropy?: string }[];
+  disk_auth_json?: string;
+}
+export type IResponseQuickstart = ISuccessResponse<{
+  organization: {
+    drive_id: DriveID;
+    org_name: string;
+    host_url: string;
+    frontend_url: string;
+  };
+  admin: {
+    user_id: UserID;
+    api_key_value: string;
+    auto_login_url: string;
+    auth_json: IFrameInjectedAuth;
+  };
+  members: {
+    user_id: UserID;
+    api_key_value: string;
+    auto_login_url: string;
+    auth_json: IFrameInjectedAuth;
+  }[];
 }>;

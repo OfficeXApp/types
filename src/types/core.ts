@@ -231,6 +231,7 @@ export interface Drive {
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;
+  email?: string;
 }
 
 export interface DriveFE extends Drive {
@@ -430,7 +431,7 @@ export interface GiftcardSpawnOrg {
   note: string;
   gas_cycles_included: number;
   timestamp_ms: number;
-  external_id: string;
+  external_id?: string;
   redeemed: boolean;
   disk_auth_json?: string;
 }
@@ -441,7 +442,7 @@ export interface GiftcardRefuel {
   note: string;
   gas_cycles_included: number;
   timestamp_ms: number;
-  external_id: string;
+  external_id?: string;
   redeemed: boolean;
 }
 
@@ -464,4 +465,14 @@ export interface PurchaseFE extends Purchase {
 export interface ShortLink {
   slug: string; // slug of the short link
   url: string; // redirect to this original url
+}
+
+export interface IFrameInjectedAuth {
+  host: HostURL;
+  drive_id: DriveID;
+  org_name: string;
+  user_id: UserID;
+  profile_name: string;
+  api_key_value: ApiKeyValue;
+  redirect_to?: string;
 }
