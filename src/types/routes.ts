@@ -3,7 +3,6 @@
 import { DirectoryAction, DirectoryActionResponseBody } from "./actions";
 import {
   ContactFE,
-  Disk,
   Drive,
   Label,
   Group,
@@ -21,8 +20,10 @@ import {
   ExternalIDsDriveResponseData,
   PurchaseFE,
   ApiKeyFE,
-  IFrameInjectedAuth,
+  DiskFE,
+  BundleDefaultDisk,
 } from "./core";
+import { IFrameInjectedConfig } from "./iframe";
 import {
   DirectoryPermissionFE,
   PurchaseStatus,
@@ -445,14 +446,14 @@ export interface IRequestGetDisk {
 }
 
 /** Get Disk Response */
-export interface IResponseGetDisk extends ISuccessResponse<Disk> {}
+export interface IResponseGetDisk extends ISuccessResponse<DiskFE> {}
 
 /** List Disks Request */
 export interface IRequestListDisks extends IPaginationParams {}
 
 /** List Disks Response */
 export interface IResponseListDisks
-  extends ISuccessResponse<IPaginatedResponse<Disk>> {}
+  extends ISuccessResponse<IPaginatedResponse<DiskFE>> {}
 
 /** Create Disk Request */
 export interface IRequestCreateDisk {
@@ -471,11 +472,12 @@ export interface IRequestCreateDisk {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
-  endpoint?: string;
+  billing_url?: string;
+  autoexpire_ms?: number;
 }
 
 /** Create Disk Response */
-export interface IResponseCreateDisk extends ISuccessResponse<Disk> {}
+export interface IResponseCreateDisk extends ISuccessResponse<DiskFE> {}
 
 /** Update Disk Request */
 export interface IRequestUpdateDisk {
@@ -493,11 +495,12 @@ export interface IRequestUpdateDisk {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
-  endpoint?: string;
+  billing_url?: string;
+  autoexpire_ms?: number;
 }
 
 /** Update Disk Response */
-export interface IResponseUpdateDisk extends ISuccessResponse<Disk> {}
+export interface IResponseUpdateDisk extends ISuccessResponse<DiskFE> {}
 
 /** Delete Disk Request */
 export interface IRequestDeleteDisk {
@@ -1421,9 +1424,10 @@ export interface IResponseRedeemGiftcardSpawnOrg
   extends ISuccessResponse<{
     owner_id: UserID;
     drive_id: DriveID;
-    host_url: HostURL;
+    host: string;
     redeem_code: string;
-    disk_auth_json?: string;
+    bundled_default_disk?: BundleDefaultDisk;
+    external_id?: string;
   }> {}
 
 /** Redeem Org Request */
@@ -1642,7 +1646,7 @@ export interface IRequestCreateGiftcardSpawnOrg {
   note: string;
   gas_cycles_included: number;
   external_id: string;
-  disk_auth_json?: string;
+  bundled_default_disk?: BundleDefaultDisk;
 }
 
 /** Update Giftcard Spawn Org Request Body */
@@ -1652,7 +1656,7 @@ export interface IRequestUpdateGiftcardSpawnOrg {
   usd_revenue_cents?: number;
   gas_cycles_included?: number;
   external_id?: string;
-  disk_auth_json?: string;
+  bundled_default_disk?: BundleDefaultDisk;
 }
 
 /** Delete Giftcard Spawn Org Request Body */
@@ -1681,7 +1685,7 @@ export interface IRedeemGiftcardSpawnOrgResult {
   drive_id: DriveID;
   host: string;
   redeem_code: string;
-  disk_auth_json?: string;
+  bundled_default_disk?: BundleDefaultDisk;
   external_id?: string;
 }
 
@@ -1744,7 +1748,7 @@ export interface RedeemDiskGiftCard_BTOA {
   disk_type: string;
   public_note: string;
   auth_json: string;
-  endpoint: string;
+  billing_url: string;
 }
 
 export interface fileRawUrl_BTOA {
@@ -1852,9 +1856,10 @@ export interface IRequestQuickstart {
   email?: string;
   note?: string;
   org_name?: string;
-  admin?: string;
-  members?: { name: string; entropy?: string }[];
-  disk_auth_json?: string;
+  tracer?: string;
+  admin?: { name?: string; secret_entropy?: string; tracer?: string };
+  members?: { name?: string; secret_entropy?: string; tracer?: string }[];
+  bundled_default_disk?: BundleDefaultDisk;
 }
 export type IResponseQuickstart = ISuccessResponse<{
   organization: {
@@ -1862,17 +1867,20 @@ export type IResponseQuickstart = ISuccessResponse<{
     org_name: string;
     host_url: string;
     frontend_url: string;
+    tracer?: string;
   };
   admin: {
     user_id: UserID;
     api_key_value: string;
     auto_login_url: string;
-    auth_json: IFrameInjectedAuth;
+    auth_json: IFrameInjectedConfig;
+    tracer?: string;
   };
   members: {
     user_id: UserID;
     api_key_value: string;
     auto_login_url: string;
-    auth_json: IFrameInjectedAuth;
+    auth_json: IFrameInjectedConfig;
+    tracer?: string;
   }[];
 }>;

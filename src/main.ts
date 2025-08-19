@@ -5,3 +5,4 @@ export * from "./types/primitives";
 export * from "./types/routes";
 export * from "./types/webhooks";
 export * from "./types/vendor";
+export * from "./types/iframe";

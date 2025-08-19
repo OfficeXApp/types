@@ -211,7 +211,23 @@ export interface Disk {
   external_id?: ExternalID;
   external_payload?: ExternalPayload;
   created_at: number;
-  endpoint?: string;
+  billing_url?: string;
+  autoexpire_ms?: number;
+}
+
+export interface BundleDefaultDisk {
+  name: string;
+  disk_type: DiskTypeEnum;
+  public_note?: string;
+  autoexpire_ms?: number;
+  billing_url?: string;
+  auth_json?: {
+    endpoint: string;
+    access_key: string;
+    secret_key: string;
+    bucket: string;
+    region: string;
+  };
 }
 
 export interface DiskFE extends Disk {
@@ -433,7 +449,7 @@ export interface GiftcardSpawnOrg {
   timestamp_ms: number;
   external_id?: string;
   redeemed: boolean;
-  disk_auth_json?: string;
+  bundled_default_disk?: BundleDefaultDisk;
 }
 
 export interface GiftcardRefuel {
@@ -465,14 +481,4 @@ export interface PurchaseFE extends Purchase {
 export interface ShortLink {
   slug: string; // slug of the short link
   url: string; // redirect to this original url
-}
-
-export interface IFrameInjectedAuth {
-  host: HostURL;
-  drive_id: DriveID;
-  org_name: string;
-  user_id: UserID;
-  profile_name: string;
-  api_key_value: ApiKeyValue;
-  redirect_to?: string;
 }
