@@ -1,4 +1,12 @@
-import { DriveID, FileConflictResolutionEnum, UserID } from "./primitives";
+import {
+  DiskID,
+  DiskTypeEnum,
+  DriveID,
+  FileConflictResolutionEnum,
+  FileID,
+  FolderID,
+  UserID,
+} from "./primitives";
 
 export interface IFrameEphemeralConfig {
   org_entropy?: string;
@@ -98,4 +106,25 @@ export interface IFrameCommandRes_AuthToken {
   user_id: UserID;
   auth_token: string;
   tracer?: string;
+}
+
+// IFrameCommandType.DIRECTORY_ACTION
+export interface IFrameCommandRes_CreateFile {
+  fileID: FileID;
+  diskID: DiskID;
+  diskType: DiskTypeEnum;
+  parentFolderID?: FolderID;
+  raw_url?: string;
+  message: string;
+  name: string;
+}
+
+// IFrameCommandType.DIRECTORY_ACTION
+export interface IFrameCommandRes_CreateFolder {
+  folderID: FolderID;
+  diskID: DiskID;
+  diskType: DiskTypeEnum;
+  parentFolderID?: FolderID;
+  message: string;
+  name: string;
 }
