@@ -2,9 +2,7 @@
 
 import { DirectoryAction, DirectoryActionResponseBody } from "./actions";
 import {
-  ApiKey,
   ContactFE,
-  Disk,
   Drive,
   Label,
   Group,
@@ -21,7 +19,11 @@ import {
   GiftcardRefuel,
   ExternalIDsDriveResponseData,
   PurchaseFE,
+  ApiKeyFE,
+  DiskFE,
+  BundleDefaultDisk,
 } from "./core";
+import { IFrameInjectedConfig } from "./iframe";
 import {
   DirectoryPermissionFE,
   PurchaseStatus,
@@ -256,7 +258,7 @@ export interface IRequestGetApiKey {
 }
 
 /** Get API Key Response */
-export interface IResponseGetApiKey extends ISuccessResponse<ApiKey> {}
+export interface IResponseGetApiKey extends ISuccessResponse<ApiKeyFE> {}
 
 /** List API Keys Request */
 export interface IRequestListApiKeys {
@@ -265,7 +267,7 @@ export interface IRequestListApiKeys {
 }
 
 /** List API Keys Response */
-export interface IResponseListApiKeys extends ISuccessResponse<ApiKey[]> {}
+export interface IResponseListApiKeys extends ISuccessResponse<ApiKeyFE[]> {}
 
 /** Create API Key Request */
 export interface IRequestCreateApiKey {
@@ -285,7 +287,7 @@ export interface IRequestCreateApiKey {
 }
 
 /** Create API Key Response */
-export interface IResponseCreateApiKey extends ISuccessResponse<ApiKey> {}
+export interface IResponseCreateApiKey extends ISuccessResponse<ApiKeyFE> {}
 
 /** Update API Key Request */
 export interface IRequestUpdateApiKey {
@@ -306,7 +308,7 @@ export interface IRequestUpdateApiKey {
 }
 
 /** Update API Key Response */
-export interface IResponseUpdateApiKey extends ISuccessResponse<ApiKey> {}
+export interface IResponseUpdateApiKey extends ISuccessResponse<ApiKeyFE> {}
 
 /** Delete API Key Request */
 export interface IRequestDeleteApiKey {
@@ -444,14 +446,14 @@ export interface IRequestGetDisk {
 }
 
 /** Get Disk Response */
-export interface IResponseGetDisk extends ISuccessResponse<Disk> {}
+export interface IResponseGetDisk extends ISuccessResponse<DiskFE> {}
 
 /** List Disks Request */
 export interface IRequestListDisks extends IPaginationParams {}
 
 /** List Disks Response */
 export interface IResponseListDisks
-  extends ISuccessResponse<IPaginatedResponse<Disk>> {}
+  extends ISuccessResponse<IPaginatedResponse<DiskFE>> {}
 
 /** Create Disk Request */
 export interface IRequestCreateDisk {
@@ -470,11 +472,12 @@ export interface IRequestCreateDisk {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
-  endpoint?: string;
+  billing_url?: string;
+  autoexpire_ms?: number;
 }
 
 /** Create Disk Response */
-export interface IResponseCreateDisk extends ISuccessResponse<Disk> {}
+export interface IResponseCreateDisk extends ISuccessResponse<DiskFE> {}
 
 /** Update Disk Request */
 export interface IRequestUpdateDisk {
@@ -492,11 +495,12 @@ export interface IRequestUpdateDisk {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
-  endpoint?: string;
+  billing_url?: string;
+  autoexpire_ms?: number;
 }
 
 /** Update Disk Response */
-export interface IResponseUpdateDisk extends ISuccessResponse<Disk> {}
+export interface IResponseUpdateDisk extends ISuccessResponse<DiskFE> {}
 
 /** Delete Disk Request */
 export interface IRequestDeleteDisk {
@@ -550,6 +554,7 @@ export interface IRequestCreateDrive {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  email?: string;
 }
 
 /** Create Drive Response */
@@ -571,6 +576,7 @@ export interface IRequestUpdateDrive {
   external_id?: string;
   /** Additional data for external systems */
   external_payload?: string;
+  email?: string;
 }
 
 /** Update Drive Response */
@@ -1409,6 +1415,8 @@ export interface IRequestRedeemGiftcardSpawnOrg {
   owner_user_id: UserID;
   owner_name?: string;
   organization_name?: string;
+  external_id?: string;
+  email?: string;
 }
 
 /** Redeem Gift Card Spawn Org Response */
@@ -1416,9 +1424,10 @@ export interface IResponseRedeemGiftcardSpawnOrg
   extends ISuccessResponse<{
     owner_id: UserID;
     drive_id: DriveID;
-    host_url: HostURL;
+    host: string;
     redeem_code: string;
-    disk_auth_json?: string;
+    bundled_default_disk?: BundleDefaultDisk;
+    external_id?: string;
   }> {}
 
 /** Redeem Org Request */
@@ -1548,16 +1557,14 @@ export interface IRequestListGiftcardRefuels extends IPaginationParams {}
 
 /** Create Giftcard Refuel Request Body */
 export interface IRequestCreateGiftcardRefuel {
-  action: "CREATE";
-  usd_revenue_cents: number;
-  note: string;
-  gas_cycles_included: number;
-  external_id: string;
+  usd_revenue_cents?: number;
+  note?: string;
+  gas_cycles_included?: number;
+  external_id?: string;
 }
 
 /** Update Giftcard Refuel Request Body */
 export interface IRequestUpdateGiftcardRefuel {
-  action: "UPDATE";
   id: GiftcardRefuelID;
   note?: string;
   usd_revenue_cents?: number;
@@ -1639,7 +1646,7 @@ export interface IRequestCreateGiftcardSpawnOrg {
   note: string;
   gas_cycles_included: number;
   external_id: string;
-  disk_auth_json?: string;
+  bundled_default_disk?: BundleDefaultDisk;
 }
 
 /** Update Giftcard Spawn Org Request Body */
@@ -1649,7 +1656,7 @@ export interface IRequestUpdateGiftcardSpawnOrg {
   usd_revenue_cents?: number;
   gas_cycles_included?: number;
   external_id?: string;
-  disk_auth_json?: string;
+  bundled_default_disk?: BundleDefaultDisk;
 }
 
 /** Delete Giftcard Spawn Org Request Body */
@@ -1669,6 +1676,7 @@ export interface IRedeemGiftcardSpawnOrgData {
   owner_icp_principal: string;
   owner_name?: string;
   organization_name?: string;
+  external_id?: string;
 }
 
 /** Redeem Giftcard Spawn Org Result */
@@ -1677,7 +1685,8 @@ export interface IRedeemGiftcardSpawnOrgResult {
   drive_id: DriveID;
   host: string;
   redeem_code: string;
-  disk_auth_json?: string;
+  bundled_default_disk?: BundleDefaultDisk;
+  external_id?: string;
 }
 
 /** Factory Spawn History Record */
@@ -1691,6 +1700,7 @@ export interface IFactorySpawnHistoryRecord {
   giftcard_id: GiftcardSpawnOrgID;
   gas_cycles_included: number;
   timestamp_ms: number;
+  external_id?: string;
 }
 
 /** Spawn Init Args */
@@ -1726,6 +1736,9 @@ export interface IAboutDriveResponseData {
   daily_idle_cycle_burn_rate: string;
   controllers: string[];
   version: string;
+  frontend_url: string;
+  external_id?: string;
+  email?: string;
 }
 
 export type IResponseAboutDrive = ISuccessResponse<IAboutDriveResponseData>;
@@ -1735,7 +1748,7 @@ export interface RedeemDiskGiftCard_BTOA {
   disk_type: string;
   public_note: string;
   auth_json: string;
-  endpoint: string;
+  billing_url: string;
 }
 
 export interface fileRawUrl_BTOA {
@@ -1837,4 +1850,37 @@ export type IResponseAutoLoginLink = ISuccessResponse<{
   user_id: UserID;
   auto_login_link: string;
   full_login_instructions: string;
+}>;
+
+export interface IRequestQuickstart {
+  email?: string;
+  note?: string;
+  org_name?: string;
+  tracer?: string;
+  admin?: { name?: string; secret_entropy?: string; tracer?: string };
+  members?: { name?: string; secret_entropy?: string; tracer?: string }[];
+  bundled_default_disk?: BundleDefaultDisk;
+}
+export type IResponseQuickstart = ISuccessResponse<{
+  organization: {
+    drive_id: DriveID;
+    org_name: string;
+    host_url: string;
+    frontend_url: string;
+    tracer?: string;
+  };
+  admin: {
+    user_id: UserID;
+    api_key_value: string;
+    auto_login_url: string;
+    auth_json: IFrameInjectedConfig;
+    tracer?: string;
+  };
+  members: {
+    user_id: UserID;
+    api_key_value: string;
+    auto_login_url: string;
+    auth_json: IFrameInjectedConfig;
+    tracer?: string;
+  }[];
 }>;
