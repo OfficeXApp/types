@@ -22,6 +22,11 @@ import {
   ApiKeyFE,
   DiskFE,
   BundleDefaultDisk,
+  GroupFE,
+  GroupInviteFE,
+  LabelFE,
+  WebhookFE,
+  DriveFE,
 } from "./core";
 import { IFrameInjectedConfig } from "./iframe";
 import {
@@ -528,14 +533,14 @@ export interface IRequestGetDrive {
 }
 
 /** Get Drive Response */
-export interface IResponseGetDrive extends ISuccessResponse<Drive> {}
+export interface IResponseGetDrive extends ISuccessResponse<DriveFE> {}
 
 /** List Drives Request */
 export interface IRequestListDrives extends IPaginationParams {}
 
 /** List Drives Response */
 export interface IResponseListDrives
-  extends ISuccessResponse<IPaginatedResponse<Drive>> {}
+  extends ISuccessResponse<IPaginatedResponse<DriveFE>> {}
 
 /** Create Drive Request */
 export interface IRequestCreateDrive {
@@ -558,7 +563,7 @@ export interface IRequestCreateDrive {
 }
 
 /** Create Drive Response */
-export interface IResponseCreateDrive extends ISuccessResponse<Drive> {}
+export interface IResponseCreateDrive extends ISuccessResponse<DriveFE> {}
 
 /** Update Drive Request */
 export interface IRequestUpdateDrive {
@@ -580,7 +585,7 @@ export interface IRequestUpdateDrive {
 }
 
 /** Update Drive Response */
-export interface IResponseUpdateDrive extends ISuccessResponse<Drive> {}
+export interface IResponseUpdateDrive extends ISuccessResponse<DriveFE> {}
 
 /** Delete Drive Request */
 export interface IRequestDeleteDrive {
@@ -1006,14 +1011,14 @@ export interface IRequestGetGroup {
 }
 
 /** Get Group Response */
-export interface IResponseGetGroup extends ISuccessResponse<Group> {}
+export interface IResponseGetGroup extends ISuccessResponse<GroupFE> {}
 
 /** List Groups Request */
 export interface IRequestListGroups extends IPaginationParams {}
 
 /** List Groups Response */
 export interface IResponseListGroups
-  extends ISuccessResponse<IPaginatedResponse<Group>> {}
+  extends ISuccessResponse<IPaginatedResponse<GroupFE>> {}
 
 /** Create Group Request */
 export interface IRequestCreateGroup {
@@ -1035,7 +1040,7 @@ export interface IRequestCreateGroup {
 }
 
 /** Create Group Response */
-export interface IResponseCreateGroup extends ISuccessResponse<Group> {}
+export interface IResponseCreateGroup extends ISuccessResponse<GroupFE> {}
 
 /** Update Group Request */
 export interface IRequestUpdateGroup {
@@ -1058,7 +1063,7 @@ export interface IRequestUpdateGroup {
 }
 
 /** Update Group Response */
-export interface IResponseUpdateGroup extends ISuccessResponse<Group> {}
+export interface IResponseUpdateGroup extends ISuccessResponse<GroupFE> {}
 
 /** Delete Group Request */
 export interface IRequestDeleteGroup {
@@ -1106,7 +1111,7 @@ export interface IRequestGetGroupInvite {
 
 /** Get Group Invite Response */
 export interface IResponseGetGroupInvite
-  extends ISuccessResponse<GroupInvite> {}
+  extends ISuccessResponse<GroupInviteFE> {}
 
 /** List Group Invites Request */
 export interface IRequestListGroupInvites extends IPaginationParams {
@@ -1116,7 +1121,7 @@ export interface IRequestListGroupInvites extends IPaginationParams {
 
 /** List Group Invites Response */
 export interface IResponseListGroupInvites
-  extends ISuccessResponse<IPaginatedResponse<GroupInvite>> {}
+  extends ISuccessResponse<IPaginatedResponse<GroupInviteFE>> {}
 
 /** Create Group Invite Request */
 export interface IRequestCreateGroupInvite {
@@ -1141,7 +1146,7 @@ export interface IRequestCreateGroupInvite {
 
 /** Create Group Invite Response */
 export interface IResponseCreateGroupInvite
-  extends ISuccessResponse<GroupInvite> {}
+  extends ISuccessResponse<GroupInviteFE> {}
 
 /** Update Group Invite Request */
 export interface IRequestUpdateGroupInvite {
@@ -1163,7 +1168,7 @@ export interface IRequestUpdateGroupInvite {
 
 /** Update Group Invite Response */
 export interface IResponseUpdateGroupInvite
-  extends ISuccessResponse<GroupInvite> {}
+  extends ISuccessResponse<GroupInviteFE> {}
 
 /** Delete Group Invite Request */
 export interface IRequestDeleteGroupInvite {
@@ -1206,7 +1211,7 @@ export interface IRequestGetLabel {
 }
 
 /** Get Label Response */
-export interface IResponseGetLabel extends ISuccessResponse<Label> {}
+export interface IResponseGetLabel extends ISuccessResponse<LabelFE> {}
 
 /** List Labels Request */
 export interface IRequestListLabels {
@@ -1225,7 +1230,7 @@ export interface IRequestListLabels {
 
 /** List Labels Response */
 export interface IResponseListLabels
-  extends ISuccessResponse<IPaginatedResponse<Label>> {}
+  extends ISuccessResponse<IPaginatedResponse<LabelFE>> {}
 
 /** Create Label Request */
 export interface IRequestCreateLabel {
@@ -1245,7 +1250,7 @@ export interface IRequestCreateLabel {
 }
 
 /** Create Label Response */
-export interface IResponseCreateLabel extends ISuccessResponse<Label> {}
+export interface IResponseCreateLabel extends ISuccessResponse<LabelFE> {}
 
 /** Update Label Request */
 export interface IRequestUpdateLabel {
@@ -1266,7 +1271,7 @@ export interface IRequestUpdateLabel {
 }
 
 /** Update Label Response */
-export interface IResponseUpdateLabel extends ISuccessResponse<Label> {}
+export interface IResponseUpdateLabel extends ISuccessResponse<LabelFE> {}
 
 /** Delete Label Request */
 export interface IRequestDeleteLabel {
@@ -1315,14 +1320,14 @@ export interface IRequestGetWebhook {
 }
 
 /** Get Webhook Response */
-export interface IResponseGetWebhook extends ISuccessResponse<Webhook> {}
+export interface IResponseGetWebhook extends ISuccessResponse<WebhookFE> {}
 
 /** List Webhooks Request */
 export interface IRequestListWebhooks extends IPaginationParams {}
 
 /** List Webhooks Response */
 export interface IResponseListWebhooks
-  extends ISuccessResponse<IPaginatedResponse<Webhook>> {}
+  extends ISuccessResponse<IPaginatedResponse<WebhookFE>> {}
 
 /** Create Webhook Request */
 export interface IRequestCreateWebhook {
@@ -1352,7 +1357,7 @@ export interface IRequestCreateWebhook {
 }
 
 /** Create Webhook Response */
-export interface IResponseCreateWebhook extends ISuccessResponse<Webhook> {}
+export interface IResponseCreateWebhook extends ISuccessResponse<WebhookFE> {}
 
 /** Update Webhook Request */
 export interface IRequestUpdateWebhook {
@@ -1379,7 +1384,7 @@ export interface IRequestUpdateWebhook {
 }
 
 /** Update Webhook Response */
-export interface IResponseUpdateWebhook extends ISuccessResponse<Webhook> {}
+export interface IResponseUpdateWebhook extends ISuccessResponse<WebhookFE> {}
 
 /** Delete Webhook Request */
 export interface IRequestDeleteWebhook {
@@ -1439,7 +1444,7 @@ export interface IRequestRedeemOrg {
 export interface IResponseRedeemOrg
   extends ISuccessResponse<{
     drive_id: DriveID; // spawned drive id
-    host_url: HostURL; // spawned drive url endpoint
+    host_url: string; // spawned drive url endpoint
     api_key: string; // admin api key for the spawned drive
     note: string; // note about the spawned drive, particularly info about the factory
     admin_login_password: string;
@@ -1642,11 +1647,10 @@ export interface IResponseListGiftcardSpawnOrgsData {
 
 /** Create Giftcard Spawn Org Request Body */
 export interface IRequestCreateGiftcardSpawnOrg {
-  usd_revenue_cents: number;
-  note: string;
-  gas_cycles_included: number;
-  external_id: string;
-  bundled_default_disk?: BundleDefaultDisk;
+  usd_revenue_cents?: number;
+  note?: string;
+  gas_cycles_included?: number;
+  external_id?: string;
 }
 
 /** Update Giftcard Spawn Org Request Body */
